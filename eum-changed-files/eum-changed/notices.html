@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>최신 제도 · E9-Bridge</title>
+<meta name="description" content="E-9 고용허가제에서 최근 바뀐 제도를 날짜순으로 정리했습니다. 최저임금, 쿼터, 송출국, 관리 강화 소식을 6개 언어로 안내합니다.">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://eum-six.vercel.app/notices.html">
+<!-- ▼ 공통 부트 코드 — 모든 페이지에 같은 내용. 고칠 때 전부 함께 고치세요. -->
+<script>
+(function(){var l=null;try{l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('eum.lang');}catch(e){}
+if(!l){l=(navigator.languages&&navigator.languages[0])||navigator.language||'';}
+if(String(l||'').toLowerCase().indexOf('ko')!==0){var h=document.documentElement;
+h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute('data-lang-pending');},1500);}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans+Khmer:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#8a5a34">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="E9-Bridge">
+</head>
+<body data-page-title="navUpdates">
+
+<a class="skip" href="#top" data-i18n="skip">본문으로 건너뛰기</a>
+
+<!-- ▼ 공통 머리말 — 모든 페이지에 같은 내용. 고칠 때 전부 함께 고치세요. -->
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <img class="brand-mark" src="assets/logo-mark.png" alt="E9-Bridge">
+      <span class="brand-text">
+        <strong>E9-Bridge</strong>
+        <em data-i18n="brandSub">사업장 변경 안내</em>
+      </span>
+    </a>
+    <div class="auth-wrap">
+      <div class="auth-slot" id="authSlot"></div>
+      <!-- 로그인했을 때만 열리는 메뉴. 이름 단추 바로 아래에 붙습니다. -->
+      <div class="auth-menu" id="authMenu" hidden>
+        <a href="account.html" data-i18n="navAccount">계정 설정</a>
+        <button type="button" id="menuLogout" data-i18n="navLogout">로그아웃</button>
+      </div>
+    </div>
+    <div class="lang">
+      <label class="lang-label" for="langSelect" data-i18n="langLabel">언어</label>
+      <select id="langSelect" aria-label="Language">
+        <option value="ko">한국어</option>
+        <option value="en">English</option>
+        <option value="vi">Tiếng Việt</option>
+        <option value="id">Bahasa Indonesia</option>
+        <option value="km">ខ្មែរ</option>
+        <option value="ne">नेपाली</option>
+      </select>
+    </div>
+  </div>
+
+  <nav class="secnav" data-i18n-aria="navLabel" aria-label="기능 바로가기">
+    <div class="wrap secnav-in" id="secnav">
+      <a href="index.html" data-i18n="secNo1">기한</a>
+      <a href="reason.html" data-i18n="secNo2">사유</a>
+      <a href="payout.html" data-i18n="secNoPay">출국 정산</a>
+      <div class="secnav-item">
+        <a href="faq.html" data-i18n="navFaq">FAQ</a>
+        <div class="secnav-drop">
+          <a href="faq.html" data-i18n="faqTitle">자주 묻는 질문</a>
+          <a href="ask.html" data-i18n="navChatbot">챗봇 질문</a>
+          <a href="board.html" data-i18n="navBoard">질문게시판</a>
+        </div>
+      </div>
+      <a href="notices.html" data-i18n="navUpdates">최신 제도</a>
+      <a href="legal.html" data-i18n="secNoLegal">법률 자문</a>
+      <a href="interviews.html" data-i18n="navInterview">인터뷰</a>
+    </div>
+  </nav>
+</header>
+
+<div id="langToast" class="toast" hidden>
+  <span id="langToastText" data-i18n="langAuto">기기 설정에 맞춰 언어를 골랐습니다.</span>
+  <button type="button" id="toastClose" data-i18n="ok">확인</button>
+</div>
+<!-- ▲ 공통 머리말 끝 -->
+
+<main id="top">
+
+  <section id="notices" class="band">
+    <div class="wrap">
+      <h2 data-i18n="ntTitle">최근에 바뀐 제도</h2>
+      <div class="notice-list" id="noticeList"></div>
+    </div>
+  </section>
+
+  <!-- ▼ 공통 공식 창구 — 모든 페이지에 같은 내용 -->
+  <section class="band band-ink">
+    <div class="wrap">
+      <h2 data-i18n="ofTitle">공식 창구</h2>
+      <p class="sec-lead" data-i18n="ofLead">확정된 답은 아래에서 받으세요. 이 서비스는 그 앞 단계를 돕습니다.</p>
+      <ul class="official">
+        <li><b>1345</b><span data-i18n="of1345">외국인종합안내센터 · 여러 언어 상담</span></li>
+        <li><b>1350</b><span data-i18n="of1350">고용노동부 상담센터 · 임금체불 신고</span></li>
+        <li><b><a href="https://www.eps.go.kr" target="_blank" rel="noopener">eps.go.kr</a></b><span data-i18n="ofEps">고용허가제 공식 누리집</span></li>
+        <li><b><a href="https://www.hikorea.go.kr" target="_blank" rel="noopener">hikorea.go.kr</a></b><span data-i18n="ofHi">체류·비자 민원</span></li>
+      </ul>
+
+      <!-- 문의 · 소셜 — 로고를 누르면 새 창으로 열립니다 -->
+      <div class="ft-contact">
+        <a class="ft-mail" href="mailto:habyeongwoo2000@gmail.com">
+          <span data-i18n="ftMail">이메일 보내기</span>
+          <span class="ft-mail-addr">habyeongwoo2000@gmail.com</span>
+        </a>
+        <div class="ft-social">
+          <a href="https://www.instagram.com/e9_bridge/" target="_blank" rel="noopener noreferrer"
+             class="ft-sns" data-i18n-aria="ftInstagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">
+              <defs>
+                <radialGradient id="igGrad" cx="30%" cy="107%" r="150%">
+                  <stop offset="0" stop-color="#fdf497"/>
+                  <stop offset=".05" stop-color="#fdf497"/>
+                  <stop offset=".45" stop-color="#fd5949"/>
+                  <stop offset=".6" stop-color="#d6249f"/>
+                  <stop offset=".9" stop-color="#285AEB"/>
+                </radialGradient>
+              </defs>
+              <rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#igGrad)"/>
+              <rect x="4.6" y="4.6" width="14.8" height="14.8" rx="4.2" fill="none" stroke="#fff" stroke-width="1.7"/>
+              <circle cx="12" cy="12" r="3.7" fill="none" stroke="#fff" stroke-width="1.7"/>
+              <circle cx="17.2" cy="6.9" r="1.15" fill="#fff"/>
+            </svg>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61591144925891&amp;locale=ko_KR" target="_blank" rel="noopener noreferrer"
+             class="ft-sns" data-i18n-aria="ftFacebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10.5" fill="#1877F2"/>
+              <path fill="#fff" d="M15.1 12.6l.42-3.03h-2.9V7.6c0-.83.28-1.56 1.5-1.56h1.52V3.32c-.27-.04-.84-.12-1.92-.12-2.26 0-3.82 1.38-3.82 3.9v2.47H7.98v3.03h2.92v7.83c.58.09 1.17.13 1.77.13s1.19-.04 1.77-.13v-7.83z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="official-foot">
+        <p data-i18n="disclaimer">참고용 정보이며 법률 자문이 아닙니다. 최종 확인은 관할 고용센터 또는 외국인종합안내센터(1345)에서 해주세요.</p>
+        <p>E9-Bridge · <span data-i18n="brandSub">사업장 변경 안내</span> · <span data-i18n="ftTeam">팀 안녕하세요 병우입니다</span></p>
+        <p><a class="foot-privacy" href="privacy.html" data-i18n="navPrivacy">개인정보처리방침</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- 언어 파일은 고른 언어 하나만 받습니다. core.js 가 어떤 언어인지 정하고,
+     바로 아래 줄이 그 파일 하나만 불러옵니다 (예전에는 5개 언어를 전부 받았습니다). -->
+<script src="assets/i18n/core.js"></script>
+<script>document.write('<scr' + 'ipt src="assets/i18n/' + EUM_LANG + '.js"><\/scr' + 'ipt>');</script>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+
+<!-- 설치형 앱(PWA) — 서비스 워커를 등록합니다.
+     연결이 끊겨도 기한 계산은 계속 되고, 홈 화면에 추가할 수 있게 됩니다.
+     지원하지 않는 브라우저에서는 조용히 넘어갑니다. -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function (e) {
+      console.warn('service worker 등록 실패', e);
+    });
+  });
+}
+</script>
+</body>
+</html>
