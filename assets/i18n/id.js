@@ -548,5 +548,27 @@ I18N.id = {
   askFaqHit: 'Jawaban cepat dari FAQ',
   askAskAi: 'Tanya AI lebih rinci',
   /* 요일 — 기기 브라우저가 이 언어의 요일 이름을 모를 때 씁니다 */
-  weekdays: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
+  weekdays: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
+  /* ---------- 2026-10 리디자인: 첫 화면·머리말 ---------- */
+  viewMore: "Lihat semua",
+  svcTitle: "Layanan utama",
+  stTitle: "Pindah kerja dalam angka",
+  st1T: "Batas pengajuan pindah",
+  st1S: "Sejak kontrak kerja berakhir",
+  st1U: "bulan",
+  st2T: "Waktu mencari kerja baru",
+  st2S: "Sejak tanggal pengajuan",
+  st2U: "bulan",
+  st3T: "Batas jumlah pindah",
+  st3S: "3 tahun pertama · pindah karena kesalahan perusahaan tidak dihitung",
+  st3U: "kali",
+  st4T: "Bahasa",
+  st4S: "Korea · Inggris · Vietnam · Indonesia · Khmer · Nepal",
+  st4U: "bahasa",
+  hvPause: "Hentikan slide",
+  hvPlay: "Putar slide",
+  menuOpen: "Buka semua menu",
+  menuClose: "Tutup menu",
+  crumbHome: "Beranda",
+  toTop: "Kembali ke atas"
 };

@@ -30,7 +30,7 @@
      기기에 예전 파일이 남습니다.
    ------------------------------------------------------------------ */
 
-const VERSION = 'v2';   // 2026-10-28 언어 정리(km·ne 추가, th 제거) · 내 정보 한눈에 · 챗봇 FAQ 바로 답변
+const VERSION = 'v3';   // 2026-10-29 리디자인(남색·Pretendard·사진 메인 비주얼)
 const STATIC = 'e9b-static-' + VERSION;
 const PAGES = 'e9b-pages-' + VERSION;
 
@@ -44,7 +44,8 @@ const PRECACHE = [
   '/assets/data.js',
   '/assets/i18n/core.js',
   '/assets/i18n/ko.js',
-  '/assets/logo-mark.png',
+  '/assets/logo-mark.svg',
+  '/assets/logo-mark-white.svg',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png',
   '/manifest.webmanifest'

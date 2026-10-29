@@ -143,6 +143,10 @@
     /* 페이지마다 들어 있는 기능이 다릅니다. 각 함수가 자기 요소가 없으면
        조용히 넘어가므로 여기서는 그냥 다 부릅니다. */
     renderNotices();
+    renderHomeNotices();
+    renderHomeItv();
+    heroCaption();
+    menuLabel();
     renderInterviews();
     renderChips();
     renderPayList();
@@ -155,6 +159,7 @@
     $$('.my-note[data-key]').forEach(function (n) { n.textContent = T[n.getAttribute('data-key')] || ''; });
     paintPager();
     syncStick();                         // 라벨 길이가 바뀌면 헤더 높이도 바뀝니다
+    fitNav();                            // 메뉴 글자가 길어 한 줄에 안 들어가면 전체 메뉴로
     if (shown('#payResult')) calcPay();
     if (shown('#insResult')) calcIns();
     if (shown('#eligResult')) calcElig();
@@ -727,6 +732,7 @@
     sorted.forEach(function (n) {
       var body = n[lang] || n.en;
       var art = el('article', 'notice');
+      art.id = n.key;
 
       var head = el('button', 'notice-head');
       head.type = 'button';
@@ -770,7 +776,21 @@
       art.appendChild(wrap);
       list.appendChild(art);
     });
+
+    /* 첫 화면 목록에서 눌러 들어온 경우(notices.html#n-minwage-2027) 그 항목을 펼쳐 둡니다. */
+    var want = (location.hash || '').slice(1);
+    var target = want && document.getElementById(want);
+    if (target && target.classList.contains('notice')) {
+      target.classList.add('is-open');
+      var h = target.querySelector('.notice-head');
+      if (h) h.setAttribute('aria-expanded', 'true');
+      if (!noticeJumped) {
+        noticeJumped = true;
+        setTimeout(function () { target.scrollIntoView({ block: 'start' }); }, 60);
+      }
+    }
   }
+  var noticeJumped = false;
 
   /* ---------- 인터뷰 ---------- */
   /* 데이터가 비어 있으면 목록 대신 "준비 중" 안내만 보입니다.
@@ -2208,6 +2228,224 @@
     });
   }
 
+
+  /* =====================================================================
+     2026-10 리디자인 — 머리말 · 전체 메뉴 · 메인 비주얼 · 첫 화면 목록
+     ===================================================================== */
+
+  /* ---------- 전체 메뉴 (좁은 화면) ---------- */
+  function menuOpen() { return document.body.classList.contains('menu-open'); }
+  function menuLabel() {
+    var b = $('#menuBtn');
+    if (!b) return;
+    var k = menuOpen() ? 'menuClose' : 'menuOpen';
+    if (T[k]) b.setAttribute('aria-label', T[k]);
+    b.setAttribute('data-i18n-aria', k);
+  }
+  function setMenu(open) {
+    document.body.classList.toggle('menu-open', open);
+    var b = $('#menuBtn');
+    if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuLabel();
+    solidHeader();
+  }
+
+  /* 넓은 화면에서도 메뉴 글자가 길어(크메르어·네팔어 등) 한 줄에 안 들어가면
+     머리말 가운데 메뉴 대신 [MENU] 단추로 바꿉니다. 글자가 겹치거나 잘리지 않게 합니다. */
+  function fitNav() {
+    var root = document.documentElement;
+    var bar = $('.topbar-in'), nav = $('#secnav');
+    if (!bar || !nav) return;
+    root.classList.remove('nav-compact');
+    if (window.innerWidth < 1200) return;
+    var used = 0;
+    Array.prototype.forEach.call(bar.children, function (c) {
+      used += c === $('#siteNav') ? nav.scrollWidth : c.getBoundingClientRect().width;
+    });
+    var cs = getComputedStyle(bar);
+    var gap = parseFloat(cs.columnGap) || 20;
+    used += gap * (bar.children.length - 1);
+    var room = bar.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+    if (used > room - 8) root.classList.add('nav-compact');
+  }
+
+  /* 첫 화면은 사진 위에 머리말이 투명하게 떠 있다가, 내리면 흰 바탕이 됩니다. */
+  function solidHeader() {
+    var bar = $('.topbar');
+    if (!bar) return;
+    var solid = !document.body.classList.contains('is-home') || window.scrollY > 40 || menuOpen();
+    bar.classList.toggle('is-solid', solid);
+  }
+
+  function initHeader() {
+    on('#menuBtn', 'click', function () { setMenu(!menuOpen()); });
+    // 메뉴 안의 링크를 누르면 닫습니다 (같은 쪽 #앵커로 갈 때도 화면이 가려지지 않게)
+    $$('#siteNav a').forEach(function (a) {
+      a.addEventListener('click', function () { if (menuOpen()) setMenu(false); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menuOpen()) { setMenu(false); var b = $('#menuBtn'); if (b) b.focus(); }
+    });
+    window.addEventListener('resize', function () {
+      fitNav();
+      var compact = document.documentElement.classList.contains('nav-compact');
+      if (menuOpen() && window.innerWidth >= 1200 && !compact) setMenu(false);
+    });
+    window.addEventListener('scroll', solidHeader, { passive: true });
+    solidHeader();
+    fitNav();
+    // 글꼴이 늦게 도착하면 글자 폭이 바뀝니다. 한 번 더 잽니다.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fitNav(); syncStick(); });
+  }
+
+  /* ---------- 맨 위로 ---------- */
+  function initToTop() {
+    var b = el('button', 'to-top', 'TOP');
+    b.type = 'button';
+    b.setAttribute('aria-label', T.toTop || 'Top');
+    b.setAttribute('data-i18n-aria', 'toTop');
+    b.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      var skip = $('.skip'); if (skip) skip.focus({ preventScroll: true });
+    });
+    document.body.appendChild(b);
+    function check() { b.classList.toggle('is-on', window.scrollY > 600); }
+    window.addEventListener('scroll', check, { passive: true });
+    check();
+  }
+
+  /* ---------- 메인 비주얼 (사진 슬라이드) ---------- */
+  var hero = { i: 0, n: 0, timer: null, paused: false };
+  var HERO_MS = 6000;
+
+  function itvByKey(key) {
+    if (typeof INTERVIEWS === 'undefined') return null;
+    for (var i = 0; i < INTERVIEWS.length; i++) if (INTERVIEWS[i].key === key) return INTERVIEWS[i];
+    return null;
+  }
+  function itvName(it) {
+    return (lang !== 'ko' && it.aliasL && it.aliasL[lang]) || it.alias || '';
+  }
+
+  function heroCaption() {
+    var cap = $('#hvCap');
+    if (!cap) return;
+    var slide = $$('.hv-slide')[hero.i];
+    var it = slide && itvByKey(slide.getAttribute('data-itv'));
+    cap.textContent = it ? (T.navInterview || '') + ' · ' + itvName(it) : '';
+  }
+
+  function heroShow(i) {
+    var slides = $$('.hv-slide');
+    if (!slides.length) return;
+    hero.i = (i + slides.length) % slides.length;
+    slides.forEach(function (sl, k) { sl.classList.toggle('is-on', k === hero.i); });
+    var now = $('#hvNow');
+    if (now) now.textContent = ('0' + (hero.i + 1)).slice(-2);
+    heroCaption();
+    heroRun();
+  }
+
+  function heroRun() {
+    clearTimeout(hero.timer);
+    var bar = $('#hvBar');
+    if (bar) { bar.classList.remove('is-run'); void bar.offsetWidth; }
+    if (hero.paused) return;
+    if (bar) bar.classList.add('is-run');
+    hero.timer = setTimeout(function () { heroShow(hero.i + 1); }, HERO_MS);
+  }
+
+  function heroPauseBtn() {
+    var b = $('#hvPause');
+    if (!b) return;
+    var k = hero.paused ? 'hvPlay' : 'hvPause';
+    b.setAttribute('data-i18n-aria', k);
+    if (T[k]) b.setAttribute('aria-label', T[k]);
+    b.innerHTML = hero.paused
+      ? '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4l10 6-10 6z"/></svg>'
+      : '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3" height="12" rx="1"/><rect x="12" y="4" width="3" height="12" rx="1"/></svg>';
+  }
+
+  function initHero() {
+    var slides = $$('.hv-slide');
+    if (!slides.length) return;
+    hero.n = slides.length;
+    var all = $('#hvAll');
+    if (all) all.textContent = ('0' + hero.n).slice(-2);
+    // 움직임을 줄이도록 설정한 기기에서는 저절로 넘기지 않습니다.
+    try { hero.paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    on('#hvPrev', 'click', function () { heroShow(hero.i - 1); });
+    on('#hvNext', 'click', function () { heroShow(hero.i + 1); });
+    on('#hvPause', 'click', function () { hero.paused = !hero.paused; heroPauseBtn(); heroRun(); });
+    // 다른 탭으로 가면 멈췄다가 돌아오면 이어서 넘깁니다.
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) clearTimeout(hero.timer); else heroRun();
+    });
+    heroPauseBtn();
+    heroShow(0);
+  }
+
+  /* ---------- 첫 화면: 인터뷰 소개 ---------- */
+  var featI = 0;
+  function featItems() {
+    if (typeof INTERVIEWS === 'undefined') return [];
+    return INTERVIEWS.filter(function (it) { return it.photo && (it[lang] || it.en || it.ko); })
+      .sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); });
+  }
+  function renderHomeItv() {
+    var box = $('#itvFeat');
+    if (!box) return;
+    var items = featItems();
+    if (!items.length) { box.hidden = true; return; }
+    featI = (featI + items.length) % items.length;
+    var it = items[featI];
+    var body = it[lang] || it.en || it.ko;
+    var img = $('#featImg');
+    img.src = it.photo;
+    img.alt = (lang !== 'ko' && it.photoAltL && it.photoAltL[lang]) || it.photoAlt || '';
+    $('#featAlias').textContent = itvName(it);
+    var text = body.useQuote || body.intro || ((body.qa && body.qa[0]) ? body.qa[0].a : '');
+    $('#featText').textContent = text;
+    var facts = [];
+    if (it.country && T.itvCountries) facts.push(T.itvCountries[it.country] || it.country);
+    if (it.years) facts.push((T.itvYears || '{y}').replace('{y}', it.years));
+    if (it.field && T.itvFields) facts.push(T.itvFields[it.field] || it.field);
+    if (it.date) facts.push(it.date);
+    $('#featMeta').textContent = facts.join(' · ');
+  }
+  function initFeat() {
+    on('#featPrev', 'click', function () { featI -= 1; renderHomeItv(); });
+    on('#featNext', 'click', function () { featI += 1; renderHomeItv(); });
+  }
+
+  /* ---------- 첫 화면: 최신 제도 목록 ---------- */
+  function renderHomeNotices() {
+    var list = $('#homeNoticeList');
+    if (!list || typeof NOTICES === 'undefined') return;
+    list.innerHTML = '';
+    var now = today();
+    NOTICES.slice().sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); })
+      .slice(0, 5).forEach(function (n) {
+        var body = n[lang] || n.en || n.ko;
+        var li = el('li');
+        var a = el('a');
+        a.href = 'notices.html#' + n.key;
+        a.appendChild(el('span', 'nl-t', body.title));
+        var meta = el('span', 'nl-meta');
+        meta.appendChild(el('span', null, n.date || ''));
+        meta.appendChild(el('i'));
+        meta.appendChild(el('span', null, (T.noticeTags && T.noticeTags[n.tagKey]) || n.tagKey));
+        // 60일 안에 바뀐 제도에는 NEW 표시를 붙입니다.
+        if (n.date && diffDays(now, midnight(new Date(n.date + 'T00:00:00'))) <= 60) {
+          meta.appendChild(el('span', 'nl-new', 'NEW'));
+        }
+        a.appendChild(meta);
+        a.appendChild(el('span', 'nl-go'));
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+  }
+
   /* ---------- 시작 ---------- */
   /* 기능마다 페이지가 따로 있어서, 지금 열린 페이지에 없는 요소가 늘 있습니다.
      on() 은 요소가 있을 때만 연결합니다. */
@@ -2246,6 +2484,10 @@
     initSecNav();
     initSecDrop();
     initCarousels();
+    initHeader();
+    initHero();
+    initFeat();
+    initToTop();
     window.addEventListener('resize', syncStick);
 
     // 로그인 상태는 모든 페이지에서 확인합니다 (헤더 표시용)

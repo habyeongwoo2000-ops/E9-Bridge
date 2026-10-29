@@ -14,70 +14,86 @@ if(!l){l=(navigator.languages&&navigator.languages[0])||navigator.language||'';}
 if(String(l||'').toLowerCase().indexOf('ko')!==0){var h=document.documentElement;
 h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute('data-lang-pending');},1500);}})();
 </script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans+Khmer:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- 글꼴: Pretendard (한국어·영어·베트남어·인도네시아어). 크메르어·네팔어 글자는 Noto Sans 가 받습니다. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#8a5a34">
+<meta name="theme-color" content="#0b2d5c">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="E9-Bridge">
 </head>
-<body data-page-title="navUpdates">
+<body class="sub" data-page-title="navUpdates">
 
 <a class="skip" href="#top" data-i18n="skip">본문으로 건너뛰기</a>
 
-<!-- ▼ 공통 머리말 — 모든 페이지에 같은 내용. 고칠 때 전부 함께 고치세요. -->
-<header class="topbar">
+<!-- ▼ 공통 머리말 — 모든 쪽에 같은 내용. 고칠 때 전부 함께 고치세요. -->
+<header class="topbar" id="siteHeader">
   <div class="wrap topbar-in">
     <a class="brand" href="index.html">
-      <img class="brand-mark" src="assets/logo-mark.png" alt="E9-Bridge">
+      <img class="brand-mark brand-mark-c" src="assets/logo-mark.svg" alt="E9-Bridge" width="42" height="42">
+      <img class="brand-mark brand-mark-w" src="assets/logo-mark-white.svg" alt="" aria-hidden="true" width="42" height="42">
       <span class="brand-text">
         <strong>E9-Bridge</strong>
         <em data-i18n="brandSub">사업장 변경 안내</em>
       </span>
     </a>
-    <div class="auth-wrap">
-      <div class="auth-slot" id="authSlot"></div>
-      <!-- 로그인했을 때만 열리는 메뉴. 이름 단추 바로 아래에 붙습니다. -->
-      <div class="auth-menu" id="authMenu" hidden>
-        <a href="account.html" data-i18n="navAccount">계정 설정</a>
-        <button type="button" id="menuLogout" data-i18n="navLogout">로그아웃</button>
-      </div>
-    </div>
-    <div class="lang">
-      <label class="lang-label" for="langSelect" data-i18n="langLabel">언어</label>
-      <select id="langSelect" aria-label="Language">
-        <option value="ko">한국어</option>
-        <option value="en">English</option>
-        <option value="vi">Tiếng Việt</option>
-        <option value="id">Bahasa Indonesia</option>
-        <option value="km">ខ្មែរ</option>
-        <option value="ne">नेपाली</option>
-      </select>
-    </div>
-  </div>
 
-  <nav class="secnav" data-i18n-aria="navLabel" aria-label="기능 바로가기">
-    <div class="wrap secnav-in" id="secnav">
-      <a href="index.html" data-i18n="secNo1">기한</a>
-      <a href="reason.html" data-i18n="secNo2">사유</a>
-      <a href="payout.html" data-i18n="secNoPay">출국 정산</a>
-      <div class="secnav-item">
-        <a href="faq.html" data-i18n="navFaq">FAQ</a>
-        <div class="secnav-drop">
-          <a href="faq.html" data-i18n="faqTitle">자주 묻는 질문</a>
-          <a href="ask.html" data-i18n="navChatbot">챗봇 질문</a>
-          <a href="board.html" data-i18n="navBoard">질문게시판</a>
+    <!-- 주 메뉴 — 넓은 화면에서는 머리말 가운데, 좁은 화면에서는 [MENU] 를 누르면 전체 메뉴로 펼쳐집니다 -->
+    <nav class="secnav" id="siteNav" data-i18n-aria="navLabel" aria-label="기능 바로가기">
+      <div class="secnav-in" id="secnav">
+        <a href="index.html" data-i18n="secNo1">기한</a>
+        <a href="reason.html" data-i18n="secNo2">사유</a>
+        <a href="payout.html" data-i18n="secNoPay">출국 정산</a>
+        <div class="secnav-item">
+          <a href="faq.html" data-i18n="navFaq">FAQ</a>
+          <div class="secnav-drop">
+            <a href="faq.html" data-i18n="faqTitle">자주 묻는 질문</a>
+            <a href="ask.html" data-i18n="navChatbot">챗봇 질문</a>
+            <a href="board.html" data-i18n="navBoard">질문게시판</a>
+          </div>
+        </div>
+        <a href="notices.html" data-i18n="navUpdates">최신 제도</a>
+        <a href="legal.html" data-i18n="secNoLegal">법률 자문</a>
+        <a href="interviews.html" data-i18n="navInterview">인터뷰</a>
+      </div>
+      <div class="secnav-util">
+        <a href="tel:1345"><b>1345</b><span data-i18n="of1345">외국인종합안내센터 · 여러 언어 상담</span></a>
+        <a href="tel:1350"><b>1350</b><span data-i18n="of1350">고용노동부 상담센터 · 임금체불 신고</span></a>
+      </div>
+    </nav>
+
+    <div class="util">
+      <div class="lang">
+        <label class="lang-label" for="langSelect" data-i18n="langLabel">언어</label>
+        <select id="langSelect" aria-label="Language">
+          <option value="ko">한국어</option>
+          <option value="en">English</option>
+          <option value="vi">Tiếng Việt</option>
+          <option value="id">Bahasa Indonesia</option>
+          <option value="km">ខ្មែរ</option>
+          <option value="ne">नेपाली</option>
+        </select>
+      </div>
+      <div class="auth-wrap">
+        <div class="auth-slot" id="authSlot"></div>
+        <!-- 로그인했을 때만 열리는 메뉴 -->
+        <div class="auth-menu" id="authMenu" hidden>
+          <a href="account.html" data-i18n="navAccount">계정 설정</a>
+          <button type="button" id="menuLogout" data-i18n="navLogout">로그아웃</button>
         </div>
       </div>
-      <a href="notices.html" data-i18n="navUpdates">최신 제도</a>
-      <a href="legal.html" data-i18n="secNoLegal">법률 자문</a>
-      <a href="interviews.html" data-i18n="navInterview">인터뷰</a>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav"
+              data-i18n-aria="menuOpen" aria-label="전체 메뉴 열기">
+        <span class="menu-ic" aria-hidden="true"><i></i></span><span class="menu-txt" aria-hidden="true">MENU</span>
+      </button>
     </div>
-  </nav>
+  </div>
 </header>
 
 <div id="langToast" class="toast" hidden>
@@ -86,26 +102,47 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
 </div>
 <!-- ▲ 공통 머리말 끝 -->
 
+<!-- ▼ 하위 쪽 머리 — 이동 경로와 쪽 제목 -->
+<div class="subvis">
+  <div class="wrap">
+    <nav class="crumb" aria-label="breadcrumb"><a href="index.html" class="crumb-home" data-i18n-aria="crumbHome" aria-label="홈"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 12 4l8.5 6.5V20a1 1 0 0 1-1 1h-5v-6h-5v6h-5a1 1 0 0 1-1-1z"/></svg></a><span class="crumb-sep" aria-hidden="true"></span><span data-i18n="navUpdates">최신 제도</span></nav>
+    <p class="subvis-en" aria-hidden="true">Policy Updates</p>
+  </div>
+</div>
+<div class="wrap page-head"><h1 data-i18n="ntTitle">최근에 바뀐 제도</h1></div>
+
 <main id="top">
 
   <section id="notices" class="band">
     <div class="wrap">
-      <h2 data-i18n="ntTitle">최근에 바뀐 제도</h2>
       <div class="notice-list" id="noticeList"></div>
     </div>
   </section>
 
-  <!-- ▼ 공통 공식 창구 — 모든 페이지에 같은 내용 -->
-  <section class="band band-ink">
+</main>
+
+<!-- ▼ 공통 바닥글 — 모든 쪽에 같은 내용. 고칠 때 전부 함께 고치세요. -->
+<footer class="band-ink" id="siteFoot">
     <div class="wrap">
+    <div class="ft-brand">
+      <img src="assets/logo-mark-white.svg" alt="" width="40" height="40">
+      <div><strong>E9-Bridge</strong><em data-i18n="brandSub">사업장 변경 안내</em></div>
+    </div>
       <h2 data-i18n="ofTitle">공식 창구</h2>
       <p class="sec-lead" data-i18n="ofLead">확정된 답은 아래에서 받으세요. 이 서비스는 그 앞 단계를 돕습니다.</p>
       <ul class="official">
-        <li><b>1345</b><span data-i18n="of1345">외국인종합안내센터 · 여러 언어 상담</span></li>
-        <li><b>1350</b><span data-i18n="of1350">고용노동부 상담센터 · 임금체불 신고</span></li>
+        <li><b><a href="tel:1345">1345</a></b><span data-i18n="of1345">외국인종합안내센터 · 여러 언어 상담</span></li>
+        <li><b><a href="tel:1350">1350</a></b><span data-i18n="of1350">고용노동부 상담센터 · 임금체불 신고</span></li>
         <li><b><a href="https://www.eps.go.kr" target="_blank" rel="noopener">eps.go.kr</a></b><span data-i18n="ofEps">고용허가제 공식 누리집</span></li>
         <li><b><a href="https://www.hikorea.go.kr" target="_blank" rel="noopener">hikorea.go.kr</a></b><span data-i18n="ofHi">체류·비자 민원</span></li>
       </ul>
+
+      <div class="official-notdo">
+        <p class="official-notdo-h" data-i18n="ndTitle">이 서비스가 하지 않는 것</p>
+        <p>· <span data-i18n="nd1">법적 판정이나 승인 여부를 대신 결정하지 않습니다. 안내만 합니다.</span></p>
+        <p>· <span data-i18n="nd2">기본 기능은 회원가입과 로그인 없이 쓸 수 있습니다.</span></p>
+        <p>· <span data-i18n="nd3">여권번호, 계좌번호 같은 개인정보를 요구하지 않습니다.<br>묻고 답하기에 직접 적은 글만 답변을 위해 보관합니다.</span></p>
+      </div>
 
       <!-- 문의 · 소셜 — 로고를 누르면 새 창으로 열립니다 -->
       <div class="ft-contact">
@@ -148,8 +185,7 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
         <p><a class="foot-privacy" href="privacy.html" data-i18n="navPrivacy">개인정보처리방침</a></p>
       </div>
     </div>
-  </section>
-</main>
+</footer>
 <!-- 언어 파일은 고른 언어 하나만 받습니다. core.js 가 어떤 언어인지 정하고,
      바로 아래 줄이 그 파일 하나만 불러옵니다 (예전에는 5개 언어를 전부 받았습니다). -->
 <script src="assets/i18n/core.js"></script>

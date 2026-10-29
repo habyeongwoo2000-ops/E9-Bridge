@@ -548,5 +548,27 @@ I18N.vi = {
   askFaqHit: 'Câu trả lời nhanh từ mục Câu hỏi thường gặp',
   askAskAi: 'Hỏi AI chi tiết hơn',
   /* 요일 — 기기 브라우저가 이 언어의 요일 이름을 모를 때 씁니다 */
-  weekdays: ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"]
+  weekdays: ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"],
+  /* ---------- 2026-10 리디자인: 첫 화면·머리말 ---------- */
+  viewMore: "Xem thêm",
+  svcTitle: "Dịch vụ chính",
+  stTitle: "Đổi nơi làm việc qua các con số",
+  st1T: "Hạn nộp đơn đổi việc",
+  st1S: "Kể từ ngày hợp đồng kết thúc",
+  st1U: "tháng",
+  st2T: "Thời gian tìm việc mới",
+  st2S: "Kể từ ngày nộp đơn",
+  st2U: "tháng",
+  st3T: "Số lần được đổi",
+  st3S: "3 năm đầu · lần đổi do lỗi công ty không bị tính",
+  st3U: "lần",
+  st4T: "Ngôn ngữ hỗ trợ",
+  st4S: "Hàn · Anh · Việt · Indonesia · Khmer · Nepal",
+  st4U: "ngôn ngữ",
+  hvPause: "Dừng trình chiếu",
+  hvPlay: "Phát trình chiếu",
+  menuOpen: "Mở toàn bộ menu",
+  menuClose: "Đóng menu",
+  crumbHome: "Trang chủ",
+  toTop: "Lên đầu trang"
 };

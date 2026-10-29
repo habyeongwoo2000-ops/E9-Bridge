@@ -548,5 +548,27 @@ I18N.en = {
   askFaqHit: 'Instant answer from our FAQ',
   askAskAi: 'Ask the AI for more detail',
   /* 요일 — 기기 브라우저가 이 언어의 요일 이름을 모를 때 씁니다 */
-  weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  /* ---------- 2026-10 리디자인: 첫 화면·머리말 ---------- */
+  viewMore: "View more",
+  svcTitle: "Main services",
+  stTitle: "Workplace change in numbers",
+  st1T: "Deadline to apply",
+  st1S: "From the day your contract ended",
+  st1U: "month",
+  st2T: "Time to find a new job",
+  st2S: "From the day you applied",
+  st2U: "months",
+  st3T: "Changes allowed",
+  st3S: "First 3 years · changes caused by the employer are not counted",
+  st3U: "times",
+  st4T: "Languages",
+  st4S: "Korean · English · Vietnamese · Indonesian · Khmer · Nepali",
+  st4U: "languages",
+  hvPause: "Pause slideshow",
+  hvPlay: "Play slideshow",
+  menuOpen: "Open full menu",
+  menuClose: "Close full menu",
+  crumbHome: "Home",
+  toTop: "Back to top"
 };
