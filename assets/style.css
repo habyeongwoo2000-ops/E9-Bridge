@@ -1127,3 +1127,86 @@ html[lang="ko"] .legal-name-ko{display:none}
   .secnav-item > a{padding-right:26px}
   .secnav-item > a::before{right:10px}
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   최신 제도 검색·지역 필터·확인일, FAQ 주제 2단, 추천 질문 2줄,
+   PC로 보기 · 모바일로 보기 (2026-10-29 리디자인 위에 얹은 것)
+   ═══════════════════════════════════════════════════════════════ */
+/* 지역 필터 — 전체 · 전국 버튼과 시·도 고르기 상자 */
+.nt-filter{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 20px}
+.nt-filter .chip{padding:8px 18px}
+.chip.is-on,.nt-region.is-on{border-color:var(--navy);background:var(--navy);color:#fff;font-weight:700}
+.nt-region,.nt-per{
+  background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:8px 16px;font-family:var(--f);font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;max-width:100%;
+}
+.nt-per{margin-left:auto}
+.nt-empty{color:var(--ink-3);padding:28px 8px}
+/* 게시판 검색창 모양을 그대로 쓰되, 필터 줄에 맞춰 왼쪽으로 붙입니다. */
+.board-search.nt-search{justify-content:flex-start;margin:0 0 16px}
+.board-search.nt-search input[type=search]{max-width:480px}
+.board-found.nt-found{text-align:left;margin:0 0 14px}
+.notice-tag.is-local{background:var(--blue-l);color:var(--blue-d)}
+.notice-closed{
+  flex:none;font-size:12px;font-weight:700;color:var(--stop);background:var(--stop-l);
+  border-radius:var(--r-xs);padding:3px 8px;
+}
+.notice.is-closed .notice-t{color:var(--ink-3)}
+.notice-checked{
+  flex:none;order:3;align-self:center;font-size:12px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+/* 좁은 화면에서는 제목 자리를 지키도록 확인일을 제목 아래 오른쪽으로 내립니다. */
+@media (max-width:600px){
+  .notice-head{flex-wrap:wrap;position:relative;padding-right:52px}
+  .notice-arrow{position:absolute;top:22px;right:8px}
+  .notice-checked{flex-basis:100%;text-align:right}
+}
+
+/* 추천 질문은 4개씩 2줄로 맞춰 둡니다. 좁은 화면에서는 2개씩. */
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:960px}
+@media (max-width:700px){.chips{grid-template-columns:repeat(2,1fr)}}
+.chips .chip{border-radius:var(--r);padding:11px 14px;line-height:1.4;text-align:center;word-break:keep-all}
+
+/* FAQ 주제별 묶음 — 넓은 화면에서는 2단, 좁은 화면에서는 1단.
+   펼친 답이 길어도 옆 묶음이 따라 늘어나지 않게 위쪽 정렬합니다. */
+.faq-groups{display:grid;gap:32px 36px;margin:28px 0 32px;align-items:start}
+@media (min-width:960px){.faq-groups{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.faq-group .faq-list{margin:0}
+.faq-cat{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:17px;font-weight:800;color:var(--navy)}
+.faq-cat::before{content:"";width:5px;height:18px;border-radius:3px;background:var(--blue)}
+/* 2단에서는 칸이 좁아지므로 질문 글씨와 여백을 조금 줄입니다. */
+@media (min-width:960px){
+  .faq-groups .faq-item summary{font-size:16.5px;padding:20px 52px 20px 60px}
+  .faq-groups .faq-item summary::before{width:34px;height:34px;top:17px;left:10px}
+  .faq-groups .faq-a{padding:20px 22px 20px 60px}
+  .faq-groups .faq-a::before{width:34px;height:34px;left:10px}
+}
+
+/* PC로 보기 · 모바일로 보기 — 모든 페이지 맨 아래 한 줄 (app.js 가 붙입니다) */
+.view-switch{
+  display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px 10px;
+  padding:14px 16px 20px;background:var(--bg-2);border-top:1px solid var(--line-2);
+  font-size:13px;color:var(--ink-3);
+}
+.view-switch button{background:none;border:0;padding:6px 4px;font:inherit;color:var(--ink-3);cursor:pointer}
+.view-switch button:hover{color:var(--blue)}
+.view-switch button.is-on{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.view-switch-sep{color:var(--line)}
+/* PC에서 '모바일로 보기'를 누르면 뜨는 휴대폰 폭 미리보기 창 */
+html.is-previewing body{overflow:hidden}
+.view-preview{
+  position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;
+  padding:16px;background:rgba(6,29,63,.72);
+}
+.view-preview-bar{
+  width:390px;max-width:100%;display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;color:#fff;font-size:14px;font-weight:700;
+}
+.view-preview-close{
+  background:#fff;color:var(--ink);border:0;border-radius:999px;padding:8px 16px;
+  font:inherit;font-size:13px;cursor:pointer;
+}
+.view-preview iframe{
+  width:390px;max-width:100%;flex:1;border:0;border-radius:20px;background:#fff;
+  box-shadow:var(--shadow-lg);
+}

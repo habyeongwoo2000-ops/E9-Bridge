@@ -391,7 +391,7 @@ ko: {
   errAdminOnly: '관리자만 할 수 있습니다.',
   errAnswerRule: '답변은 5~2000자로 적어 주세요.',
   askReview: '실무자 검수 후 게시',
-  chips: ['신청 기한이 며칠인가요?', '3개월 안에 취업 못 하면?', '몇 번까지 바꿀 수 있나요?', '임금을 못 받았어요'],
+  chips: ['신청 기한이 며칠인가요?', '3개월 안에 취업 못 하면?', '몇 번까지 바꿀 수 있나요?', '임금을 못 받았어요', '출국만기보험·퇴직금은 어떻게 받나요?', '어디서 어떻게 신청하나요? 서류는요?', '회사 잘못으로 바꾸면 횟수에 포함되나요?', 'E-7-4 비자로 바꿀 수 있나요?'],
 
   ofTitle: '공식 창구',
   ofLead: '확정된 답은 아래에서 받으세요. 이 서비스는 그 앞 단계를 돕습니다.',
@@ -789,7 +789,7 @@ en: {
   errAdminOnly: 'Only admins can do this.',
   errAnswerRule: 'The answer must be 5–2000 characters.',
   askReview: 'Held for staff review',
-  chips: ['How long do I have to apply?', 'What if I find no job in 3 months?', 'How many changes am I allowed?', 'My wages were not paid'],
+  chips: ['How long do I have to apply?', 'What if I find no job in 3 months?', 'How many changes am I allowed?', 'My wages were not paid', 'How do I get my departure insurance and severance?', 'Where and how do I apply? What documents?', 'Does a change caused by my employer count?', 'Can I switch to an E-7-4 visa?'],
 
   ofTitle: 'Official lines',
   ofLead: 'Final answers come from here. This service helps you get ready for that call.',
@@ -1187,7 +1187,7 @@ vi: {
   errAdminOnly: 'Chỉ quản trị viên mới làm được việc này.',
   errAnswerRule: 'Câu trả lời phải có 5–2000 ký tự.',
   askReview: 'Chờ nhân viên kiểm duyệt',
-  chips: ['Tôi có bao nhiêu ngày để nộp đơn?', 'Không tìm được việc trong 3 tháng thì sao?', 'Được đổi tối đa mấy lần?', 'Tôi bị nợ lương'],
+  chips: ['Tôi có bao nhiêu ngày để nộp đơn?', 'Không tìm được việc trong 3 tháng thì sao?', 'Được đổi tối đa mấy lần?', 'Tôi bị nợ lương', 'Nhận bảo hiểm mãn hạn và trợ cấp thôi việc thế nào?', 'Nộp đơn ở đâu, thế nào? Cần giấy tờ gì?', 'Đổi do lỗi của chủ có bị tính số lần không?', 'Tôi có thể chuyển sang visa E-7-4 không?'],
 
   ofTitle: 'Kênh chính thức',
   ofLead: 'Câu trả lời cuối cùng đến từ đây. Dịch vụ này giúp bạn chuẩn bị trước.',
@@ -1585,7 +1585,7 @@ th: {
   errAdminOnly: 'เฉพาะผู้ดูแลระบบเท่านั้นที่ทำได้',
   errAnswerRule: 'คำตอบต้องมี 5–2000 ตัวอักษร',
   askReview: 'รอเจ้าหน้าที่ตรวจสอบ',
-  chips: ['มีเวลายื่นคำขอกี่วัน', 'ถ้าหางานไม่ได้ใน 3 เดือน', 'เปลี่ยนได้กี่ครั้ง', 'ไม่ได้รับค่าจ้าง'],
+  chips: ['มีเวลายื่นคำขอกี่วัน', 'ถ้าหางานไม่ได้ใน 3 เดือน', 'เปลี่ยนได้กี่ครั้ง', 'ไม่ได้รับค่าจ้าง', 'รับเงินประกันครบกำหนดและเงินชดเชยอย่างไร', 'ยื่นที่ไหน อย่างไร ใช้เอกสารอะไร', 'ถ้าเปลี่ยนเพราะความผิดนายจ้าง นับจำนวนครั้งไหม', 'เปลี่ยนเป็นวีซ่า E-7-4 ได้ไหม'],
 
   ofTitle: 'ช่องทางราชการ',
   ofLead: 'คำตอบที่แน่นอนมาจากที่นี่ บริการนี้ช่วยเตรียมตัวก่อนติดต่อ',
@@ -1983,7 +1983,7 @@ id: {
   errAdminOnly: 'Hanya admin yang bisa melakukan ini.',
   errAnswerRule: 'Jawaban harus 5–2000 karakter.',
   askReview: 'Menunggu pemeriksaan petugas',
-  chips: ['Berapa hari waktu mengajukan?', 'Bagaimana bila 3 bulan tidak dapat kerja?', 'Boleh pindah berapa kali?', 'Upah saya tidak dibayar'],
+  chips: ['Berapa hari waktu mengajukan?', 'Bagaimana bila 3 bulan tidak dapat kerja?', 'Boleh pindah berapa kali?', 'Upah saya tidak dibayar', 'Bagaimana menerima jaminan kepulangan dan pesangon?', 'Di mana dan bagaimana mengajukan? Dokumen apa?', 'Pindah karena kesalahan pemberi kerja dihitung tidak?', 'Bisakah saya ganti ke visa E-7-4?'],
 
   ofTitle: 'Kanal resmi',
   ofLead: 'Jawaban pasti datang dari sini. Layanan ini membantu Anda bersiap sebelum menghubungi.',
