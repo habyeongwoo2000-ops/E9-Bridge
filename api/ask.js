@@ -14,6 +14,27 @@
 const { KB_TEXT, CHECKED_ON, LANG_NAME } = require('./_kb');
 const G = require('./_gemini');
 
+/* 같은 질문이 같은 언어로 또 오면 AI 를 다시 부르지 않고 바로 돌려줍니다.
+   이 서버 인스턴스의 메모리에만 있어서 인스턴스가 새로 뜨면 비워집니다(그래도 됩니다).
+   자주 묻는 질문은 화면(app.js)이 FAQ 에서 먼저 바로 답하므로, 여기까지 오는 것은
+   그 밖의 질문입니다. */
+const CACHE = new Map();
+const CACHE_MS = 6 * 60 * 60 * 1000;   // 6시간 — 확인일이 바뀌면 재배포로 비워집니다
+const CACHE_MAX = 300;
+function cacheKey(lang, q) {
+  return lang + '|' + q.toLowerCase().replace(/[\s?!.,·"'~]+/g, ' ').trim();
+}
+function cacheGet(k) {
+  const v = CACHE.get(k);
+  if (!v) return null;
+  if (Date.now() - v.at > CACHE_MS) { CACHE.delete(k); return null; }
+  return v.data;
+}
+function cachePut(k, data) {
+  if (CACHE.size >= CACHE_MAX) CACHE.delete(CACHE.keys().next().value);
+  CACHE.set(k, { at: Date.now(), data: data });
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'POST only' });
@@ -28,6 +49,10 @@ module.exports = async function handler(req, res) {
     const lang = LANG_NAME[body.lang] ? body.lang : 'en';
 
     if (!question) return res.status(400).json({ error: 'question required' });
+
+    const ck = cacheKey(lang, question);
+    const hit = cacheGet(ck);
+    if (hit) return res.status(200).json(Object.assign({ cached: true }, hit));
 
     const system = `You help migrant workers in Korea, mainly on the E-9 Employment Permit System. Answer their questions helpfully.
 
@@ -56,14 +81,23 @@ ${KB_TEXT}`;
     /* 키를 여러 개 넣어 두었으면, 한 키의 한도가 찼을 때 기다리지 않고
        다음 키로 넘어갑니다. 잠깐 몰린 것(503)이면 짧게 기다렸다 다시 합니다.
        자세한 규칙은 _gemini.js 에 적어 두었습니다. */
-    const out = await G.generate({
+    /* 속도: 이 답변에는 긴 "생각" 단계가 필요 없습니다(근거 안에서 짧게 답하기).
+       생각을 끄면 첫 글자가 나오기까지 걸리는 시간이 크게 줄어듭니다.
+       모델에 따라 이 설정을 받지 않으면(400) 설정 없이 한 번 더 부릅니다. */
+    const payload = {
       system_instruction: { parts: [{ text: system }] },
       contents: [{ role: 'user', parts: [{ text: question }] }],
       generationConfig: {
-        maxOutputTokens: 3000,
-        temperature: 0.2
+        maxOutputTokens: 2000,
+        temperature: 0.2,
+        thinkingConfig: { thinkingBudget: 0 }
       }
-    });
+    };
+    let out = await G.generate(payload);
+    if (!out.ok && out.status === 400 && /thinking/i.test(String(out.detail || ''))) {
+      delete payload.generationConfig.thinkingConfig;
+      out = await G.generate(payload);
+    }
 
     if (!out.ok) {
       /* 화면에서 "지금 몰려서 그렇다"와 "설정이 잘못됐다"를 다르게 안내할 수
@@ -86,6 +120,7 @@ ${KB_TEXT}`;
     }
 
     const verified = answer.indexOf('검증되지 않은 일반 정보') === -1;
+    cachePut(ck, { answer: answer, verified: verified });
     return res.status(200).json({ answer: answer, verified: verified });
   } catch (e) {
     console.error(e);

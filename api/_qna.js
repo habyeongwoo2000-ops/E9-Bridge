@@ -15,7 +15,7 @@
 
 const { LANG_NAME } = require('./_kb');
 
-const LANGS = ['ko', 'en', 'vi', 'th', 'id'];
+const LANGS = ['ko', 'en', 'vi', 'id', 'km', 'ne'];
 const G = require('./_gemini');
 
 /* 쓸 모델은 _gemini.js 의 MODEL_CHAIN 이 정합니다.
@@ -138,10 +138,14 @@ function isLang(code) {
   return LANGS.indexOf(code) !== -1;
 }
 
-/* jsonb 묶음에서 해당 언어를 꺼냅니다. 없으면 한국어 → 영어 순으로 물러납니다. */
+/* jsonb 묶음에서 해당 언어를 꺼냅니다. 없으면 한국어가 아닌 사람에게는 영어를,
+   한국어 사용자에게는 한국어를 먼저 보여 줍니다. 캄보디아어·네팔어를 넣기 전에
+   올라온 글은 km/ne 번역이 없으므로 영어로 보입니다(한국어보다 읽기 쉽습니다). */
 function pickText(bundle, lang) {
   if (!bundle || typeof bundle !== 'object') return '';
-  return bundle[lang] || bundle.ko || bundle.en || '';
+  if (bundle[lang]) return bundle[lang];
+  if (lang !== 'ko' && bundle.en) return bundle.en;
+  return bundle.ko || bundle.en || '';
 }
 
 function readBody(req) {

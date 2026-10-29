@@ -4,6 +4,15 @@
    POST /api/account { action:'nickname', nickname }
    POST /api/account { action:'password', current, next }
 
+   ── 내 정보 한눈에 (로그인 개인화) ──
+   GET  /api/account?part=summary                      → { summary }
+   POST /api/account { action:'summarySave', part, data } part = deadline | reason | payout
+   POST /api/account { action:'summaryClear' }
+   POST /api/account { action:'summaryMail', to, subject, text }
+        저장한 요약을 본인 이메일로 보냅니다. 하루 5통까지. 주소는 저장하지 않습니다.
+        메일 설정(_mail.js)이 없으면 501 { error:'mailOff' } — 화면이 메일 앱 열기로 대신합니다.
+   표 변경은 docs/my_summary.sql 을 Supabase SQL Editor 에서 한 번 실행하세요.
+
    지켜야 하는 것 세 가지
 
    1) 로그인 아이디는 바꾸지 않습니다.
@@ -19,6 +28,69 @@
 
 const { sb, readBody } = require('./_db');
 const A = require('./_auth');
+const M = require('./_mail');
+
+/* ---------- 내 정보 요약: 받을 수 있는 값만 골라 담습니다 ----------
+   화면에서 보낸 값을 그대로 저장하지 않습니다. 정해 둔 칸과 모양만 통과시켜서
+   엉뚱한 값(긴 글, 스크립트 등)이 계정에 쌓이지 않게 합니다.
+   결과 문장이 아니라 "입력한 값"만 저장합니다. 화면 글자는 고른 언어로
+   그때그때 다시 계산하므로, 언어를 바꿔도 요약이 그 언어로 보입니다. */
+const DAY = /^\d{4}-\d{2}-\d{2}$/;
+function day(v) {
+  const s = String(v || '').trim();
+  if (!DAY.test(s)) return '';
+  const d = new Date(s + 'T00:00:00Z');
+  if (Number.isNaN(d.getTime()) || d.getUTCFullYear() < 2000 || d.getUTCFullYear() > 2100) return '';
+  return s;
+}
+function pick(v, list) { return list.indexOf(String(v || '')) >= 0 ? String(v) : ''; }
+
+const CLEAN = {
+  deadline: function (d) {
+    const leave = day(d.leave);
+    if (!leave) return null;
+    return { leave: leave, apply: day(d.apply) };
+  },
+  reason: function (d) {
+    const q1 = pick(d.q1, ['wage', 'abuse', 'closed', 'terms', 'own']);
+    const q2 = pick(d.q2, ['yes', 'some', 'no']);
+    const q3 = pick(d.q3, ['0', '1', '2', '3']);
+    if (!q1 || !q2 || !q3) return null;
+    return { q1: q1, q2: q2, q3: q3 };
+  },
+  payout: function (d) {
+    const out = {};
+    if (d.exit !== undefined) out.exit = day(d.exit);
+    if (d.ins) {
+      const wage = Math.round(Number(d.ins.wage));
+      const start = day(d.ins.start);
+      if (wage > 0 && wage < 100000000 && start) out.ins = { wage: wage, start: start, end: day(d.ins.end) };
+    }
+    if (d.elig) {
+      out.elig = {
+        start: day(d.elig.start), end: day(d.elig.end),
+        moved: pick(d.elig.moved, ['none', 'prevOver', 'prevUnder', 'unsure']),
+        hours: pick(d.elig.hours, ['yes', 'no', 'unsure']),
+        nat: pick(d.elig.nat, ['g1', 'g2', 'g3']),
+        type: pick(d.elig.type, ['leave', 'change', 'reentry'])
+      };
+    }
+    return Object.keys(out).length ? out : null;
+  }
+};
+
+const MAIL_PER_DAY = 5;
+const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
+
+function esc(t) {
+  return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+async function readSummary(uid) {
+  const rows = await sb('eum_users?select=my_summary,mail_day,mail_count&id=eq.' +
+    encodeURIComponent(uid) + '&limit=1');
+  return rows && rows[0];
+}
 
 function fail(res, code, key) {
   return res.status(code).json({ ok: false, error: key });
@@ -34,6 +106,11 @@ module.exports = async function handler(req, res) {
     if (!me) return fail(res, 401, 'errNeedLogin');
 
     /* ---------- 내 정보 ---------- */
+    if (req.method === 'GET' && req.query && req.query.part === 'summary') {
+      const row = await readSummary(me.uid);
+      return res.status(200).json({ ok: true, summary: (row && row.my_summary) || {} });
+    }
+
     if (req.method === 'GET') {
       const rows = await sb('eum_users?select=username,nickname,provider,created_at,birthdate,nationality,gender&id=eq.' +
         encodeURIComponent(me.uid) + '&limit=1');
@@ -125,6 +202,79 @@ module.exports = async function handler(req, res) {
 
       // 쿠키를 새로 발급해 유효기간을 다시 채웁니다.
       A.setSession(res, u);
+      return res.status(200).json({ ok: true });
+    }
+
+    /* ---------- 내 정보 요약 저장 ---------- */
+    if (action === 'summarySave') {
+      const part = String(body.part || '');
+      if (!CLEAN[part]) return fail(res, 400, 'errNet');
+      const clean = CLEAN[part](body.data || {});
+      if (!clean) return fail(res, 400, 'errNet');
+
+      const row = await readSummary(me.uid);
+      const cur = (row && row.my_summary) || {};
+      // 출국 정산은 계산기가 세 개라 따로따로 들어옵니다. 들어온 칸만 바꿉니다.
+      const prev = part === 'payout' ? (cur.payout || {}) : {};
+      cur[part] = Object.assign({}, prev, clean, { at: new Date().toISOString() });
+
+      await sb('eum_users?id=eq.' + encodeURIComponent(me.uid), {
+        method: 'PATCH',
+        headers: { prefer: 'return=minimal' },
+        body: JSON.stringify({ my_summary: cur })
+      });
+      return res.status(200).json({ ok: true, summary: cur });
+    }
+
+    /* ---------- 내 정보 요약 지우기 ---------- */
+    if (action === 'summaryClear') {
+      await sb('eum_users?id=eq.' + encodeURIComponent(me.uid), {
+        method: 'PATCH',
+        headers: { prefer: 'return=minimal' },
+        body: JSON.stringify({ my_summary: null })
+      });
+      return res.status(200).json({ ok: true, summary: {} });
+    }
+
+    /* ---------- 내 정보 요약을 이메일로 보내기 ----------
+       본문은 화면이 고른 언어로 만든 글입니다(서버에는 6개 언어 문장이 없습니다).
+       아무 글이나 아무 주소로 보내는 통로가 되지 않게 세 가지를 막습니다.
+         · 로그인한 사람만, 요약을 저장해 둔 사람만
+         · 하루 5통까지
+         · 글 길이 제한, HTML 은 서버에서 글자를 이스케이프해 만듭니다 */
+    if (action === 'summaryMail') {
+      const to = String(body.to || '').trim();
+      if (!EMAIL.test(to) || to.length > 254) return fail(res, 400, 'ckEmailBad');
+
+      const text = String(body.text || '').replace(/\r/g, '').slice(0, 8000).trim();
+      const subject = String(body.subject || 'E9-Bridge').replace(/[\r\n]+/g, ' ').slice(0, 120).trim() || 'E9-Bridge';
+      if (!text) return fail(res, 400, 'errNet');
+
+      const row = await readSummary(me.uid);
+      const sum = row && row.my_summary;
+      if (!sum || !Object.keys(sum).length) return fail(res, 400, 'myNone');
+
+      const today = new Date().toISOString().slice(0, 10);
+      const used = row.mail_day === today ? (row.mail_count || 0) : 0;
+      if (used >= MAIL_PER_DAY) return fail(res, 429, 'myEmailLimit');
+
+      if (!M.configured()) return fail(res, 501, 'mailOff');
+
+      const html = '<div style="font-family:sans-serif;font-size:15px;line-height:1.6;color:#2b2118">' +
+        text.split('\n').map(function (l) {
+          if (!l.trim()) return '<br>';
+          if (/^■ /.test(l)) return '<h3 style="margin:18px 0 6px;font-size:16px">' + esc(l.slice(2)) + '</h3>';
+          return '<div>' + esc(l) + '</div>';
+        }).join('') + '</div>';
+
+      const out = await M.send(to, subject, text, html);
+      if (!out.ok) return fail(res, out.reason === 'off' ? 501 : 502, out.reason === 'off' ? 'mailOff' : 'myEmailFail');
+
+      await sb('eum_users?id=eq.' + encodeURIComponent(me.uid), {
+        method: 'PATCH',
+        headers: { prefer: 'return=minimal' },
+        body: JSON.stringify({ mail_day: today, mail_count: used + 1 })
+      });
       return res.status(200).json({ ok: true });
     }
 

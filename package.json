@@ -1,5 +1,8 @@
 {
   "name": "eum",
   "private": true,
-  "engines": { "node": ">=20" }
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "nodemailer": "10.0.16"
+  }
 }

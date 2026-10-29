@@ -13,7 +13,7 @@ module.exports = function handler(req, res) {
 
     // 키를 안 넣었으면 조용히 실패하지 않고 이유를 화면에 알립니다.
     if (!c) {
-      res.writeHead(302, { location: '/' + ret.replace('board.html', 'login.html') + '?err=oauthOff' });
+      res.writeHead(302, { location: '/login.html?err=oauthOff' + (ret !== 'board.html' ? '&next=' + ret : '') });
       return res.end();
     }
 

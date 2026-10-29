@@ -36,7 +36,7 @@
      (README 4장 "언어 추가"). */
 
   // 브라우저가 옛 코드나 세 글자 코드를 보내는 경우를 흡수합니다.
-  var LANG_ALIAS = { in: 'id', ind: 'id', vie: 'vi', tha: 'th', kor: 'ko', eng: 'en' };
+  var LANG_ALIAS = { in: 'id', ind: 'id', vie: 'vi', kor: 'ko', eng: 'en', khm: 'km', nep: 'ne' };
 
   /* 지원 목록에 있는 코드만 통과시킵니다. ?lang=constructor 같은 입력도 여기서 막힙니다.
      I18N 은 아직 안 받아 온 언어가 비어 있으므로 목록으로 판단합니다. */
@@ -151,6 +151,8 @@
     boardMsg(boardMsgKey, boardMsgKind); // 안내 문구도 새 언어로 다시 씁니다
     authMsg(authMsgKey, authMsgKind);
     paintAuth();
+    paintMy();
+    $$('.my-note[data-key]').forEach(function (n) { n.textContent = T[n.getAttribute('data-key')] || ''; });
     paintPager();
     syncStick();                         // 라벨 길이가 바뀌면 헤더 높이도 바뀝니다
     if (shown('#payResult')) calcPay();
@@ -191,6 +193,12 @@
   var weekdayFmt = {};
 
   function weekdayOf(d) {
+    /* 브라우저에 따라 크메르어·네팔어 요일 이름이 없어서 영어로 나옵니다.
+       그 언어를 모르는 브라우저면 언어 파일의 weekdays 를 씁니다. */
+    var known = true;
+    try { known = !Intl.DateTimeFormat.supportedLocalesOf || Intl.DateTimeFormat.supportedLocalesOf([lang]).length > 0; }
+    catch (e) { known = false; }
+    if (!known && T.weekdays && T.weekdays.length === 7) return T.weekdays[d.getDay()];
     if (!(lang in weekdayFmt)) {
       /* 태국어는 기본 달력이 불교력이라 2026년이 2569년으로 나옵니다.
          서류의 연도와 어긋나면 안 되므로 그레고리력을 못박습니다.
@@ -287,9 +295,12 @@
 
   /* showQuizResult 와 이메일 전송용 quizEmailBody 가 같은 판정을 쓰므로
      여기서 한 번만 계산합니다. */
-  function quizFields() {
-    if (!lastQuiz) return null;
-    var q1 = lastQuiz.q1, q2 = lastQuiz.q2, q3 = lastQuiz.q3;
+  function quizFields() { return lastQuiz ? quizCompute(lastQuiz) : null; }
+
+  /* 세 답(q1·q2·q3)만으로 판정합니다. 첫 화면의 "내 정보 한눈에"도
+     계정에 저장해 둔 답으로 이 함수를 불러 같은 결과를 그립니다. */
+  function quizCompute(qq) {
+    var q1 = qq.q1, q2 = qq.q2, q3 = qq.q3;
     var employerFault = q1 !== 'own';
     var overLimit = q3 === '3';
 
@@ -513,25 +524,14 @@
     });
   }
 
-  function calcElig() {
-    var box = $('#eligVerdicts');
+  /* 적격 판정 — 입력값만으로 계산해 결과를 돌려줍니다(화면에 그리지 않습니다).
+     inp: { start, end, exit, moved, hours, nat, type }  날짜는 'YYYY-MM-DD' 또는 ''
+     돌려주는 값: { bad:true } 또는 { tenureCls, tenureText, items:[{n, kind, body, w}] }
+     첫 화면 "내 정보 한눈에"도 계정에 저장한 값으로 이 함수를 부릅니다. */
+  function eligCompute(inp) {
     var E = T.pyElig;
-    if (!box || !E) return;
-
-    var startV = $('#eligStart') ? $('#eligStart').value : '';
-    var endV = $('#eligEnd') ? $('#eligEnd').value : '';
-    var exitV = $('#exitDate') ? $('#exitDate').value : '';
-    var moved = radioVal('pyMoved');
-    var hours = radioVal('pyHours');
-    var nat = radioVal('pyNat');
-    var type = radioVal('pyType');
-
-    save('insStart', startV); save('insEnd', endV);
-    save('payMoved', moved); save('payHours', hours);
-    save('payNat', nat); save('payType', type);
-
-    $('#eligResult').hidden = false;
-    var tenureEl = $('#eligTenure');
+    var startV = inp.start || '', endV = inp.end || '', exitV = inp.exit || '';
+    var moved = inp.moved || '', hours = inp.hours || '', nat = inp.nat || '', type = inp.type || '';
     var months = null;
 
     if (startV) {
@@ -539,32 +539,27 @@
       /* 마지막 근무일이 비어 있으면 출국 예정일까지, 그것도 없으면 오늘까지 셉니다. */
       var end = endV ? midnight(new Date(endV + 'T00:00:00'))
                      : (exitV ? midnight(new Date(exitV + 'T00:00:00')) : today());
-      if (end < start) {
-        tenureEl.className = 'callout is-stop';
-        tenureEl.textContent = E.badDates;
-        box.innerHTML = '';
-        return;
-      }
+      if (end < start) return { bad: true, tenureCls: 'callout is-stop', tenureText: E.badDates, items: [] };
       months = monthsWorked(start, end);
     }
 
     var over1y = months !== null && months >= 12;
     var nearly = months !== null && months >= 10 && months < 12;
+    var out = { items: [] };
 
     if (months === null) {
-      tenureEl.className = 'callout is-warn';
-      tenureEl.textContent = E.needHire;
+      out.tenureCls = 'callout is-warn';
+      out.tenureText = E.needHire;
     } else {
       var y = Math.floor(months / 12), mm = months % 12;
       var line = y > 0 ? E.tenureYM.replace('{y}', y).replace('{m}', mm)
                        : E.tenureM.replace('{m}', months);
-      tenureEl.className = 'callout' + (over1y ? '' : (nearly ? ' is-warn' : ' is-stop'));
-      tenureEl.textContent = line + ' ' +
-        (over1y ? E.tenureOver : (nearly ? E.tenureNear : E.tenureUnder));
+      out.tenureCls = 'callout' + (over1y ? '' : (nearly ? ' is-warn' : ' is-stop'));
+      out.tenureText = line + ' ' + (over1y ? E.tenureOver : (nearly ? E.tenureNear : E.tenureUnder));
     }
 
-    box.innerHTML = '';
     var I = E.items;
+    function add(it, kind, body) { out.items.push({ n: it.n, kind: kind, body: body, w: it.w }); }
 
     /* 1) 출국만기보험금 — 한 사업장에서 계속 1년 이상이어야 근로자에게 갑니다.
           1년 미만이면 그 사업장 몫은 사업주에게 귀속됩니다
@@ -578,7 +573,7 @@
       matBody += ' ' + (type === 'change' ? I.mat.typeChange
                      : (type === 'reentry' ? I.mat.typeReentry : I.mat.typeLeave));
     }
-    box.appendChild(verdictCard(I.mat.n, matKind, matBody, I.mat.w));
+    add(I.mat, matKind, matBody);
 
     /* 2) 퇴직금 차액 — 계속근로 1년 이상 + 4주 평균 1주 15시간 이상
           (근로자퇴직급여 보장법 제4조 제1항). 위 계산기의 차액 칸과 짝입니다. */
@@ -590,18 +585,57 @@
     /* 입사일을 모르면 판정할 수 없습니다. '대상 아님'으로 단정하지 않습니다. */
     else if (months === null) { sevKind = 'warn'; sevBody = I.sev.noDate; }
     else { sevKind = 'no'; sevBody = I.sev.no; }
-    box.appendChild(verdictCard(I.sev.n, sevKind, sevBody, I.sev.w));
+    add(I.sev, sevKind, sevBody);
 
     /* 3) 귀국비용보험 — 근로자가 낸 돈이라 근속기간과 무관하게 돌려받습니다
           (시행령 제22조). 국가군에 따라 납부액이 다릅니다. */
     var amt = nat === 'g3' ? E.amt3 : (nat === 'g2' ? E.amt2 : E.amt1);
-    box.appendChild(verdictCard(I.ret.n, 'ok', I.ret.ok.replace('{amt}', amt), I.ret.w));
+    add(I.ret, 'ok', I.ret.ok.replace('{amt}', amt));
 
     /* 4) 국민연금 반환일시금 — E-9 체류자격은 상호주의와 무관하게 대상입니다. */
-    box.appendChild(verdictCard(I.pen.n, 'ok', I.pen.ok, I.pen.w));
+    add(I.pen, 'ok', I.pen.ok);
 
     /* 5) 못 받은 임금·수당 — 출국 뒤에도 3년 안에 청구할 수 있습니다 (근로기준법 제49조). */
-    box.appendChild(verdictCard(I.wage.n, 'warn', I.wage.ok, I.wage.w));
+    add(I.wage, 'warn', I.wage.ok);
+    return out;
+  }
+
+  function eligInputs() {
+    return {
+      start: $('#eligStart') ? $('#eligStart').value : '',
+      end: $('#eligEnd') ? $('#eligEnd').value : '',
+      exit: $('#exitDate') ? $('#exitDate').value : '',
+      moved: radioVal('pyMoved'), hours: radioVal('pyHours'),
+      nat: radioVal('pyNat'), type: radioVal('pyType')
+    };
+  }
+
+  function calcElig() {
+    var box = $('#eligVerdicts');
+    if (!box || !T.pyElig) return;
+
+    var inp = eligInputs();
+    save('insStart', inp.start); save('insEnd', inp.end);
+    save('payMoved', inp.moved); save('payHours', inp.hours);
+    save('payNat', inp.nat); save('payType', inp.type);
+
+    $('#eligResult').hidden = false;
+    var tenureEl = $('#eligTenure');
+    var r = eligCompute(inp);
+    tenureEl.className = r.tenureCls;
+    tenureEl.textContent = r.tenureText;
+    box.innerHTML = '';
+    r.items.forEach(function (it) { box.appendChild(verdictCard(it.n, it.kind, it.body, it.w)); });
+  }
+
+  /* 쌓인 보험료 ≈ 월 통상임금 × 8.3% × 일한 달 수
+     법정 퇴직금 ≈ 30일분 임금 × (재직일수 / 365)
+     첫 화면 요약도 이 함수로 같은 값을 냅니다. */
+  function insMoney(wage, start, end) {
+    var days = diffDays(end, start);
+    var saved = wage * INS_RATE * (days / 30.4375);
+    var legal = wage * (days / 365);
+    return { days: days, saved: saved, legal: legal, gap: legal - saved };
   }
 
   function calcIns() {
@@ -633,7 +667,8 @@
       return;
     }
 
-    var days = diffDays(end, start);            // start → end 사이의 날 수
+    var money = insMoney(wage, start, end);
+    var days = money.days;                      // start → end 사이의 날 수
     var years = Math.floor(days / 365);
     var restDays = days - years * 365;
     var months = Math.floor(restDays / 30);
@@ -641,12 +676,7 @@
     var joinDue = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 15);
     var eligible = new Date(start.getFullYear() + 1, start.getMonth(), start.getDate());
 
-    // 쌓인 보험료 ≈ 월 통상임금 × 8.3% × 일한 달 수
-    var monthsTotal = days / 30.4375;
-    var saved = wage * INS_RATE * monthsTotal;
-    // 법정 퇴직금 ≈ 30일분 임금 × (재직일수 / 365)
-    var legal = wage * (days / 365);
-    var gap = legal - saved;
+    var saved = money.saved, legal = money.legal, gap = money.gap;
 
     $('#insWorkedOut').textContent =
       (years > 0 ? years + (T.yearUnit || '년') + ' ' : '') +
@@ -729,7 +759,7 @@
       wrap.appendChild(ask);
 
       var meta = el('div', 'notice-meta');
-      meta.appendChild(el('span', null, T.ntSourceLabel + ': ' + n.source));
+      meta.appendChild(el('span', null, T.ntSourceLabel + ': ' + ((lang !== 'ko' && n.sourceL && n.sourceL[lang]) || n.source)));
       meta.appendChild(el('span', null, T.ntCheckedLabel + ': ' + n.checked));
       var a = el('a', null, T.ntOriginal);
       a.href = n.url; a.target = '_blank'; a.rel = 'noopener';
@@ -770,7 +800,7 @@
       /* 누구인지 — 가명·국적·연차·업종만 씁니다.
          이름과 회사는 데이터에 아예 넣지 않습니다. */
       var who = el('div', 'itv-who');
-      var label = (T.itvAlias || '{n}').replace('{n}', it.alias || '?');
+      var label = (T.itvAlias || '{n}').replace('{n}', (lang !== 'ko' && it.aliasL && it.aliasL[lang]) || it.alias || '?');
       who.appendChild(el('span', 'itv-alias', label));
       var facts = [];
       if (it.country && T.itvCountries) facts.push(T.itvCountries[it.country] || it.country);
@@ -787,7 +817,7 @@
         var fig = el('figure', 'itv-photo');
         var img = document.createElement('img');
         img.src = it.photo;
-        img.alt = it.photoAlt || '';
+        img.alt = (lang !== 'ko' && it.photoAltL && it.photoAltL[lang]) || it.photoAlt || '';
         img.loading = 'lazy';
         fig.appendChild(img);
         art.appendChild(fig);
@@ -1258,6 +1288,8 @@
       .then(function () {
         paintAuth(); paintSocial();
         syncAccountLang();
+        loadMySummary();      // 첫 화면 "내 정보 한눈에"
+        loginNext();          // login.html?next=... 이면 소셜 버튼도 그쪽으로 돌아오게
         // 관리자 답변 칸은 로그인 여부를 알아야 그리므로, 로그인 확인이
         // 끝난 뒤 게시판을 한 번 더(비로그인 상태로 이미 그렸다면) 그립니다.
         if ($('#boardList')) renderBoard(boardPage);
@@ -1474,6 +1506,336 @@
   }
 
   /* ---------- 질문 답변 ---------- */
+  /* ---------- 내 정보 한눈에 (로그인 개인화) ----------
+     로그인한 사람이 기한 계산 · 사유 자가진단 · 출국 정산에서 [계산] 버튼을 누르면
+     "입력한 값"을 계정에 저장합니다(api/account.js summarySave).
+     첫 화면은 저장된 값을 받아 지금 고른 언어로 다시 계산해 한 번에 보여 줍니다.
+     세 가지를 모두 넣었으면 첫 화면에 들어올 때 팝업으로 한 번 띄웁니다.
+     로그인하지 않았으면 아무것도 서버로 보내지 않습니다(예전과 같습니다). */
+  var mySum = null;            // { deadline, reason, payout } — 로그인 확인 뒤 채워집니다
+  var MY_PARTS = ['deadline', 'reason', 'payout'];
+
+  function myHas(part) {
+    var v = mySum && mySum[part];
+    if (!v) return false;
+    if (part === 'payout') return !!(v.exit || v.ins || v.elig);
+    return true;
+  }
+
+  function myCount() {
+    var n = 0;
+    MY_PARTS.forEach(function (p) { if (myHas(p)) n++; });
+    return n;
+  }
+
+  function loadMySummary() {
+    if (!me) { mySum = null; paintMy(); return; }
+    fetch('api/account?part=summary', { headers: { accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { mySum = (d && d.summary) || {}; })
+      .catch(function () { mySum = {}; })
+      .then(function () { paintMy(); myMaybeAutoOpen(); });
+  }
+
+  /* 결과 아래에 "내 정보에 저장했습니다" 를 잠깐 적어 둡니다. */
+  function myNote(anchorSel, key, kind) {
+    var anchor = $(anchorSel);
+    if (!anchor) return;
+    var id = 'myNote-' + anchorSel.replace(/[^a-z0-9]/gi, '');
+    var n = document.getElementById(id);
+    if (!n) {
+      n = el('p', 'my-note');
+      n.id = id;
+      n.setAttribute('role', 'status');
+      anchor.parentNode.insertBefore(n, anchor.nextSibling);
+    }
+    n.className = 'my-note' + (kind ? ' is-' + kind : '');
+    n.textContent = T[key] || '';
+    n.setAttribute('data-key', key);
+  }
+
+  function mySave(part, data, anchorSel) {
+    if (!me) return;
+    fetch('api/account', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ action: 'summarySave', part: part, data: data })
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (out) {
+        if (!out.ok || !out.data || !out.data.ok) throw new Error('save');
+        mySum = out.data.summary || mySum;
+        if (anchorSel) myNote(anchorSel, 'mySaved', 'good');
+        paintMy();
+      })
+      .catch(function (e) {
+        console.warn('summary save failed', e);
+        if (anchorSel) myNote(anchorSel, 'mySaveFail', 'bad');
+      });
+  }
+
+  /* 첫 화면 카드 — 로그인 전/후 두 모습입니다. */
+  function paintMy() {
+    var card = $('#myCard');
+    if (!card) return;
+    var guest = $('#myGuest'), user = $('#myUser');
+    guest.hidden = !!me;
+    user.hidden = !me;
+    if (!me) return;
+
+    var n = myCount();
+    $('#myProgress').textContent = (T.myProgress || '{n}/3').replace('{n}', n);
+    $$('.my-step', card).forEach(function (li) {
+      var part = li.getAttribute('data-part');
+      var done = myHas(part);
+      li.classList.toggle('is-done', done);
+      $('.my-step-ico', li).textContent = done ? '✓' : '';
+      $('.my-step-state', li).textContent = done ? T.myDone : T.myTodo;
+      $('.my-step-go', li).textContent = done ? T.myEdit : T.myGo;
+    });
+    var open = $('#myOpen');
+    if (open) open.disabled = n === 0;
+    if ($('#myPop') && $('#myPop').open) paintMyPop();
+  }
+
+  /* 요약 내용을 줄 단위로 만듭니다. 팝업과 이메일이 같은 내용을 씁니다.
+     돌려주는 값: [{ h: 제목 } | { k: 항목, v: 값, kind } | { p: 문장 }] */
+  function myRows() {
+    var rows = [];
+    var now = today();
+    // 숫자와 단위 사이 띄어쓰기 — 한국어는 "13일", 다른 언어는 "13 days".
+    function unit(u) { return (lang === 'ko' || /^\s/.test(u || '')) ? (u || '') : ' ' + u; }
+    function dayLine(d) {
+      var days = diffDays(d, now);
+      if (days < 0) return fmtDay(d) + ' · ' + Math.abs(days) + unit(T.daysOver);
+      if (days === 0) return fmtDay(d) + ' · ' + T.dueToday;
+      return fmtDay(d) + ' · ' + days + unit(T.daysUnit);
+    }
+    function kindOf(d) {
+      var days = diffDays(d, now);
+      return days < 0 || days === 0 ? 'stop' : (days <= 7 ? 'warn' : 'ok');
+    }
+    function asDay(v) { return midnight(new Date(v + 'T00:00:00')); }
+
+    /* 1) 기한 */
+    rows.push({ h: T.dlTitle });
+    var dl = mySum && mySum.deadline;
+    if (dl && dl.leave) {
+      var leave = asDay(dl.leave);
+      var applyDue = addMonths(leave, 1);
+      var applied = dl.apply ? asDay(dl.apply) : null;
+      var jobDue = addMonths(applied || applyDue, 3);
+      rows.push({ k: T.myLeave, v: fmtDay(leave) });
+      if (applied) rows.push({ k: T.myApplied, v: fmtDay(applied) });
+      rows.push({ k: T.myApplyBy, v: dayLine(applyDue), kind: applied ? 'ok' : kindOf(applyDue) });
+      rows.push({ k: T.myJobBy, v: dayLine(jobDue), kind: kindOf(jobDue) });
+      if (!applied) rows.push({ p: T.msgEstimate });
+    } else rows.push({ p: T.myNone });
+
+    /* 2) 사유 자가진단 */
+    rows.push({ h: T.ckTitle });
+    var rs = mySum && mySum.reason;
+    if (rs && rs.q1) {
+      var f = quizCompute(rs);
+      rows.push({ k: f.tag, v: f.title, kind: f.kind === 'stop' ? 'stop' : (f.kind === 'warn' ? 'warn' : 'ok') });
+      rows.push({ p: f.body + ' ' + f.ev + ' ' + f.count });
+      rows.push({ k: T.ckDocsTitle, v: (T.docs || []).join(', ') });
+    } else rows.push({ p: T.myNone });
+
+    /* 3) 출국 정산 */
+    rows.push({ h: T.secNoPay });
+    var py = mySum && mySum.payout;
+    if (py && (py.exit || py.ins || py.elig)) {
+      if (py.exit) {
+        var exit = asDay(py.exit);
+        var reportDue = addMonths(exit, -1);
+        var claimDue = new Date(exit.getFullYear(), exit.getMonth(), exit.getDate() - 7);
+        rows.push({ k: T.myExit, v: fmtDay(exit) });
+        rows.push({ k: T.myReport, v: dayLine(reportDue), kind: kindOf(reportDue) });
+        rows.push({ k: T.myClaim, v: dayLine(claimDue), kind: kindOf(claimDue) });
+      }
+      if (py.ins && py.ins.wage && py.ins.start) {
+        var st = asDay(py.ins.start);
+        var en = py.ins.end ? asDay(py.ins.end) : now;
+        if (en > st) {
+          var m = insMoney(py.ins.wage, st, en);
+          rows.push({ k: T.myInsSaved, v: wonFmt(m.saved) });
+          if (m.gap > 10000) rows.push({ k: T.myInsGap, v: wonFmt(m.gap), kind: 'warn' });
+        }
+      }
+      if (py.elig && T.pyElig) {
+        var r = eligCompute({
+          start: py.elig.start, end: py.elig.end, exit: py.exit || '',
+          moved: py.elig.moved, hours: py.elig.hours, nat: py.elig.nat, type: py.elig.type
+        });
+        if (r.tenureText) rows.push({ p: r.tenureText });
+        r.items.forEach(function (it) {
+          var E = T.pyElig;
+          rows.push({ k: it.n, v: it.kind === 'ok' ? E.vOk : (it.kind === 'warn' ? E.vWarn : E.vNo),
+                      kind: it.kind === 'no' ? 'stop' : it.kind });
+        });
+      }
+    } else rows.push({ p: T.myNone });
+
+    return rows;
+  }
+
+  function paintMyPop() {
+    var body = $('#myPopBody');
+    if (!body) return;
+    body.innerHTML = '';
+    var sec = null, dl = null;
+    myRows().forEach(function (r) {
+      if (r.h) {
+        sec = el('section', 'my-sec');
+        sec.appendChild(el('h3', null, r.h));
+        body.appendChild(sec);
+        dl = null;
+        return;
+      }
+      if (r.p) { sec.appendChild(el('p', 'my-p', r.p)); dl = null; return; }
+      if (!dl) { dl = el('dl', 'my-dl'); sec.appendChild(dl); }
+      var row = el('div', 'my-row' + (r.kind ? ' is-' + r.kind : ''));
+      row.appendChild(el('dt', null, r.k));
+      row.appendChild(el('dd', null, r.v));
+      dl.appendChild(row);
+    });
+    var stamp = [];
+    MY_PARTS.forEach(function (p) { if (mySum && mySum[p] && mySum[p].at) stamp.push(mySum[p].at); });
+    if (stamp.length) {
+      stamp.sort();
+      body.appendChild(el('p', 'my-stamp', T.myUpdated + ': ' + stamp[stamp.length - 1].slice(0, 10)));
+    }
+    body.appendChild(el('p', 'my-dis', T.disclaimer));
+    $('#myPopDone').hidden = myCount() < 3;
+  }
+
+  /* 이메일 본문(글자). 서버는 이 글을 HTML 로 바꿀 때 글자를 이스케이프합니다. */
+  function myText() {
+    var lines = [T.myPopTitle];
+    myRows().forEach(function (r) {
+      if (r.h) { lines.push(''); lines.push('■ ' + r.h); }
+      else if (r.p) lines.push(r.p);
+      else lines.push('- ' + r.k + ': ' + r.v);
+    });
+    lines.push('', T.disclaimer, '', 'E9-Bridge · https://eum-six.vercel.app/?lang=' + lang);
+    return lines.join('\n');
+  }
+
+  function openMyPop() {
+    var pop = $('#myPop');
+    if (!pop || !me) return;
+    paintMyPop();
+    var msg = $('#myMailMsg');
+    if (msg) { msg.textContent = ''; msg.className = 'result-email-msg'; }
+    if (typeof pop.showModal === 'function') { if (!pop.open) pop.showModal(); }
+    else pop.setAttribute('open', '');
+  }
+
+  function closeMyPop() {
+    var pop = $('#myPop');
+    if (!pop) return;
+    if (typeof pop.close === 'function' && pop.open) pop.close();
+    else pop.removeAttribute('open');
+  }
+
+  /* 세 가지를 다 넣은 뒤 첫 화면에 오면 한 번 띄웁니다. 같은 내용으로는 다시 띄우지 않고,
+     어느 하나라도 새로 저장하면 다음에 또 한 번 띄웁니다. */
+  function myMaybeAutoOpen() {
+    if (!$('#myPop') || !me || myCount() < 3) return;
+    var sig = MY_PARTS.map(function (p) { return (mySum[p] && mySum[p].at) || ''; }).join('|');
+    if (load('myPopSeen') === sig) return;
+    save('myPopSeen', sig);
+    openMyPop();
+  }
+
+  function sendMyMail(e) {
+    if (e) e.preventDefault();
+    var input = $('#myEmail'), msg = $('#myMailMsg'), btn = $('#myMailBtn');
+    var addr = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) {
+      msg.textContent = T.ckEmailBad; msg.className = 'result-email-msg is-bad';
+      input.focus();
+      return;
+    }
+    var text = myText();
+    btn.disabled = true;
+    msg.textContent = T.myEmailSending; msg.className = 'result-email-msg';
+
+    fetch('api/account', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ action: 'summaryMail', to: addr, subject: T.myEmailSubject, text: text })
+    })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { status: r.status, data: d }; }); })
+      .then(function (out) {
+        if (out.status === 200 && out.data && out.data.ok) {
+          msg.textContent = T.myEmailSent; msg.className = 'result-email-msg is-good';
+          return;
+        }
+        if (out.status === 429) {
+          msg.textContent = T.myEmailLimit; msg.className = 'result-email-msg is-bad';
+          return;
+        }
+        /* 서버에 메일 설정이 아직 없으면(501) 이 기기의 메일 앱을 열어 대신 보냅니다. */
+        if (out.status === 501 || out.status === 404 || out.status === 0) { myMailto(addr, text); return; }
+        msg.textContent = T.myEmailFail; msg.className = 'result-email-msg is-bad';
+      })
+      .catch(function () { myMailto(addr, text); })
+      .then(function () { btn.disabled = false; });
+  }
+
+  function myMailto(addr, text) {
+    var msg = $('#myMailMsg');
+    var url = 'mailto:' + encodeURIComponent(addr).replace(/%40/g, '@') +
+      '?subject=' + encodeURIComponent(T.myEmailSubject) +
+      '&body=' + encodeURIComponent(text);
+    window.location.href = url;
+    msg.textContent = T.ckEmailOpened; msg.className = 'result-email-msg is-good';
+  }
+
+  function clearMy() {
+    if (!me) return;
+    if (!window.confirm(T.myClearAsk)) return;
+    fetch('api/account', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ action: 'summaryClear' })
+    })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status)); })
+      .then(function () {
+        mySum = {};
+        drop('myPopSeen');
+        closeMyPop();
+        paintMy();
+      })
+      .catch(function (e) {
+        console.warn('summary clear failed', e);
+        var msg = $('#myMailMsg');
+        if (msg) { msg.textContent = T.errNet; msg.className = 'result-email-msg is-bad'; }
+      });
+  }
+
+  /* login.html?next=index.html — 로그인한 뒤 돌아갈 화면. 우리 사이트의 .html 이름만 받습니다. */
+  function nextPage() {
+    var v = null;
+    try { v = new URLSearchParams(location.search).get('next'); } catch (e) {}
+    return v && /^[a-z0-9_-]{1,40}\.html$/.test(v) ? v : null;
+  }
+
+  function loginNext() {
+    var n = nextPage();
+    if (!n) return;
+    ['#btnGoogle', '#btnKakao'].forEach(function (sel) {
+      var b = $(sel);
+      if (b) b.setAttribute('href', b.getAttribute('href').replace(/ret=[^&]*/, 'ret=' + n));
+    });
+    // 로그인 ↔ 회원가입 사이를 오가도 돌아갈 곳을 잃지 않게 합니다.
+    $$('a[href="signup.html"], a[href="login.html"]').forEach(function (a) {
+      a.setAttribute('href', a.getAttribute('href') + '?next=' + n);
+    });
+  }
+
   function renderChips() {
     var box = $('#askChips');
     if (!box) return;
@@ -1539,11 +1901,85 @@
     });
   }
 
+  /* ---------- 자주 묻는 질문 바로 답변 ----------
+     AI 를 부르기 전에 FAQ_KB(data.js)에서 먼저 찾습니다. 질문에 그 주제의 낱말이
+     충분히 들어 있거나, FAQ 질문 문장과 많이 닮았으면 FAQ 답을 그 자리에서 보여 줍니다.
+     애매하면(점수가 낮거나 두 주제가 비슷하면) 찾지 않은 것으로 보고 AI 에게 넘깁니다.
+     틀린 FAQ 답을 보여 주느니 조금 기다려 AI 답을 받는 편이 낫기 때문입니다. */
+  function normQ(v) {
+    return String(v || '').toLowerCase()
+      .replace(/[?？!！.,，。·"'“”‘’~()\[\]{}:;]/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  function grams(v) {
+    var t = v.replace(/\s+/g, ''), m = {}, n = 0;
+    for (var i = 0; i < t.length - 1; i++) { var g = t.substr(i, 2); m[g] = (m[g] || 0) + 1; n++; }
+    return { m: m, n: n };
+  }
+
+  // 글자 두 개씩 끊어 겹치는 비율(0~1). 띄어쓰기가 없는 크메르어에서도 동작합니다.
+  function dice(a, b) {
+    var A = grams(a), B = grams(b);
+    if (!A.n || !B.n) return 0;
+    var hit = 0;
+    for (var g in A.m) if (B.m[g]) hit += Math.min(A.m[g], B.m[g]);
+    return (2 * hit) / (A.n + B.n);
+  }
+
+  function kwHit(text, kw) {
+    // 영문·숫자 낱말은 낱말 경계를 봅니다 (times 안의 mes 같은 우연한 일치를 막습니다).
+    if (/^[a-z0-9 \-]+$/.test(kw)) {
+      return new RegExp('(^|[^a-z0-9])' + kw.replace(/[-]/g, '\\-') + '($|[^a-z0-9])').test(text);
+    }
+    return text.indexOf(kw) !== -1;
+  }
+
+  function faqMatch(question) {
+    if (typeof FAQ_KB === 'undefined') return null;
+    var t = normQ(question);
+    if (t.length < 2) return null;
+    var best = null, bs = 0, second = 0;
+    FAQ_KB.forEach(function (f) {
+      if (!T['faqA_' + f.key]) return;
+      var sc = 0;
+      f.keywords.forEach(function (k) {
+        var kk = normQ(k);
+        if (kk && kwHit(t, kk)) sc += Math.min(kk.replace(/\s/g, '').length, 8);
+      });
+      var d = dice(t, normQ(T['faqQ_' + f.key]));
+      var total = sc + (d >= 0.35 ? d * 10 : 0);
+      if (total > bs) { second = bs; bs = total; best = f; }
+      else if (total > second) second = total;
+    });
+    return best && bs >= 5 && bs >= second * 1.4 ? best : null;
+  }
+
   function answer(question) {
     var thread = $('#thread');
     if (!thread) return;
     thread.appendChild(el('div', 'bubble bubble-u', question));
 
+    /* 자주 묻는 질문이면 기다리지 않고 바로 답합니다. */
+    var faq = faqMatch(question);
+    if (faq) {
+      var fbox = el('div', 'bubble bubble-a');
+      thread.appendChild(fbox);
+      fillAnswer(fbox, T['faqA_' + faq.key], faq.src, false, false, T.askFaqHit);
+      var more = el('button', 'btn btn-ghost btn-sm ask-more', T.askAskAi);
+      more.type = 'button';
+      more.addEventListener('click', function () {
+        more.remove();
+        askAi(question);
+      });
+      fbox.appendChild(more);
+      return;
+    }
+    askAi(question);
+  }
+
+  function askAi(question) {
+    var thread = $('#thread');
+    if (!thread) return;
     var box = el('div', 'bubble bubble-a');
     var wait = el('p');
     wait.appendChild(el('span', 'spin'));
@@ -1570,8 +2006,9 @@
       });
   }
 
-  function fillAnswer(box, text, src, offline, review) {
+  function fillAnswer(box, text, src, offline, review, tag) {
     box.innerHTML = '';
+    if (tag) box.appendChild(el('span', 'flag flag-faq', tag));
     if (review) box.appendChild(el('span', 'flag', T.askReview));
     String(text).split('\n').forEach(function (line) {
       if (line.trim()) box.appendChild(el('p', null, line.trim()));
@@ -1848,7 +2285,7 @@
       authSend('login', {
         username: $('#authId').value.trim(),
         password: $('#authPw').value
-      }, 'authLoginOk', function () { location.href = 'board.html'; });
+      }, 'authLoginOk', function () { location.href = nextPage() || 'board.html'; });
     });
 
     // 머리말 메뉴 — 바깥을 누르거나 Esc 를 누르면 닫힙니다.
@@ -1902,7 +2339,7 @@
       try { err = new URLSearchParams(location.search).get('err'); } catch (e2) {}
       if (err === 'oauth' || err === 'oauthOff') {
         authMsg(err === 'oauthOff' ? 'errOauthOff' : 'errOauth', 'bad');
-        try { history.replaceState(null, '', location.pathname); } catch (e3) {}
+        try { history.replaceState(null, '', location.pathname + (nextPage() ? '?next=' + nextPage() : '')); } catch (e3) {}
       }
     }
 
@@ -1916,7 +2353,7 @@
         username: $('#authId').value.trim(),
         password: pw,
         lang: lang            // 이 기기가 지금 쓰고 있는 언어를 함께 저장합니다
-      }, 'authSignupOk', function () { location.href = 'board.html'; });
+      }, 'authSignupOk', function () { location.href = nextPage() || 'board.html'; });
     });
 
     // 기한
@@ -1929,7 +2366,14 @@
         if (savedApply) $('#applyDate').value = savedApply;
         calcDday();
       }
-      on('#ddayForm', 'submit', function (e) { e.preventDefault(); calcDday(); });
+      on('#ddayForm', 'submit', function (e) {
+        e.preventDefault();
+        calcDday();
+        // 계산이 실제로 됐을 때만(미래 날짜 오류가 아닐 때) 내 정보에 저장합니다.
+        if (!$('#ddayResult').hidden && !$('.dday-cards').hidden) {
+          mySave('deadline', { leave: $('#leaveDate').value, apply: $('#applyDate').value }, '#ddayResult');
+        }
+      });
       on('#ddayReset', 'click', function () {
         $('#ddayForm').reset();
         $('#ddayResult').hidden = true;
@@ -1941,7 +2385,11 @@
     if ($('#payForm')) {
       var savedExit = load('exit');
       if (savedExit) { $('#exitDate').value = savedExit; calcPay(); }
-      on('#payForm', 'submit', function (e) { e.preventDefault(); calcPay(); });
+      on('#payForm', 'submit', function (e) {
+        e.preventDefault();
+        calcPay();
+        if ($('#exitDate').value) mySave('payout', { exit: $('#exitDate').value }, '#payResult');
+      });
       on('#payReset', 'click', function () {
         $('#payForm').reset();
         $('#payResult').hidden = true;
@@ -1963,6 +2411,9 @@
         save('insStart', $('#insStart').value);
         save('insEnd', $('#insEnd').value);
         calcIns();
+        if (!$('#insResult').hidden && $('#insSavedOut').textContent !== '–') {
+          mySave('payout', { ins: { wage: $('#insWage').value, start: $('#insStart').value, end: $('#insEnd').value } }, '#insResult');
+        }
       });
       on('#insReset', 'click', function () {
         $('#insForm').reset();
@@ -1993,13 +2444,29 @@
       // 입사일과 답이 모두 남아 있을 때만 지난 결과를 되살립니다
       if (es && load('payMoved')) calcElig();
 
-      on('#eligForm', 'submit', function (e) { e.preventDefault(); calcElig(); });
+      on('#eligForm', 'submit', function (e) {
+        e.preventDefault();
+        calcElig();
+        var ei = eligInputs();
+        var part = { elig: ei };
+        if (ei.exit) part.exit = ei.exit;
+        mySave('payout', part, '#eligResult');
+      });
       on('#eligReset', 'click', function () {
         $('#eligForm').reset();
         $('#eligResult').hidden = true;
         ['payMoved', 'payHours', 'payNat', 'payType'].forEach(function (k) { drop(k); });
       });
     }
+
+    // 내 정보 한눈에 — 팝업
+    on('#myOpen', 'click', openMyPop);
+    on('#myPopX', 'click', closeMyPop);
+    on('#myPopClose', 'click', closeMyPop);
+    on('#myMailForm', 'submit', sendMyMail);
+    on('#myClear', 'click', clearMy);
+    // 팝업 바깥(어두운 부분)을 누르면 닫습니다.
+    on('#myPop', 'click', function (e) { if (e.target === this) closeMyPop(); });
 
     // 자가진단
     on('#quizForm', 'submit', function (e) {
@@ -2010,6 +2477,7 @@
         q3: $('input[name=q3]:checked').value
       };
       showQuizResult();
+      mySave('reason', lastQuiz, '#quizResult');
       $('#quizResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
     on('#quizReset', 'click', function () {

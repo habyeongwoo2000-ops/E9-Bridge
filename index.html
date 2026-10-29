@@ -18,7 +18,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="E9-Bridge">
 <meta property="og:title" content="E9-Bridge — 사업장 변경 안내">
-<meta property="og:description" content="고용허가제(E-9) 외국인근로자를 위한 사업장 변경 기한·사유 안내. 5개 언어로 3분 안에 확인하세요.">
+<meta property="og:description" content="고용허가제(E-9) 외국인근로자를 위한 사업장 변경 기한·사유 안내. 6개 언어로 3분 안에 확인하세요.">
 <meta property="og:url" content="https://eum-six.vercel.app/">
 <meta property="og:image" content="https://eum-six.vercel.app/assets/og-cover.png">
 <meta property="og:locale" content="ko_KR">
@@ -75,7 +75,7 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans+Thai:wght@400;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans+Khmer:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -112,8 +112,9 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
         <option value="ko">한국어</option>
         <option value="en">English</option>
         <option value="vi">Tiếng Việt</option>
-        <option value="th">ไทย</option>
         <option value="id">Bahasa Indonesia</option>
+        <option value="km">ខ្មែរ</option>
+        <option value="ne">नेपाली</option>
       </select>
     </div>
   </div>
@@ -158,11 +159,7 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
             <!-- 화면에는 보이지 않지만 HTML 에 남는 한 줄입니다. 위의 제목·설명은
                  언어에 따라 app.js 가 바꿔 쓰기 때문에, 브랜드 이름과 무엇을 하는
                  서비스인지는 자바스크립트 없이도 읽히도록 여기 따로 적어 둡니다. -->
-            <p class="sr">E9-Bridge는 고용허가제(E-9)로 한국에 온 외국인근로자가 사업장 변경 기한과 사유를 한국어·영어·베트남어·태국어·인도네시아어로 확인할 수 있는 무료 안내 서비스입니다.</p>
-            <div class="hero-cta">
-              <a class="btn btn-go" href="#deadline" data-i18n="heroCta">내 기한 계산하기</a>
-              <a class="btn btn-ghost" href="ask.html" data-i18n="heroCta2">질문하기</a>
-            </div>
+            <p class="sr">E9-Bridge는 고용허가제(E-9)로 한국에 온 외국인근로자가 사업장 변경 기한과 사유를 한국어·영어·베트남어·인도네시아어·캄보디아어(크메르어)·네팔어로 확인할 수 있는 무료 안내 서비스입니다.</p>
           </div>
         </div>
       </div>
@@ -223,13 +220,38 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
       </div>
       </div>
 
-      <div class="ask-card">
-        <h2 data-i18n="askCardTitle">궁금한 점</h2>
-        <p data-i18n="askCardLead">궁금한 점을 적어 주세요. 확인된 법령과 공지 안에서만 답합니다.</p>
-        <div class="ask-card-actions">
-          <a class="btn btn-go" href="ask.html" data-i18n="heroCta2">질문하기</a>
-          <a class="btn btn-go" href="notices.html" data-i18n="askGoNotices">공지 이동하기</a>
-          <a class="btn btn-go" href="board.html" data-i18n="askGoBoard">게시판 이동하기</a>
+      <!-- 내 정보 한눈에 — 로그인한 사람이 기한·사유·출국 정산에 넣은 값을 모아 보여 줍니다.
+           값은 계정에 저장되고(api/account.js · docs/my_summary.sql), 화면 글자는 고른 언어로
+           그때그때 다시 계산해 그립니다. 로그인하지 않았으면 로그인 안내만 보입니다. -->
+      <div class="ask-card my-card" id="myCard">
+        <h2 data-i18n="myTitle">내 정보 한눈에</h2>
+        <p data-i18n="myLead">기한 계산, 사유 자가진단, 출국 정산을 입력하면 결과가 여기에 모여 한 번에 보입니다.</p>
+
+        <div class="my-guest" id="myGuest">
+          <p class="my-sub" data-i18n="myLoginLead">로그인하면 입력한 내용이 내 계정에 저장되어 여기에서 한 번에 볼 수 있고, 내 이메일로도 받을 수 있습니다.</p>
+          <a class="btn btn-go" href="login.html?next=index.html" data-i18n="myLoginBtn">로그인하고 시작하기</a>
+        </div>
+
+        <div class="my-user" id="myUser" hidden>
+          <p class="my-progress" id="myProgress"></p>
+          <ul class="my-steps">
+            <li class="my-step" data-part="deadline">
+              <span class="my-step-ico" aria-hidden="true"></span>
+              <span class="my-step-txt"><b data-i18n="dlTitle">기한 계산</b><small class="my-step-state"></small></span>
+              <a class="my-step-go" href="#deadline" data-i18n="myGo">입력하기</a>
+            </li>
+            <li class="my-step" data-part="reason">
+              <span class="my-step-ico" aria-hidden="true"></span>
+              <span class="my-step-txt"><b data-i18n="ckTitle">사유 자가진단</b><small class="my-step-state"></small></span>
+              <a class="my-step-go" href="reason.html" data-i18n="myGo">입력하기</a>
+            </li>
+            <li class="my-step" data-part="payout">
+              <span class="my-step-ico" aria-hidden="true"></span>
+              <span class="my-step-txt"><b data-i18n="secNoPay">출국 정산</b><small class="my-step-state"></small></span>
+              <a class="my-step-go" href="payout.html" data-i18n="myGo">입력하기</a>
+            </li>
+          </ul>
+          <button type="button" class="btn btn-go" id="myOpen" data-i18n="myOpen">한눈에 보기</button>
         </div>
       </div>
       </div>
@@ -337,6 +359,31 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
     </div>
   </section>
 </main>
+
+<!-- 내 정보 요약 팝업 — "한눈에 보기"를 누르거나, 세 가지를 모두 입력한 뒤 첫 화면에 오면 열립니다. -->
+<dialog class="my-pop" id="myPop" aria-labelledby="myPopTitle">
+  <div class="my-pop-head">
+    <h2 id="myPopTitle" data-i18n="myPopTitle">내 사업장 변경 요약</h2>
+    <button type="button" class="my-pop-x" id="myPopX" data-i18n-aria="myClose" aria-label="닫기">&times;</button>
+  </div>
+  <p class="my-pop-done" id="myPopDone" data-i18n="myAllDone" hidden>세 가지를 모두 입력했습니다. 요약을 확인하세요.</p>
+  <div class="my-pop-body" id="myPopBody"></div>
+
+  <form class="my-mail" id="myMailForm" novalidate>
+    <label for="myEmail" data-i18n="myEmailLabel">요약을 받을 이메일 주소</label>
+    <div class="result-email-row">
+      <input type="email" id="myEmail" inputmode="email" autocomplete="email" data-i18n-ph="ckEmailPh" placeholder="you@example.com">
+      <button type="submit" class="btn btn-go" id="myMailBtn" data-i18n="myEmailSend">내 이메일로 보내기</button>
+    </div>
+    <p class="hint" data-i18n="myEmailHint">본인 이메일만 적어 주세요. 주소는 보내는 데만 쓰고 저장하지 않습니다.</p>
+    <p class="result-email-msg" id="myMailMsg" role="status" aria-live="polite"></p>
+  </form>
+
+  <div class="my-pop-foot">
+    <button type="button" class="btn btn-ghost btn-sm" id="myClear" data-i18n="myClear">저장한 내용 모두 지우기</button>
+    <button type="button" class="btn btn-ghost" id="myPopClose" data-i18n="myClose">닫기</button>
+  </div>
+</dialog>
 
 <!-- 언어 파일은 고른 언어 하나만 받습니다. core.js 가 어떤 언어인지 정하고,
      바로 아래 줄이 그 파일 하나만 불러옵니다 (예전에는 5개 언어를 전부 받았습니다). -->

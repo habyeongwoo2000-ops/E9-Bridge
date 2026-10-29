@@ -30,7 +30,7 @@
      기기에 예전 파일이 남습니다.
    ------------------------------------------------------------------ */
 
-const VERSION = 'v1';
+const VERSION = 'v2';   // 2026-10-28 언어 정리(km·ne 추가, th 제거) · 내 정보 한눈에 · 챗봇 FAQ 바로 답변
 const STATIC = 'e9b-static-' + VERSION;
 const PAGES = 'e9b-pages-' + VERSION;
 

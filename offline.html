@@ -53,14 +53,19 @@
     vi: ['Không có kết nối', 'Trang sẽ tự mở lại khi có mạng. Một số chức năng vẫn dùng được khi không có mạng.',
          'Tính hạn — chỉ cần ngày nghỉ việc', 'Những trang đã mở vẫn xem lại được',
          'Đặt câu hỏi và diễn đàn cần có mạng', 'Về trang đầu'],
-    th: ['ไม่มีการเชื่อมต่อ', 'หน้านี้จะเปิดใหม่เมื่อกลับมาออนไลน์ บางฟังก์ชันใช้ได้แม้ไม่มีอินเทอร์เน็ต',
-         'คำนวณกำหนดเวลา — ใส่แค่วันที่ลาออก', 'หน้าที่เคยเปิดแล้วยังดูซ้ำได้',
-         'การถามคำถามและกระดานสนทนาต้องใช้อินเทอร์เน็ต', 'ไปหน้าแรก'],
+    km: ['មិនមានការតភ្ជាប់', 'ទំព័រនេះនឹងបើកឡើងវិញដោយស្វ័យប្រវត្តិ ពេលមានអ៊ីនធឺណិតវិញ។ មុខងារខ្លះអាចប្រើបានដោយគ្មានអ៊ីនធឺណិត។',
+         'គណនាថ្ងៃកំណត់ — គ្រាន់តែបញ្ចូលថ្ងៃឈប់ធ្វើការ', 'ទំព័រដែលធ្លាប់បើករួច អាចមើលម្តងទៀតបាន',
+         'ការសួរសំណួរ និងក្តារសំណួរ ត្រូវការអ៊ីនធឺណិត', 'ទៅទំព័រដើម'],
+    ne: ['इन्टरनेट जडान छैन', 'इन्टरनेट जोडिएपछि यो पेज आफैं फेरि खुल्छ। केही सुविधा इन्टरनेट बिना पनि चल्छन्।',
+         'म्याद हिसाब — काम छोडेको मिति मात्र राखे पुग्छ', 'पहिले खोलेका पेज फेरि हेर्न सकिन्छ',
+         'प्रश्न सोध्न र प्रश्न बोर्डका लागि इन्टरनेट चाहिन्छ', 'मुख्य पेजमा जानुहोस्'],
     id: ['Tidak ada koneksi', 'Halaman akan terbuka lagi saat kembali online. Beberapa fungsi tetap bisa dipakai tanpa koneksi.',
          'Hitung batas waktu — cukup tanggal berhenti kerja', 'Halaman yang pernah dibuka masih bisa dilihat',
          'Bertanya dan papan diskusi butuh koneksi', 'Ke halaman awal']
   };
-  var langs = (navigator.languages || [navigator.language || 'ko']);
+  var langs = (navigator.languages || [navigator.language || 'ko']).slice();
+  /* 사이트에서 직접 고른 언어가 있으면 그것을 먼저 씁니다. */
+  try { var saved = localStorage.getItem('eum.lang'); if (saved) langs.unshift(saved); } catch (e) {}
   var pick = 'ko';
   for (var i = 0; i < langs.length; i++) {
     var two = String(langs[i]).slice(0, 2).toLowerCase();

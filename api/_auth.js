@@ -174,7 +174,7 @@ function checkNick(v) {
 
 /* ---------- 언어 ---------- */
 
-const LANG_CODES = ['ko', 'en', 'vi', 'th', 'id'];
+const LANG_CODES = ['ko', 'en', 'vi', 'id', 'km', 'ne'];
 
 function normalizeLang(v) {
   return LANG_CODES.indexOf(v) !== -1 ? v : null;
