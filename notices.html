@@ -115,7 +115,23 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
 
   <section id="notices" class="band">
     <div class="wrap">
+      <form class="board-search nt-search" id="ntSearch" role="search">
+        <label class="sr" for="ntQ" data-i18n="ntSearchLabel">제도 검색</label>
+        <input type="search" id="ntQ" maxlength="60" placeholder="제도·지역·기관 이름으로 찾기"
+               data-i18n-ph="ntSearchPh" autocapitalize="off" autocorrect="off">
+        <button type="submit" class="btn btn-go btn-sm" data-i18n="boardSearchBtn">찾기</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="ntQClear" hidden data-i18n="boardSearchClear">전체 보기</button>
+      </form>
+      <p class="board-found nt-found" id="ntFound" hidden></p>
+      <div class="nt-filter" id="ntFilter"></div>
       <div class="notice-list" id="noticeList"></div>
+      <nav class="pager" id="ntPager" hidden aria-label="page">
+        <button type="button" class="pg-arrow" id="ntPrevBlock" data-i18n-aria="ntPrevBlock" aria-label="이전 10쪽">«</button>
+        <button type="button" class="pg-arrow" id="ntPrev" data-i18n-aria="boardPrev" aria-label="이전">‹</button>
+        <span class="pg-nums" id="ntNums"></span>
+        <button type="button" class="pg-arrow" id="ntNext" data-i18n-aria="boardNext" aria-label="다음">›</button>
+        <button type="button" class="pg-arrow" id="ntNextBlock" data-i18n-aria="ntNextBlock" aria-label="다음 10쪽">»</button>
+      </nav>
     </div>
   </section>
 

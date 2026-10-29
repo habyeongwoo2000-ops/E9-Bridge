@@ -29,5 +29,8 @@ I18N.uz = {
   reset: 'Tozalash',
   errNet: 'Xatolik yuz berdi. Qayta urinib koʻring.',
   ofTitle: 'Rasmiy idoralar',
+  askSourceLabel: 'Manba',
+  askMtReview: 'Tarjima tekshirilishi kerak',
+  chips: ['Ariza berish uchun necha kun bor?', '3 oy ichida ish topolmasam nima boʻladi?', 'Necha martagacha almashtirish mumkin?', 'Ish haqim toʻlanmadi', 'Chiqish sugʻurtasi va ishdan boʻshash nafaqasini qanday olaman?', 'Qayerda va qanday ariza beraman? Qanday hujjatlar kerak?', 'Ish beruvchining aybi bilan almashsam, hisobga olinadimi?', 'E-7-4 vizasiga oʻtsam boʻladimi?'],
   disclaimer: 'Bu maʼlumot faqat maʼlumot uchun, yuridik maslahat emas. Yakuniy tasdiqni bandlik markazi yoki 1345 orqali oling.'
 };

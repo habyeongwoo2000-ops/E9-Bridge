@@ -103,6 +103,14 @@ module.exports = async function handler(req, res) {
 
       const total = got.total || 0;
       const pages = Math.max(1, Math.ceil(total / PER_PAGE));
+      /* 로그인하지 않은 목록(pub=1)은 누구에게나 같으므로 CDN 에 30초 담아 두고 바로 내줍니다.
+         그 뒤 5분까지는 묵은 것을 먼저 주고 뒤에서 새로 받습니다. 로그인한 사람의 목록은
+         비공개 글이 섞일 수 있어 절대 담아 두지 않습니다. */
+      if (!me && !mineOnly && (q.pub === '1')) {
+        res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=300');
+      } else {
+        res.setHeader('Cache-Control', 'private, no-store');
+      }
       return res.status(200).json({
         items: items, page: page, pages: pages, total: total, perPage: PER_PAGE,
         q: term, isAdmin: canSeeAll
