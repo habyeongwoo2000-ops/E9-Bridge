@@ -8,8 +8,6 @@
   /* core.js 가 미리 정한 언어입니다. 그 언어 파일 하나만 받아 둔 상태이므로
      여기서 곧바로 씁니다. 다른 언어로 바꾸면 그때 그 파일을 받아 옵니다. */
   var lang = (typeof EUM_LANG === 'string' && I18N[EUM_LANG]) ? EUM_LANG : 'ko';
-  // 초안 언어는 core.js 가 함께 받아 둔 영어로 빠진 문장을 메웁니다.
-  if (typeof eumMergeDraft === 'function') eumMergeDraft(lang);
   var T = I18N[lang] || I18N.ko || {};
 
   /* ---------- 작은 도구들 ---------- */
@@ -720,182 +718,30 @@
   }
 
   /* ---------- 공지 ---------- */
-  /* 광역 16개 시·도(광주·전남은 2026-07-01 전남광주통합특별시로 합쳐졌습니다).
-     지자체 정책은 data.js 에서 region 에 이 코드를 적습니다. region 이 없는 항목은 전국 제도입니다. */
-  var NT_REGIONS = ['seoul', 'busan', 'daegu', 'incheon', 'daejeon', 'ulsan', 'sejong',
-    'gyeonggi', 'gangwon', 'chungbuk', 'chungnam', 'jeonbuk', 'jeonnamgwangju', 'gyeongbuk', 'gyeongnam', 'jeju'];
-  // 'all' · 'nation' · 지역 코드. 마지막에 고른 것을 기억해 다시 열어도 그 지역을 보여 줍니다.
-  var ntPick = load('ntRegion') || 'all';
-  // 한 쪽에 몇 개씩 보일지 — 사용자가 고르고, 고른 값을 기억합니다.
-  var NT_PER_CHOICES = [10, 15, 20];
-  var ntPer = Number(load('ntPer')) || 10;
-  if (NT_PER_CHOICES.indexOf(ntPer) === -1) ntPer = 10;
-  var ntPage = 1;
-  var ntQ = '';
-
-  /* 검색어를 띄어쓰기로 나눠, 모두 들어 있는 항목만 남깁니다(대소문자 무시).
-     지금 언어의 제목·내용에 더해 출처·지역 이름·한국어 제목도 함께 봅니다 —
-     기관 이름은 한국어로만 적혀 있고, 상담사가 한국어로 찾아 줄 때도 있습니다. */
-  function ntMatch(n) {
-    if (!ntQ) return true;
-    var body = n[lang] || n.en;
-    var hay = [body.title, body.points.join(' '), n.source, n.ko && n.ko.title,
-      n.region ? regionName(n.region) : ''].join(' ').toLowerCase();
-    return ntQ.toLowerCase().split(/\s+/).every(function (w) { return !w || hay.indexOf(w) !== -1; });
-  }
-
-  function paintNtFound(count) {
-    var p = $('#ntFound'), clear = $('#ntQClear');
-    if (clear) clear.hidden = !ntQ;
-    if (!p) return;
-    p.hidden = !ntQ;
-    p.textContent = ntQ ? '"' + ntQ + '" · ' + count + (T.boardFoundUnit || '') : '';
-  }
-
-  function regionName(code) { return (T.ntRegions && T.ntRegions[code]) || code; }
-
-  // 신청 마감일이 지났는지 — 지난 공고는 남겨 두되 "마감"으로 표시하고 아래로 내립니다.
-  function ntClosed(n) { return !!(n.until && n.until < fmt(today())); }
-
-  function renderNtFilter() {
-    var box = $('#ntFilter');
-    if (!box) return;
-    box.innerHTML = '';
-
-    function pick(v) { ntPick = v; ntPage = 1; save('ntRegion', v); renderNotices(); }
-    function btn(v, label) {
-      var b = el('button', 'chip' + (ntPick === v ? ' is-on' : ''), label);
-      b.type = 'button';
-      b.setAttribute('aria-pressed', ntPick === v ? 'true' : 'false');
-      b.addEventListener('click', function () { pick(v); });
-      box.appendChild(b);
-    }
-    btn('all', T.ntFilterAll);
-    btn('nation', T.ntFilterNation);
-
-    // 지역은 17개라 버튼 대신 고르기 상자로 둡니다. 올라온 정책 수를 함께 보여 줍니다.
-    var count = {};
-    NOTICES.forEach(function (n) { if (n.region) count[n.region] = (count[n.region] || 0) + 1; });
-    var sel = el('select', 'nt-region' + (NT_REGIONS.indexOf(ntPick) !== -1 ? ' is-on' : ''));
-    sel.setAttribute('aria-label', T.ntFilterRegion);
-    sel.appendChild(el('option', null, T.ntFilterRegion)).value = '';
-    NT_REGIONS.forEach(function (r) {
-      var o = el('option', null, regionName(r) + ' (' + (count[r] || 0) + ')');
-      o.value = r;
-      sel.appendChild(o);
-    });
-    sel.value = NT_REGIONS.indexOf(ntPick) !== -1 ? ntPick : '';
-    sel.addEventListener('change', function () { pick(sel.value || 'all'); });
-    box.appendChild(sel);
-
-    var per = el('select', 'nt-per');
-    per.setAttribute('aria-label', T.ntPerLabel || 'Per page');
-    NT_PER_CHOICES.forEach(function (n) {
-      var o = el('option', null, String(T.ntPerUnit || '%d').replace('%d', n));
-      o.value = String(n);
-      per.appendChild(o);
-    });
-    per.value = String(ntPer);
-    per.addEventListener('change', function () {
-      ntPer = Number(per.value) || 10;
-      ntPage = 1;
-      save('ntPer', String(ntPer));
-      renderNotices();
-    });
-    box.appendChild(per);
-  }
-
-  /* 게시판과 같은 모양의 쪽 번호입니다. 쪽을 옮기면 목록 맨 위로 돌아갑니다. */
-  function paintNtPager(pages) {
-    var nav = $('#ntPager');
-    if (!nav) return;
-    nav.hidden = pages <= 1;
-    var box = $('#ntNums');
-    box.innerHTML = '';
-    function go(p) {
-      ntPage = p;
-      renderNotices();
-      var top = $('#ntFilter');
-      if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    // 쪽 번호는 10개씩 끊어 보입니다(1~10, 11~20 …). 지금 쪽이 들어 있는 묶음만 그립니다.
-    var block = 10;
-    var start = Math.floor((ntPage - 1) / block) * block + 1;
-    var end = Math.min(pages, start + block - 1);
-    for (var n = start; n <= end; n++) {
-      (function (num) {
-        var b = el('button', 'pg-num' + (num === ntPage ? ' is-on' : ''), String(num));
-        b.type = 'button';
-        if (num === ntPage) b.setAttribute('aria-current', 'page');
-        b.addEventListener('click', function () { go(num); });
-        box.appendChild(b);
-      })(n);
-    }
-    var prev = $('#ntPrev'), next = $('#ntNext');
-    prev.disabled = ntPage <= 1;
-    next.disabled = ntPage >= pages;
-    prev.onclick = function () { if (ntPage > 1) go(ntPage - 1); };
-    next.onclick = function () { if (ntPage < pages) go(ntPage + 1); };
-    // « » 는 10쪽 묶음 단위로 넘깁니다: 1~10 → 11~20 의 첫 쪽, 11~20 → 1~10 의 첫 쪽.
-    var prevB = $('#ntPrevBlock'), nextB = $('#ntNextBlock');
-    if (prevB && nextB) {
-      prevB.disabled = start <= 1;
-      nextB.disabled = end >= pages;
-      prevB.onclick = function () { if (start > 1) go(start - block); };
-      nextB.onclick = function () { if (end < pages) go(end + 1); };
-    }
-  }
-
   function renderNotices() {
     var list = $('#noticeList');
     if (!list) return;
     list.innerHTML = '';
-    renderNtFilter();
 
     /* 최신 소식이 위로 오게 정렬합니다. 날짜가 없는 옛 항목은 뒤로 보냅니다.
-       같은 날 발표된 항목은 data.js 에 적힌 순서를 그대로 지킵니다(안정 정렬).
-       마감된 지자체 공고는 맨 아래로 보냅니다.
        원본 배열은 건드리지 않습니다 — 다른 곳에서 순서를 기대할 수 있습니다. */
-    var sorted = NOTICES.filter(function (n) {
-      if (!ntMatch(n)) return false;
-      if (ntPick === 'nation') return !n.region;
-      if (ntPick !== 'all') return n.region === ntPick;
-      return true;
-    }).sort(function (a, b) {
-      var c = (ntClosed(a) ? 1 : 0) - (ntClosed(b) ? 1 : 0);
-      return c || String(b.date || '').localeCompare(String(a.date || ''));
+    var sorted = NOTICES.slice().sort(function (a, b) {
+      return String(b.date || '').localeCompare(String(a.date || ''));
     });
 
-    paintNtFound(sorted.length);
-    if (!sorted.length) {
-      list.appendChild(el('p', 'nt-empty', ntQ ? T.ntNoMatch : T.ntEmpty));
-      paintNtPager(0);
-      return;
-    }
-
-    var pages = Math.ceil(sorted.length / ntPer);
-    if (ntPage > pages) ntPage = pages;
-    paintNtPager(pages);
-
-    sorted.slice((ntPage - 1) * ntPer, ntPage * ntPer).forEach(function (n) {
+    sorted.forEach(function (n) {
       var body = n[lang] || n.en;
-      var closed = ntClosed(n);
-      var art = el('article', 'notice' + (closed ? ' is-closed' : ''));
+      var art = el('article', 'notice');
       art.id = n.key;
 
       var head = el('button', 'notice-head');
       head.type = 'button';
       head.setAttribute('aria-expanded', 'false');
-      // 지자체 정책은 태그 자리에 지역 이름을 씁니다. 어느 지역 이야기인지가 먼저 보여야 합니다.
-      var tagLabel = n.region ? regionName(n.region)
-        : ((T.noticeTags && T.noticeTags[n.tagKey]) || n.tagKey);
-      head.appendChild(el('span', 'notice-tag' + (n.region ? ' is-local' : ''), tagLabel));
+      var tagLabel = (T.noticeTags && T.noticeTags[n.tagKey]) || n.tagKey;
+      head.appendChild(el('span', 'notice-tag', tagLabel));
       // 날짜를 제목 옆에 크게 둡니다. "언제 바뀐 것인가" 가 이 쪽의 핵심입니다.
       if (n.date) head.appendChild(el('span', 'notice-date', n.date));
-      if (closed) head.appendChild(el('span', 'notice-closed', T.ntClosed));
       head.appendChild(el('p', 'notice-t', body.title));
-      // 언제 마지막으로 확인했는지 — 펼치지 않아도 보이게 줄 오른쪽에 둡니다.
-      if (n.checked) head.appendChild(el('span', 'notice-checked', T.ntCheckedLabel + ' ' + n.checked));
       head.appendChild(el('span', 'notice-arrow', '⌄'));
       head.addEventListener('click', function () {
         var open = art.classList.toggle('is-open');
@@ -921,7 +767,6 @@
       var meta = el('div', 'notice-meta');
       meta.appendChild(el('span', null, T.ntSourceLabel + ': ' + ((lang !== 'ko' && n.sourceL && n.sourceL[lang]) || n.source)));
       meta.appendChild(el('span', null, T.ntCheckedLabel + ': ' + n.checked));
-      if (n.until) meta.appendChild(el('span', null, T.ntUntil + ': ' + n.until));
       var a = el('a', null, T.ntOriginal);
       a.href = n.url; a.target = '_blank'; a.rel = 'noopener';
       meta.appendChild(a);
@@ -1229,43 +1074,6 @@
     p.textContent = '"' + boardQ + '" · ' + boardTotal + (T.boardFoundUnit || '건');
   }
 
-  /* 목록 한 쪽을 그립니다. 서버 응답과 아래 임시 저장본이 같은 모양이라 함께 씁니다. */
-  function paintBoardList(list, data) {
-    var items = (data && data.items) || [];
-    boardPage = (data && data.page) || 1;
-    boardPages = (data && data.pages) || 1;
-    boardTotal = (data && data.total) || 0;
-    boardPer = (data && data.perPage) || 10;
-
-    list.innerHTML = '';
-    if (!items.length) {
-      list.appendChild(el('p', 'board-empty', boardQ ? T.boardNoResult : T.boardEmpty));
-    } else {
-      // 최신 글이 맨 위이므로, 번호는 전체 개수에서 거꾸로 셉니다.
-      var first = boardTotal - (boardPage - 1) * boardPer;
-      items.forEach(function (it, i) { list.appendChild(boardRow(it, first - i)); });
-    }
-    paintPager();
-    paintFound();
-  }
-
-  /* 서버가 늦으면(첫 요청은 서버가 깨어나느라 몇 초 걸리기도 합니다) 무한정 기다리지 않습니다.
-     15초가 지나면 끊고 한 번 더 시도합니다. */
-  function fetchBoard(url, tries) {
-    var ac = typeof AbortController === 'function' ? new AbortController() : null;
-    var killer = ac ? setTimeout(function () { ac.abort(); }, 15000) : null;
-    return fetch(url, { headers: { accept: 'application/json' }, signal: ac ? ac.signal : undefined })
-      .then(function (r) {
-        if (killer) clearTimeout(killer);
-        return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status));
-      }, function (e) { if (killer) clearTimeout(killer); throw e; })
-      .catch(function (e) {
-        if (tries > 0) return new Promise(function (ok) { setTimeout(ok, 1200); })
-          .then(function () { return fetchBoard(url, tries - 1); });
-        throw e;
-      });
-  }
-
   function renderBoard(page) {
     var list = $('#boardList');
     if (!list) return;
@@ -1274,46 +1082,36 @@
 
     var url = 'api/posts?page=' + boardPage + '&lang=' + encodeURIComponent(lang);
     if (boardQ) url += '&q=' + encodeURIComponent(boardQ);
-    /* 로그인하지 않은 목록은 모두에게 같습니다. pub=1 을 붙이면 서버가 잠깐(30초) 저장해 둔
-       목록을 바로 내줍니다. 로그인한 사람은 자기 비공개 글이 보여야 하므로 붙이지 않습니다. */
-    if (!me) url += '&pub=1';
 
-    /* 이 기기에서 마지막으로 본 같은 쪽을 먼저 보여 주고, 새 목록이 오면 바꿉니다.
-       같은 쪽의 저장본이 없으면 "불러오는 중"을 보여 줍니다. */
-    var cacheKey = 'board:' + url.replace(/&pub=1$/, '') + (me ? ':' + me.username : '');
-    var cached = null;
-    try { cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null'); } catch (e) {}
-    list.setAttribute('aria-busy', 'true');
-    if (cached) paintBoardList(list, cached);
-    else if (page || !list.querySelector('.board-row')) {
-      list.innerHTML = '';
-      var wait = el('p', 'board-empty board-loading');
-      wait.appendChild(el('span', 'spin'));
-      wait.appendChild(document.createTextNode(T.boardLoading || ''));
-      list.appendChild(wait);
-    }
-
-    fetchBoard(url, 1)
+    fetch(url, { headers: { accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status)); })
       .then(function (data) {
         if (seq !== boardSeq) return;
-        try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch (e) {}
-        paintBoardList(list, data);
-        list.removeAttribute('aria-busy');
+        var items = (data && data.items) || [];
+        boardPage = (data && data.page) || 1;
+        boardPages = (data && data.pages) || 1;
+        boardTotal = (data && data.total) || 0;
+        boardPer = (data && data.perPage) || 10;
+
+        list.innerHTML = '';
+        if (!items.length) {
+          list.appendChild(el('p', 'board-empty', boardQ ? T.boardNoResult : T.boardEmpty));
+        } else {
+          // 최신 글이 맨 위이므로, 번호는 전체 개수에서 거꾸로 셉니다.
+          var first = boardTotal - (boardPage - 1) * boardPer;
+          items.forEach(function (it, i) { list.appendChild(boardRow(it, first - i)); });
+        }
+        paintPager();
+        paintFound();
         if (page) list.scrollIntoView({ behavior: 'smooth', block: 'start' });
       })
       .catch(function (e) {
         if (seq !== boardSeq) return;
-        list.removeAttribute('aria-busy');
+        /* 서버가 없는 배포(GitHub Pages)에서도 화면이 깨지지 않게 안내만 남깁니다.
+           나머지 기능은 그대로 동작합니다. */
         console.warn('board list unavailable', e);
-        // 저장본을 보여 주고 있었다면 그대로 둡니다. 없을 때만 실패 안내와 다시 시도 버튼을 둡니다.
-        if (cached) return;
         list.innerHTML = '';
-        var p = el('p', 'board-empty', T.boardListFail + ' ');
-        var again = el('button', 'btn btn-ghost btn-sm', T.boardRetry || 'Retry');
-        again.type = 'button';
-        again.addEventListener('click', function () { renderBoard(boardPage); });
-        p.appendChild(again);
-        list.appendChild(p);
+        list.appendChild(el('p', 'board-empty', T.boardListFail));
         boardPages = 1;
         paintPager();
       });
@@ -1512,9 +1310,9 @@
         syncAccountLang();
         loadMySummary();      // 첫 화면 "내 정보 한눈에"
         loginNext();          // login.html?next=... 이면 소셜 버튼도 그쪽으로 돌아오게
-        // 로그인한 사람에게만 목록이 달라집니다(자기 비공개 글, 관리자 답변 칸).
-        // 로그인하지 않았으면 처음 불러온 목록이 그대로 맞으므로 다시 부르지 않습니다.
-        if ($('#boardList') && me) renderBoard(boardPage);
+        // 관리자 답변 칸은 로그인 여부를 알아야 그리므로, 로그인 확인이
+        // 끝난 뒤 게시판을 한 번 더(비로그인 상태로 이미 그렸다면) 그립니다.
+        if ($('#boardList')) renderBoard(boardPage);
         // 마이페이지 "내가 남긴 질문"도 로그인 확인이 끝난 뒤에야 그릴 수 있습니다.
         if ($('#myqList')) renderMyQuestions(myqPage);
       });
@@ -2058,40 +1856,17 @@
     });
   }
 
-  /* 추천 질문 칩은 순서대로 지식베이스 항목과 짝을 이룹니다.
-     답이 이미 정해져 있으니 서버(AI)를 기다리지 않고 바로 보여 줍니다. */
-  var CHIP_KEYS = ['apply-deadline', 'job-period', 'limit-count', 'unpaid-wage',
-    'exit-insurance', 'how-to', 'employer-fault', 'e74-change'];
-
   function renderChips() {
     var box = $('#askChips');
     if (!box) return;
     box.innerHTML = '';
-    (T.chips || []).forEach(function (c, i) {
+    (T.chips || []).forEach(function (c) {
       var b = el('button', 'chip', c);
       b.type = 'button';
-      b.addEventListener('click', function () {
-        $('#askInput').value = c;
-        var hit = null;
-        KB.forEach(function (item) { if (item.key === CHIP_KEYS[i]) hit = item; });
-        if (hit) answerLocal(c, hit);
-        else answer(c);
-      });
+      b.addEventListener('click', function () { $('#askInput').value = c; answer(c); });
       box.appendChild(b);
     });
   }
-
-  function answerLocal(question, hit) {
-    var thread = $('#thread');
-    if (!thread) return;
-    thread.appendChild(el('div', 'bubble bubble-u', question));
-    var box = el('div', 'bubble bubble-a');
-    thread.appendChild(box);
-    fillAnswer(box, hit[lang] || hit.en, hit.src, false, hit.review, null, isMt(hit));
-  }
-
-  /* 이 언어의 답이 기계 번역 초안인지 — 그렇다면 "번역 검토 필요"를 붙입니다. */
-  function isMt(hit) { return !!(hit[lang] && hit.mt && hit.mt.indexOf(lang) !== -1); }
 
   function clearThread() { var t = $('#thread'); if (t) t.innerHTML = ''; }
 
@@ -2242,7 +2017,7 @@
         /* 먼저 브라우저 안의 지식베이스에서 찾아 봅니다. 답이 있으면
            서버가 잠깐 안 되더라도 사용자는 답을 얻습니다. */
         var hit = findEntry(question);
-        if (hit) { fillAnswer(box, hit[lang] || hit.en, hit.src, true, hit.review, null, isMt(hit)); return; }
+        if (hit) { fillAnswer(box, hit[lang] || hit.en, hit.src, true, hit.review); return; }
 
         /* 지식베이스에도 없을 때 — 몰려서 실패한 것이면 그렇게 말해 줍니다.
            "답을 못 찾았다" 고만 하면 다시 눌러 볼 생각을 못 합니다. */
@@ -2251,11 +2026,10 @@
       });
   }
 
-  function fillAnswer(box, text, src, offline, review, tag, mt) {
+  function fillAnswer(box, text, src, offline, review, tag) {
     box.innerHTML = '';
     if (tag) box.appendChild(el('span', 'flag flag-faq', tag));
     if (review) box.appendChild(el('span', 'flag', T.askReview));
-    if (mt) box.appendChild(el('span', 'flag', T.askMtReview || 'Translation needs review'));
     String(text).split('\n').forEach(function (line) {
       if (line.trim()) box.appendChild(el('p', null, line.trim()));
     });
@@ -2680,77 +2454,7 @@
     if (n) n.addEventListener(ev, fn);
   }
 
-  /* ---------- PC로 보기 · 모바일로 보기 (모든 페이지 맨 아래) ---------- */
-  /* 휴대폰에서는 화면 폭(viewport)을 1200px 로 바꿔 PC 배치를 보여 줍니다.
-     PC 브라우저는 화면 폭을 바꿀 수 없어서, 휴대폰 폭 미리보기 창을 띄워 같은 페이지를 보여 줍니다.
-     미리보기 창 안의 페이지에는 이 줄을 다시 그리지 않습니다(창 속의 창이 생기지 않게). */
-  var IN_FRAME = window.self !== window.top;
-  function isPhone() { return Math.min(screen.width, screen.height) < 768; }
-  function viewMode() { return load('view') || (isPhone() ? 'mobile' : 'pc'); }
-
-  function openPreview() {
-    if ($('#viewPreview')) return;
-    var box = el('div', 'view-preview');
-    box.id = 'viewPreview';
-    box.setAttribute('role', 'dialog');
-    box.setAttribute('aria-modal', 'true');
-    var bar = el('div', 'view-preview-bar');
-    bar.appendChild(el('span', null, T.viewPreview || 'Mobile preview'));
-    var back = el('button', 'view-preview-close', T.viewPc || 'PC');
-    back.type = 'button';
-    back.addEventListener('click', function () { setView('pc'); });
-    bar.appendChild(back);
-    var frame = el('iframe');
-    frame.src = location.href;
-    frame.title = T.viewPreview || 'Mobile preview';
-    box.appendChild(bar);
-    box.appendChild(frame);
-    document.body.appendChild(box);
-    document.documentElement.classList.add('is-previewing');
-    back.focus();
-  }
-  function closePreview() {
-    var box = $('#viewPreview');
-    if (box) box.remove();
-    document.documentElement.classList.remove('is-previewing');
-  }
-
-  function applyView() {
-    var mode = viewMode();
-    if (isPhone()) {
-      var meta = document.querySelector('meta[name=viewport]');
-      if (meta) meta.setAttribute('content', mode === 'pc' ? 'width=1200' : 'width=device-width, initial-scale=1');
-    } else if (mode === 'mobile') openPreview();
-    else closePreview();
-    $$('.view-switch button').forEach(function (b) {
-      var on = b.getAttribute('data-mode') === mode;
-      b.classList.toggle('is-on', on);
-      b.setAttribute('aria-pressed', on ? 'true' : 'false');
-    });
-  }
-  function setView(mode) { save('view', mode); applyView(); }
-
-  function initViewSwitch() {
-    if (IN_FRAME) return;
-    var bar = el('div', 'view-switch');
-    var label = el('span', 'view-switch-label', '화면');
-    label.setAttribute('data-i18n', 'viewLabel');
-    bar.appendChild(label);
-    [['pc', 'viewPc', 'PC로 보기'], ['mobile', 'viewMobile', '모바일로 보기']].forEach(function (v, i) {
-      if (i) bar.appendChild(el('span', 'view-switch-sep', '|'));
-      var b = el('button', null, v[2]);
-      b.type = 'button';
-      b.setAttribute('data-mode', v[0]);
-      b.setAttribute('data-i18n', v[1]);
-      b.addEventListener('click', function () { setView(v[0]); });
-      bar.appendChild(b);
-    });
-    document.body.appendChild(bar);
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('#viewPreview')) setView('pc'); });
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
-    initViewSwitch();
     var d = detect();
     // 링크(?lang=)로 들어온 선택도 다음 방문까지 유지합니다.
     if (d.source === 'url') save('lang', d.code);
@@ -2760,7 +2464,6 @@
       if (toastText) toastText.setAttribute('data-i18n', 'langUnsupported');
     }
     applyLang(d.code);
-    if (!IN_FRAME) applyView();
 
     var toast = $('#langToast');
     if (toast && d.auto && d.code !== 'ko') {
@@ -2816,20 +2519,6 @@
       boardQ = '';
       if ($('#boardQ')) $('#boardQ').value = '';
       renderBoard(1);
-    });
-
-    // 최신 제도 검색 — 목록이 브라우저 안에 다 있으니 글자를 칠 때마다 바로 거릅니다.
-    function ntSearch() {
-      ntQ = $('#ntQ').value.trim().slice(0, 60);
-      ntPage = 1;
-      renderNotices();
-    }
-    on('#ntSearch', 'submit', function (e) { e.preventDefault(); ntSearch(); });
-    on('#ntQ', 'input', ntSearch);
-    on('#ntQClear', 'click', function () {
-      $('#ntQ').value = '';
-      ntSearch();
-      $('#ntQ').focus();
     });
 
     // 로그인

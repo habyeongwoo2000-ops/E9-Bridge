@@ -30,7 +30,7 @@
      기기에 예전 파일이 남습니다.
    ------------------------------------------------------------------ */
 
-const VERSION = 'v24';   // 2026-10-29 리디자인(남색·Pretendard·사진 메인 비주얼) + 최신 제도·FAQ 개편
+const VERSION = 'v4';   // 2026-10-30 새 로고로 아이콘·미리보기 이미지 교체
 const STATIC = 'e9b-static-' + VERSION;
 const PAGES = 'e9b-pages-' + VERSION;
 
