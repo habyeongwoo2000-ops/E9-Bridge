@@ -570,5 +570,10 @@ I18N.en = {
   menuOpen: "Open full menu",
   menuClose: "Close full menu",
   crumbHome: "Home",
-  toTop: "Back to top"
+  toTop: "Back to top",
+  commTitle: "Community",
+  commLead1: "Moments with E9-Bridge.",
+  commLead2: "Get new policies and news on our official channels.",
+  commIg: "E9-Bridge on Instagram (opens in a new window)",
+  commFb: "E9-Bridge on Facebook (opens in a new window)"
 };

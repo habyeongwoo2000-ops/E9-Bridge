@@ -570,5 +570,10 @@ I18N.ko = {
   menuOpen: "전체 메뉴 열기",
   menuClose: "전체 메뉴 닫기",
   crumbHome: "홈",
-  toTop: "맨 위로"
+  toTop: "맨 위로",
+  commTitle: "커뮤니티",
+  commLead1: "E9-Bridge와 함께하는 순간들.",
+  commLead2: "새 제도와 소식을 공식 채널에서 전해드립니다.",
+  commIg: "E9-Bridge 인스타그램 (새 창)",
+  commFb: "E9-Bridge 페이스북 (새 창)"
 };

@@ -570,5 +570,10 @@ I18N.id = {
   menuOpen: "Buka semua menu",
   menuClose: "Tutup menu",
   crumbHome: "Beranda",
-  toTop: "Kembali ke atas"
+  toTop: "Kembali ke atas",
+  commTitle: "Komunitas",
+  commLead1: "Momen bersama E9-Bridge.",
+  commLead2: "Dapatkan aturan baru dan kabar terbaru di kanal resmi kami.",
+  commIg: "Instagram E9-Bridge (jendela baru)",
+  commFb: "Facebook E9-Bridge (jendela baru)"
 };

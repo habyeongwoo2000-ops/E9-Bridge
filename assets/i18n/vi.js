@@ -570,5 +570,10 @@ I18N.vi = {
   menuOpen: "Mở toàn bộ menu",
   menuClose: "Đóng menu",
   crumbHome: "Trang chủ",
-  toTop: "Lên đầu trang"
+  toTop: "Lên đầu trang",
+  commTitle: "Cộng đồng",
+  commLead1: "Những khoảnh khắc cùng E9-Bridge.",
+  commLead2: "Chúng tôi cập nhật chính sách mới và tin tức trên các kênh chính thức.",
+  commIg: "Instagram của E9-Bridge (mở cửa sổ mới)",
+  commFb: "Facebook của E9-Bridge (mở cửa sổ mới)"
 };

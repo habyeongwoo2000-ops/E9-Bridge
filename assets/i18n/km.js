@@ -649,5 +649,10 @@ I18N.km = {
   "menuOpen": "បើកម៉ឺនុយទាំងអស់",
   "menuClose": "បិទម៉ឺនុយ",
   "crumbHome": "ទំព័រដើម",
-  "toTop": "ត្រឡប់ទៅខាងលើ"
+  "toTop": "ត្រឡប់ទៅខាងលើ",
+  "commTitle": "សហគមន៍",
+  "commLead1": "ពេលវេលាជាមួយ E9-Bridge។",
+  "commLead2": "យើងផ្តល់ព័ត៌មាន និងច្បាប់ថ្មីៗ តាមបណ្តាញផ្លូវការរបស់យើង។",
+  "commIg": "Instagram របស់ E9-Bridge (បើកផ្ទាំងថ្មី)",
+  "commFb": "Facebook របស់ E9-Bridge (បើកផ្ទាំងថ្មី)"
 };

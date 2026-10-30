@@ -30,7 +30,7 @@
      기기에 예전 파일이 남습니다.
    ------------------------------------------------------------------ */
 
-const VERSION = 'v4';   // 2026-10-30 새 로고로 아이콘·미리보기 이미지 교체
+const VERSION = 'v5';   // 2026-10-30 첫 화면 커뮤니티(SNS) 영역 추가
 const STATIC = 'e9b-static-' + VERSION;
 const PAGES = 'e9b-pages-' + VERSION;
 
