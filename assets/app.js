@@ -165,6 +165,7 @@
     if (shown('#payResult')) calcPay();
     if (shown('#insResult')) calcIns();
     if (shown('#eligResult')) calcElig();
+    if ($('#wizard')) { wzPaintSteps(); if (wzAt === 'result') wzPaintResult(); }
     if (shown('#ddayResult')) calcDday();
     if (shown('#quizResult')) showQuizResult();
     clearThread();
@@ -308,13 +309,17 @@
      계정에 저장해 둔 답으로 이 함수를 불러 같은 결과를 그립니다. */
   function quizCompute(qq) {
     var q1 = qq.q1, q2 = qq.q2, q3 = qq.q3;
-    var employerFault = q1 !== 'own';
+    var employerFault = q1 !== 'own' && q1 !== 'other';
     var overLimit = q3 === '3';
 
     var kind, tag, title, body;
     if (overLimit) {
       kind = 'stop';
       tag = T.resCountTag; title = T.resCountTitle; body = T.resCountBody;
+    } else if (q1 === 'other') {
+      // 보기에 없는 이유는 사업주 잘못인지 여기서 가를 수 없습니다. 상담을 먼저 권합니다.
+      kind = 'warn';
+      tag = T.resOtherTag; title = T.resOtherTitle; body = T.resOtherBody;
     } else if (employerFault) {
       kind = null;
       tag = T.resEmpTag; title = T.resEmpTitle; body = T.resEmpBody;
@@ -323,8 +328,8 @@
       tag = T.resOwnTag; title = T.resOwnTitle; body = T.resOwnBody;
     }
 
-    var ev = q2 === 'yes' ? T.evYes : (q2 === 'some' ? T.evSome : T.evNo);
-    var count = T.countLine.replace('{n}', q3 === '3' ? '3+' : q3);
+    var ev = q2 === 'yes' ? T.evYes : (q2 === 'some' ? T.evSome : (q2 === 'unsure' ? T.evUnsure : T.evNo));
+    var count = q3 === 'unsure' ? T.countUnsure : T.countLine.replace('{n}', q3 === '3' ? '3+' : q3);
 
     return { kind: kind, tag: tag, title: title, body: body, ev: ev, count: count };
   }
@@ -341,6 +346,11 @@
     $('#resultTag').textContent = f.tag;
     $('#resultTitle').textContent = f.title;
     $('#resultBody').textContent = f.body + ' ' + f.ev + ' ' + f.count;
+    var other = $('#resultOther');
+    if (other) {
+      other.hidden = !lastQuiz.q1Text;
+      other.textContent = lastQuiz.q1Text ? T.ckOtherNote + ': ' + lastQuiz.q1Text : '';
+    }
 
     var ul = $('#resultDocs');
     ul.innerHTML = '';
@@ -362,6 +372,7 @@
     if (!f) return '';
 
     var lines = [f.title, '', f.body + ' ' + f.ev + ' ' + f.count];
+    if (lastQuiz.q1Text) lines.push('', T.ckOtherNote + ': ' + lastQuiz.q1Text);
 
     lines.push('', T.ckDocsTitle);
     (T.docs || []).forEach(function (d) { lines.push('- ' + d); });
@@ -576,7 +587,7 @@
     else if (moved === 'prevOver') { matKind = 'warn'; matBody = I.mat.prevOver; }
     else if (moved === 'unsure' || months === null) { matKind = 'warn'; matBody = I.mat.unsure; }
     else { matKind = 'no'; matBody = I.mat.no; }
-    if (matKind === 'ok') {
+    if (matKind === 'ok' && type !== 'unsure') {
       matBody += ' ' + (type === 'change' ? I.mat.typeChange
                      : (type === 'reentry' ? I.mat.typeReentry : I.mat.typeLeave));
     }
@@ -717,6 +728,153 @@
       msg.className = 'callout';
       msg.textContent = T.insMsgOk;
     }
+  }
+
+  /* ---------- 내 상황 확인 (단계별) ----------
+     check.html 한 쪽에서 기한 → 사유 → 출국 정산 → 종합 결과 순서로 갑니다.
+     각 단계의 계산은 위 함수들을 그대로 쓰고, 여기서는 단계 이동 · 넘어가기 ·
+     같은 날짜 채워 주기 · 종합 결과만 맡습니다. 주소 #deadline · #reason · #payout ·
+     #result 로 원하는 단계를 바로 열 수 있습니다(예전 reason.html · payout.html 도 이리로 옵니다). */
+  var WZ_STEPS = ['deadline', 'reason', 'payout', 'result'];
+  var wzSkip = {};
+  var wzAt = 'deadline';
+
+  /* 지금 입력칸에 들어 있는 값으로 요약용 묶음을 만듭니다(myRows 가 읽는 모양과 같습니다). */
+  function wzSum() {
+    var out = {};
+    var lv = $('#leaveDate') && $('#leaveDate').value;
+    if (lv && !wzSkip.deadline) out.deadline = { leave: lv, apply: $('#applyDate').value };
+
+    var q1 = radioVal('q1'), q2 = radioVal('q2'), q3 = radioVal('q3');
+    if (q1 && q2 && q3 && !wzSkip.reason) {
+      out.reason = { q1: q1, q2: q2, q3: q3 };
+      var t = $('#q1OtherText');
+      if (q1 === 'other' && t && t.value.trim()) out.reason.q1Text = t.value.trim();
+    }
+
+    if (!wzSkip.payout) {
+      var py = {};
+      if ($('#exitDate').value) py.exit = $('#exitDate').value;
+      var wage = parseFloat($('#insWage').value);
+      if (isFinite(wage) && wage > 0 && $('#insStart').value) {
+        py.ins = { wage: wage, start: $('#insStart').value, end: $('#insEnd').value };
+      }
+      var ei = eligInputs();
+      if (ei.moved || ei.hours || ei.nat || ei.type) py.elig = ei;
+      if (py.exit || py.ins || py.elig) out.payout = py;
+    }
+    return out;
+  }
+
+  function wzState(step) {
+    if (wzSkip[step]) return 'skip';
+    return wzSum()[step] ? 'done' : 'todo';
+  }
+
+  function wzPaintSteps() {
+    $$('.wz-step').forEach(function (b) {
+      var step = b.getAttribute('data-step');
+      var st = step === 'result' ? '' : wzState(step);
+      b.classList.toggle('is-on', step === wzAt);
+      b.classList.toggle('is-done', st === 'done');
+      b.classList.toggle('is-skip', st === 'skip');
+      if (step === wzAt) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+      $('.wz-s', b).textContent = st === 'done' ? T.wzDone : (st === 'skip' ? T.wzSkipTag : '');
+    });
+  }
+
+  /* 다음으로 가기 전에, 입력은 해 놓고 버튼을 안 누른 단계가 있으면 대신 계산해 둡니다.
+     빈 칸이 있는 폼은 건드리지 않습니다(필수 칸 경고가 뜨지 않게). */
+  function wzRunStep(step) {
+    function submit(sel) {
+      var form = $(sel);
+      if (!form) return;
+      if (typeof form.requestSubmit === 'function') form.requestSubmit();
+      else form.dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+    if (step === 'deadline' && $('#leaveDate').value) submit('#ddayForm');
+    if (step === 'reason' && radioVal('q1') && radioVal('q2') && radioVal('q3')) submit('#quizForm');
+    if (step === 'payout') {
+      if ($('#exitDate').value) submit('#payForm');
+      if ($('#insWage').value && $('#insStart').value) submit('#insForm');
+      if (radioVal('pyMoved') && radioVal('pyHours') && radioVal('pyNat') && radioVal('pyType')) submit('#eligForm');
+    }
+  }
+
+  function wzPaintResult() {
+    var box = $('#wzSummary');
+    if (!box) return;
+    paintRows(box, myRows(wzSum(), wzSkip));
+    $('#wzLogin').hidden = !!me;
+  }
+
+  function wzGo(step, focus) {
+    if (WZ_STEPS.indexOf(step) === -1) step = 'deadline';
+    wzAt = step;
+    $$('.wz-panel').forEach(function (p) { p.hidden = p.getAttribute('data-step') !== step; });
+
+    /* 출국 정산의 "그만두는 날"은 1단계 퇴사일과 같은 날입니다. 비어 있으면 채워 둡니다. */
+    if (step === 'payout') {
+      var lv = $('#leaveDate').value;
+      if (lv) {
+        if (!$('#insEnd').value) $('#insEnd').value = lv;
+        if (!$('#eligEnd').value) $('#eligEnd').value = lv;
+      }
+    }
+    if (step === 'result') wzPaintResult();
+    wzPaintSteps();
+
+    try { history.replaceState(null, '', location.pathname + location.search + '#' + step); } catch (e) {}
+    if (focus) {
+      var top = $('#wzSteps');
+      if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function wzMove(dir) {
+    var i = WZ_STEPS.indexOf(wzAt) + dir;
+    if (i >= 0 && i < WZ_STEPS.length) wzGo(WZ_STEPS[i], true);
+  }
+
+  function initWizard() {
+    if (!$('#wizard')) return;
+    $$('.wz-step').forEach(function (b) {
+      b.addEventListener('click', function () { wzGo(b.getAttribute('data-step'), true); });
+    });
+    $$('.wz-next').forEach(function (b) {
+      b.addEventListener('click', function () {
+        wzRunStep(wzAt);
+        delete wzSkip[wzAt];
+        wzMove(1);
+      });
+    });
+    $$('.wz-skip').forEach(function (b) {
+      b.addEventListener('click', function () { wzSkip[wzAt] = true; wzMove(1); });
+    });
+    $$('.wz-prev').forEach(function (b) {
+      b.addEventListener('click', function () { wzMove(-1); });
+    });
+    on('#wzRestart', 'click', function () {
+      wzSkip = {};
+      ['#ddayReset', '#quizReset', '#payReset', '#insReset', '#eligReset'].forEach(function (sel) {
+        var btn = $(sel);
+        if (btn) btn.click();
+      });
+      wzGo('deadline', true);
+    });
+    // "기타"를 고르면 짧게 적을 칸을 보여 줍니다.
+    $$('input[name=q1]').forEach(function (r) {
+      r.addEventListener('change', function () {
+        var t = $('#q1OtherText');
+        if (!t) return;
+        t.hidden = radioVal('q1') !== 'other';
+        if (!t.hidden) t.focus();
+      });
+    });
+    // 입력을 바꾸면 위 단계 표시(완료 등)도 바로 따라갑니다.
+    $('#wizard').addEventListener('change', wzPaintSteps);
+    window.addEventListener('hashchange', function () { wzGo(location.hash.slice(1)); });
+    wzGo(location.hash.slice(1) || 'deadline');
   }
 
   /* ---------- 공지 ---------- */
@@ -1823,7 +1981,12 @@
 
   /* 요약 내용을 줄 단위로 만듭니다. 팝업과 이메일이 같은 내용을 씁니다.
      돌려주는 값: [{ h: 제목 } | { k: 항목, v: 값, kind } | { p: 문장 }] */
-  function myRows() {
+  /* sum 을 주면 그 값으로, 없으면 계정에 저장된 값(mySum)으로 그립니다.
+     skip 은 "내 상황 확인"에서 넘어간 단계 — 그 단계는 "넘어감"으로 적습니다. */
+  function myRows(sum, skip) {
+    var S = sum || mySum;
+    skip = skip || {};
+    function none(part) { return { p: skip[part] ? T.wzSkipped : T.myNone }; }
     var rows = [];
     var now = today();
     // 숫자와 단위 사이 띄어쓰기 — 한국어는 "13일", 다른 언어는 "13 days".
@@ -1842,7 +2005,7 @@
 
     /* 1) 기한 */
     rows.push({ h: T.dlTitle });
-    var dl = mySum && mySum.deadline;
+    var dl = S && S.deadline;
     if (dl && dl.leave) {
       var leave = asDay(dl.leave);
       var applyDue = addMonths(leave, 1);
@@ -1853,21 +2016,22 @@
       rows.push({ k: T.myApplyBy, v: dayLine(applyDue), kind: applied ? 'ok' : kindOf(applyDue) });
       rows.push({ k: T.myJobBy, v: dayLine(jobDue), kind: kindOf(jobDue) });
       if (!applied) rows.push({ p: T.msgEstimate });
-    } else rows.push({ p: T.myNone });
+    } else rows.push(none('deadline'));
 
     /* 2) 사유 자가진단 */
     rows.push({ h: T.ckTitle });
-    var rs = mySum && mySum.reason;
+    var rs = S && S.reason;
     if (rs && rs.q1) {
       var f = quizCompute(rs);
       rows.push({ k: f.tag, v: f.title, kind: f.kind === 'stop' ? 'stop' : (f.kind === 'warn' ? 'warn' : 'ok') });
       rows.push({ p: f.body + ' ' + f.ev + ' ' + f.count });
+      if (rs.q1Text) rows.push({ k: T.ckOtherNote, v: rs.q1Text });
       rows.push({ k: T.ckDocsTitle, v: (T.docs || []).join(', ') });
-    } else rows.push({ p: T.myNone });
+    } else rows.push(none('reason'));
 
     /* 3) 출국 정산 */
     rows.push({ h: T.secNoPay });
-    var py = mySum && mySum.payout;
+    var py = S && S.payout;
     if (py && (py.exit || py.ins || py.elig)) {
       if (py.exit) {
         var exit = asDay(py.exit);
@@ -1898,17 +2062,15 @@
                       kind: it.kind === 'no' ? 'stop' : it.kind });
         });
       }
-    } else rows.push({ p: T.myNone });
+    } else rows.push(none('payout'));
 
     return rows;
   }
 
-  function paintMyPop() {
-    var body = $('#myPopBody');
-    if (!body) return;
+  function paintRows(body, rows) {
     body.innerHTML = '';
     var sec = null, dl = null;
-    myRows().forEach(function (r) {
+    rows.forEach(function (r) {
       if (r.h) {
         sec = el('section', 'my-sec');
         sec.appendChild(el('h3', null, r.h));
@@ -1923,6 +2085,12 @@
       row.appendChild(el('dd', null, r.v));
       dl.appendChild(row);
     });
+  }
+
+  function paintMyPop() {
+    var body = $('#myPopBody');
+    if (!body) return;
+    paintRows(body, myRows());
     var stamp = [];
     MY_PARTS.forEach(function (p) { if (mySum && mySum[p] && mySum[p].at) stamp.push(mySum[p].at); });
     if (stamp.length) {
@@ -2734,9 +2902,6 @@
   function initViewSwitch() {
     if (IN_FRAME) return;
     var bar = el('div', 'view-switch');
-    var label = el('span', 'view-switch-label', '화면');
-    label.setAttribute('data-i18n', 'viewLabel');
-    bar.appendChild(label);
     [['pc', 'viewPc', 'PC로 보기'], ['mobile', 'viewMobile', '모바일로 보기']].forEach(function (v, i) {
       if (i) bar.appendChild(el('span', 'view-switch-sep', '|'));
       var b = el('button', null, v[2]);
@@ -2746,7 +2911,10 @@
       b.addEventListener('click', function () { setView(v[0]); });
       bar.appendChild(b);
     });
-    document.body.appendChild(bar);
+    // 바닥글 맨 아래 줄 오른쪽 끝에 둡니다. 바닥글이 없는 쪽에서는 예전처럼 맨 아래 한 줄로 붙입니다.
+    var foot = $('#siteFoot .official-foot');
+    if (foot) { bar.classList.add('in-foot'); foot.appendChild(bar); }
+    else document.body.appendChild(bar);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('#viewPreview')) setView('pc'); });
   }
 
@@ -3030,13 +3198,17 @@
         q2: $('input[name=q2]:checked').value,
         q3: $('input[name=q3]:checked').value
       };
+      // "기타"에 적은 글은 이 화면과 이메일에만 씁니다. 계정(서버)에는 보내지 않습니다.
+      var otherIn = $('#q1OtherText');
+      if (lastQuiz.q1 === 'other' && otherIn && otherIn.value.trim()) lastQuiz.q1Text = otherIn.value.trim();
       showQuizResult();
-      mySave('reason', lastQuiz, '#quizResult');
+      mySave('reason', { q1: lastQuiz.q1, q2: lastQuiz.q2, q3: lastQuiz.q3 }, '#quizResult');
       $('#quizResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
     on('#quizReset', 'click', function () {
       $('#quizForm').reset();
       lastQuiz = null;
+      if ($('#q1OtherText')) $('#q1OtherText').hidden = true;
       $('#quizResult').hidden = true;
       $('#docPreview').hidden = true;
       $('#docReadOut').hidden = true;
@@ -3059,6 +3231,9 @@
       $('#docReadOut').hidden = true;
     });
     on('#resultEmailSend', 'click', sendQuizEmail);
+
+    // 내 상황 확인 (단계별)
+    initWizard();
 
     // 질문
     on('#askForm', 'submit', function (e) {

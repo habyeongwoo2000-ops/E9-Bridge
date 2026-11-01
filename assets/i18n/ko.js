@@ -587,3 +587,33 @@ I18N.ko = {
   commIg: "E9-Bridge 인스타그램 (새 창)",
   commFb: "E9-Bridge 페이스북 (새 창)"
 };
+
+/* 내 상황 확인 */
+Object.assign(I18N.ko, {
+  navCheck: "내 상황 확인",
+  wzLead: "기한, 사유, 출국 정산을 차례로 확인합니다. 필요 없는 단계는 넘어가도 됩니다.",
+  wzStepResult: "종합 결과",
+  wzPrev: "← 이전",
+  wzNext: "다음 단계 →",
+  wzSkip: "이 단계 넘어가기",
+  wzSeeResult: "종합 결과 보기",
+  wzSkipped: "넘어간 단계입니다.",
+  wzRestart: "처음부터 다시",
+  wzResultLead: "입력한 내용으로 만든 요약입니다. 넘어간 단계는 위 번호를 눌러 언제든 다시 할 수 있습니다.",
+  wzLoginHint: "로그인하면 이 결과가 내 계정에 저장되고 이메일로도 받을 수 있습니다.",
+  wzStart: "시작하기",
+  wzHomeLead: "기한 계산, 사유 자가진단, 출국 정산을 한 쪽에서 차례로 확인하세요. 필요 없는 단계는 넘어가도 됩니다.",
+  wzDone: "완료",
+  wzSkipTag: "넘어감",
+  ckQ1Other: "기타 (여기에 없는 이유)",
+  ckQ1OtherPh: "어떤 상황인지 짧게 적어 주세요 (선택)",
+  ckQ2d: "잘 모르겠다",
+  ckQ3e: "잘 모르겠다",
+  pyQtypeD: "아직 정하지 않았다",
+  resOtherTag: "상담 권장",
+  resOtherTitle: "상황에 따라 판단이 달라질 수 있습니다",
+  resOtherBody: "보기에 없는 이유는 회사 잘못인지 여기서 판단하기 어렵습니다. 적어 둔 내용과 자료를 가지고 고용센터나 1345에 먼저 상담하세요.",
+  evUnsure: "자료가 있는지 잘 모르겠다면 계약서, 급여 명세서, 통장 입금 기록, 문자 메시지부터 찾아 모아 두세요.",
+  countUnsure: "지금까지 바꾼 횟수는 고용센터나 EPS 누리집(eps.go.kr)에서 확인할 수 있습니다.",
+  ckOtherNote: "적은 내용"
+});

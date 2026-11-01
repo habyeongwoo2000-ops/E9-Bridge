@@ -30,7 +30,7 @@
      기기에 예전 파일이 남습니다.
    ------------------------------------------------------------------ */
 
-const VERSION = 'v27';   // 2026-11-01 최신 제도 카드에 발표일·확인일 라벨 구분
+const VERSION = 'v28';   // 2026-11-01 기한·사유·출국 정산을 "내 상황 확인" 한 쪽(check.html)으로 합침 + PC·모바일 보기 바닥글 오른쪽으로
 const STATIC = 'e9b-static-' + VERSION;
 const PAGES = 'e9b-pages-' + VERSION;
 
@@ -38,6 +38,7 @@ const PAGES = 'e9b-pages-' + VERSION;
 const PRECACHE = [
   '/',
   '/index.html',
+  '/check.html',
   '/offline.html',
   '/assets/style.css',
   '/assets/app.js',

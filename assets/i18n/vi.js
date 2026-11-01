@@ -587,3 +587,33 @@ I18N.vi = {
   commIg: "Instagram của E9-Bridge (mở cửa sổ mới)",
   commFb: "Facebook của E9-Bridge (mở cửa sổ mới)"
 };
+
+/* 내 상황 확인 */
+Object.assign(I18N.vi, {
+  navCheck: "Kiểm tra tình huống của tôi",
+  wzLead: "Kiểm tra lần lượt thời hạn, lý do và các khoản tiền trước khi xuất cảnh. Bạn có thể bỏ qua bước không cần.",
+  wzStepResult: "Kết quả tổng hợp",
+  wzPrev: "← Quay lại",
+  wzNext: "Bước tiếp theo →",
+  wzSkip: "Bỏ qua bước này",
+  wzSeeResult: "Xem kết quả tổng hợp",
+  wzSkipped: "Bạn đã bỏ qua bước này.",
+  wzRestart: "Làm lại từ đầu",
+  wzResultLead: "Đây là bản tóm tắt từ thông tin bạn đã nhập. Bạn có thể quay lại bước đã bỏ qua bất cứ lúc nào bằng cách bấm số ở trên.",
+  wzLoginHint: "Đăng nhập để lưu kết quả này vào tài khoản và nhận qua email.",
+  wzStart: "Bắt đầu",
+  wzHomeLead: "Kiểm tra lần lượt thời hạn, tự kiểm tra lý do và các khoản tiền khi xuất cảnh trên một trang. Bạn có thể bỏ qua bước không cần.",
+  wzDone: "Xong",
+  wzSkipTag: "Đã bỏ qua",
+  ckQ1Other: "Khác (lý do không có trong danh sách)",
+  ckQ1OtherPh: "Viết ngắn gọn tình huống của bạn (không bắt buộc)",
+  ckQ2d: "Không chắc",
+  ckQ3e: "Không chắc",
+  pyQtypeD: "Chưa quyết định",
+  resOtherTag: "Nên được tư vấn",
+  resOtherTitle: "Kết quả có thể khác tùy tình huống",
+  resOtherBody: "Với lý do không có trong danh sách, ở đây không thể xác định có phải lỗi của công ty hay không. Hãy mang nội dung bạn đã viết và các tài liệu đến Trung tâm việc làm hoặc gọi 1345 để được tư vấn trước.",
+  evUnsure: "Nếu không chắc mình có tài liệu, hãy bắt đầu thu thập hợp đồng, phiếu lương, sao kê tiền vào tài khoản và tin nhắn.",
+  countUnsure: "Bạn có thể kiểm tra số lần đã đổi nơi làm việc tại Trung tâm việc làm hoặc trên trang EPS (eps.go.kr).",
+  ckOtherNote: "Nội dung bạn đã viết"
+});

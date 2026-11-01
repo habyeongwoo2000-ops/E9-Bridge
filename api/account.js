@@ -52,9 +52,9 @@ const CLEAN = {
     return { leave: leave, apply: day(d.apply) };
   },
   reason: function (d) {
-    const q1 = pick(d.q1, ['wage', 'abuse', 'closed', 'terms', 'own']);
-    const q2 = pick(d.q2, ['yes', 'some', 'no']);
-    const q3 = pick(d.q3, ['0', '1', '2', '3']);
+    const q1 = pick(d.q1, ['wage', 'abuse', 'closed', 'terms', 'own', 'other']);
+    const q2 = pick(d.q2, ['yes', 'some', 'no', 'unsure']);
+    const q3 = pick(d.q3, ['0', '1', '2', '3', 'unsure']);
     if (!q1 || !q2 || !q3) return null;
     return { q1: q1, q2: q2, q3: q3 };
   },
@@ -72,7 +72,7 @@ const CLEAN = {
         moved: pick(d.elig.moved, ['none', 'prevOver', 'prevUnder', 'unsure']),
         hours: pick(d.elig.hours, ['yes', 'no', 'unsure']),
         nat: pick(d.elig.nat, ['g1', 'g2', 'g3']),
-        type: pick(d.elig.type, ['leave', 'change', 'reentry'])
+        type: pick(d.elig.type, ['leave', 'change', 'reentry', 'unsure'])
       };
     }
     return Object.keys(out).length ? out : null;

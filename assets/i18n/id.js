@@ -587,3 +587,33 @@ I18N.id = {
   commIg: "Instagram E9-Bridge (jendela baru)",
   commFb: "Facebook E9-Bridge (jendela baru)"
 };
+
+/* 내 상황 확인 */
+Object.assign(I18N.id, {
+  navCheck: "Cek situasi saya",
+  wzLead: "Cek tenggat, alasan, dan uang yang diterima sebelum pulang secara berurutan. Langkah yang tidak perlu boleh dilewati.",
+  wzStepResult: "Ringkasan",
+  wzPrev: "← Kembali",
+  wzNext: "Langkah berikutnya →",
+  wzSkip: "Lewati langkah ini",
+  wzSeeResult: "Lihat ringkasan",
+  wzSkipped: "Anda melewati langkah ini.",
+  wzRestart: "Mulai lagi",
+  wzResultLead: "Ringkasan ini dibuat dari isian Anda. Langkah yang dilewati bisa dikerjakan kapan saja dengan menekan nomornya di atas.",
+  wzLoginHint: "Masuk untuk menyimpan hasil ini di akun Anda dan menerimanya lewat email.",
+  wzStart: "Mulai",
+  wzHomeLead: "Cek tenggat, cek alasan mandiri, dan uang saat pulang secara berurutan dalam satu halaman. Langkah yang tidak perlu boleh dilewati.",
+  wzDone: "Selesai",
+  wzSkipTag: "Dilewati",
+  ckQ1Other: "Lainnya (alasan yang tidak ada di daftar)",
+  ckQ1OtherPh: "Tulis singkat situasi Anda (opsional)",
+  ckQ2d: "Tidak yakin",
+  ckQ3e: "Tidak yakin",
+  pyQtypeD: "Belum memutuskan",
+  resOtherTag: "Sebaiknya konsultasi",
+  resOtherTitle: "Hasilnya bisa berbeda tergantung situasi",
+  resOtherBody: "Untuk alasan yang tidak ada di daftar, di sini tidak bisa ditentukan apakah itu kesalahan perusahaan. Konsultasikan dulu ke Pusat Layanan Kerja atau hubungi 1345 dengan membawa tulisan Anda dan dokumen yang ada.",
+  evUnsure: "Jika tidak yakin punya bukti, mulailah mengumpulkan kontrak kerja, slip gaji, catatan transfer ke rekening, dan pesan teks.",
+  countUnsure: "Jumlah pindah tempat kerja bisa dicek di Pusat Layanan Kerja atau situs EPS (eps.go.kr).",
+  ckOtherNote: "Yang Anda tulis"
+});

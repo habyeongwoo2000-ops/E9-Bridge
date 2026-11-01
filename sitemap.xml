@@ -25,17 +25,9 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- 사유 자가진단 -->
+  <!-- 내 상황 확인 (기한 · 사유 · 출국 정산) -->
   <url>
-    <loc>https://eum-six.vercel.app/reason.html</loc>
-    <lastmod>2026-08-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 출국 정산 · 출국만기보험 계산 -->
-  <url>
-    <loc>https://eum-six.vercel.app/payout.html</loc>
+    <loc>https://eum-six.vercel.app/check.html</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

@@ -111,9 +111,7 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
     <!-- 주 메뉴 — 넓은 화면에서는 머리말 가운데, 좁은 화면에서는 [MENU] 를 누르면 전체 메뉴로 펼쳐집니다 -->
     <nav class="secnav" id="siteNav" data-i18n-aria="navLabel" aria-label="기능 바로가기">
       <div class="secnav-in" id="secnav">
-        <a href="index.html" data-i18n="secNo1">기한</a>
-        <a href="reason.html" data-i18n="secNo2">사유</a>
-        <a href="payout.html" data-i18n="secNoPay">출국 정산</a>
+        <a href="check.html" data-i18n="navCheck">내 상황 확인</a>
         <div class="secnav-item">
           <a href="faq.html" data-i18n="navFaq">FAQ</a>
           <div class="secnav-drop">
@@ -206,9 +204,9 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
         <h2 class="sec-title" data-i18n="svcTitle">주요 서비스</h2>
       </div>
       <ul class="svc-list">
-        <li><a href="#deadline"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="31" rx="3"/><path d="M7 19h34M16 6v8M32 6v8"/><circle class="ac" cx="30" cy="31" r="6"/><path class="ac" d="M30 28v3.5l2.2 1.6"/></svg></span><span class="svc-name" data-i18n="dlTitle">기한 계산</span></a></li>
-        <li><a href="reason.html"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="11" y="9" width="26" height="33" rx="3"/><path d="M18 9V6.5h12V9"/><path d="M17 19h14M17 26h9"/><path class="ac" d="M18 33.5l3.5 3.5L30 29.5"/></svg></span><span class="svc-name" data-i18n="ckTitle">사유 자가진단</span></a></li>
-        <li><a href="payout.html"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 15h28a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z"/><path d="M8 15 30 8l2 7"/><rect class="ac" x="29" y="23" width="13" height="9" rx="2"/><circle class="ac" cx="34" cy="27.5" r="1.2"/></svg></span><span class="svc-name" data-i18n="secNoPay">출국 정산</span></a></li>
+        <li><a href="check.html#deadline"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="31" rx="3"/><path d="M7 19h34M16 6v8M32 6v8"/><circle class="ac" cx="30" cy="31" r="6"/><path class="ac" d="M30 28v3.5l2.2 1.6"/></svg></span><span class="svc-name" data-i18n="dlTitle">기한 계산</span></a></li>
+        <li><a href="check.html#reason"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="11" y="9" width="26" height="33" rx="3"/><path d="M18 9V6.5h12V9"/><path d="M17 19h14M17 26h9"/><path class="ac" d="M18 33.5l3.5 3.5L30 29.5"/></svg></span><span class="svc-name" data-i18n="ckTitle">사유 자가진단</span></a></li>
+        <li><a href="check.html#payout"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 15h28a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z"/><path d="M8 15 30 8l2 7"/><rect class="ac" x="29" y="23" width="13" height="9" rx="2"/><circle class="ac" cx="34" cy="27.5" r="1.2"/></svg></span><span class="svc-name" data-i18n="secNoPay">출국 정산</span></a></li>
         <li><a href="notices.html"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M9 21v8a2 2 0 0 0 2 2h5l14 8V11l-14 8h-5a2 2 0 0 0-2 2z"/><path d="M16 31l3 9h5l-2-8"/><path class="ac" d="M36 19c2 1.5 3 3.5 3 6s-1 4.5-3 6"/></svg></span><span class="svc-name" data-i18n="navUpdates">최신 제도</span></a></li>
         <li><a href="ask.html"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M9 11h28a3 3 0 0 1 3 3v15a3 3 0 0 1-3 3H21l-9 7v-7H9a3 3 0 0 1-3-3V14a3 3 0 0 1 3-3z"/><circle class="ac" cx="16" cy="21.5" r="1.6"/><circle class="ac" cx="23" cy="21.5" r="1.6"/><circle class="ac" cx="30" cy="21.5" r="1.6"/></svg></span><span class="svc-name" data-i18n="navChatbot">챗봇 질문</span></a></li>
         <li><a href="board.html"><span class="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="8" y="8" width="30" height="32" rx="3"/><path d="M15 17h16M15 24h16M15 31h9"/><circle class="ac" cx="35" cy="35" r="7"/><path class="ac" d="M32.8 33.2a2.2 2.2 0 1 1 2.9 2.1c-.5.2-.7.6-.7 1.1v.6M35 39.3v.2"/></svg></span><span class="svc-name" data-i18n="navBoard">질문게시판</span></a></li>
@@ -222,54 +220,16 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
   <section id="deadline" class="band band-sky">
     <div class="wrap">
       <div class="card-row">
-      <div class="calc-card">
-      <h2 data-i18n="dlTitle">기한 계산</h2>
-
-      <form class="form" id="ddayForm" autocomplete="off">
-        <div class="field">
-          <label for="leaveDate" data-i18n="dlLeaveDate">퇴사일 (근로계약이 끝난 날)</label>
-          <input type="date" id="leaveDate" required>
-        </div>
-        <div class="field">
-          <label for="applyDate" data-i18n="dlApplyDate">사업장 변경을 신청한 날 <span class="opt" data-i18n="optional">(선택)</span></label>
-          <input type="date" id="applyDate">
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-go" data-i18n="dlCalc">기한 보기</button>
-          <button type="button" class="btn btn-ghost" id="ddayReset" data-i18n="reset">지우기</button>
-        </div>
-      </form>
-
-      <div id="ddayResult" class="dday" hidden>
-        <div class="dday-cards">
-          <article class="dcard" id="cardApply">
-            <p class="dcard-k" data-i18n="dlCardApply">사업장 변경 신청 마감</p>
-            <p class="dcard-n"><span class="num" id="applyNum">–</span><span class="unit" data-i18n="daysUnit">일 남음</span></p>
-            <p class="dcard-d" id="applyDateOut">–</p>
-            <p class="dcard-r" data-i18n="dlRuleApply">근로계약 종료일부터 1개월</p>
-          </article>
-          <article class="dcard" id="cardJob">
-            <p class="dcard-k" data-i18n="dlCardJob">새 직장 구하기 마감</p>
-            <p class="dcard-n"><span class="num" id="jobNum">–</span><span class="unit" data-i18n="daysUnit">일 남음</span></p>
-            <p class="dcard-d" id="jobDateOut">–</p>
-            <p class="dcard-r" data-i18n="dlRuleJob">사업장 변경 신청일부터 3개월</p>
-          </article>
-        </div>
-
-        <div class="live" id="liveTimeline">
-          <div class="live-track">
-            <span class="live-fill" id="liveFill"></span>
-            <span class="live-pin" id="livePin"><b data-i18n="tlToday">오늘</b></span>
-          </div>
-          <div class="live-labels">
-            <span id="lbLeave">–</span>
-            <span id="lbApply">–</span>
-            <span id="lbJob">–</span>
-          </div>
-        </div>
-
-        <p class="callout" id="ddayMsg"></p>
-      </div>
+      <!-- 기한·사유·출국 정산은 check.html 에서 차례로 합니다. 여기서는 시작만 안내합니다. -->
+      <div class="calc-card wz-start">
+        <h2 data-i18n="navCheck">내 상황 확인</h2>
+        <p class="sec-lead" data-i18n="wzHomeLead">기한 계산, 사유 자가진단, 출국 정산을 한 쪽에서 차례로 확인하세요. 필요 없는 단계는 넘어가도 됩니다.</p>
+        <ol class="wz-start-list">
+          <li><span class="wz-n">1</span><span data-i18n="dlTitle">기한 계산</span></li>
+          <li><span class="wz-n">2</span><span data-i18n="ckTitle">사유 자가진단</span></li>
+          <li><span class="wz-n">3</span><span data-i18n="secNoPay">출국 정산</span></li>
+        </ol>
+        <a class="btn btn-go" href="check.html" data-i18n="wzStart">시작하기</a>
       </div>
 
       <!-- 내 정보 한눈에 — 로그인한 사람이 기한·사유·출국 정산에 넣은 값을 모아 보여 줍니다.
@@ -290,17 +250,17 @@ h.setAttribute('data-lang-pending','1');setTimeout(function(){h.removeAttribute(
             <li class="my-step" data-part="deadline">
               <span class="my-step-ico" aria-hidden="true"></span>
               <span class="my-step-txt"><b data-i18n="dlTitle">기한 계산</b><small class="my-step-state"></small></span>
-              <a class="my-step-go" href="#deadline" data-i18n="myGo">입력하기</a>
+              <a class="my-step-go" href="check.html#deadline" data-i18n="myGo">입력하기</a>
             </li>
             <li class="my-step" data-part="reason">
               <span class="my-step-ico" aria-hidden="true"></span>
               <span class="my-step-txt"><b data-i18n="ckTitle">사유 자가진단</b><small class="my-step-state"></small></span>
-              <a class="my-step-go" href="reason.html" data-i18n="myGo">입력하기</a>
+              <a class="my-step-go" href="check.html#reason" data-i18n="myGo">입력하기</a>
             </li>
             <li class="my-step" data-part="payout">
               <span class="my-step-ico" aria-hidden="true"></span>
               <span class="my-step-txt"><b data-i18n="secNoPay">출국 정산</b><small class="my-step-state"></small></span>
-              <a class="my-step-go" href="payout.html" data-i18n="myGo">입력하기</a>
+              <a class="my-step-go" href="check.html#payout" data-i18n="myGo">입력하기</a>
             </li>
           </ul>
           <button type="button" class="btn btn-go" id="myOpen" data-i18n="myOpen">한눈에 보기</button>

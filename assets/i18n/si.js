@@ -34,3 +34,33 @@ I18N.si = {
   chips: ['අයදුම් කිරීමට දින කීයක් තිබේද?', 'මාස 3ක් ඇතුළත රැකියාවක් නොලැබුණොත්?', 'කී වතාවක් දක්වා මාරු විය හැකිද?', 'මගේ වැටුප ලැබුණේ නැහැ', 'පිටවීමේ රක්ෂණය සහ සේවා අවසාන දීමනාව ලබා ගන්නේ කෙසේද?', 'කොහේද, කෙසේද අයදුම් කරන්නේ? ලේඛන මොනවාද?', 'සේවායෝජකයාගේ වරදින් මාරු වුණොත් ගණන් කරනවාද?', 'E-7-4 වීසා එකට මාරු විය හැකිද?'],
   disclaimer: 'මෙය තොරතුරු පමණි, නීති උපදෙස් නොවේ. අවසන් තහවුරු කිරීම රැකියා මධ්‍යස්ථානයෙන් හෝ 1345 වෙතින් ලබා ගන්න.'
 };
+
+/* 내 상황 확인 */
+Object.assign(I18N.si, {
+  navCheck: "Check my situation",
+  wzLead: "Check your deadlines, your reason and your departure payments in order. You can skip any step you do not need.",
+  wzStepResult: "Summary",
+  wzPrev: "← Back",
+  wzNext: "Next step →",
+  wzSkip: "Skip this step",
+  wzSeeResult: "See summary",
+  wzSkipped: "You skipped this step.",
+  wzRestart: "Start over",
+  wzResultLead: "This summary is made from what you entered. You can go back to a skipped step at any time by tapping its number above.",
+  wzLoginHint: "Log in to save this result to your account and receive it by email.",
+  wzStart: "Start",
+  wzHomeLead: "Check deadlines, the reason self-check and departure payments in order on one page. You can skip any step you do not need.",
+  wzDone: "Done",
+  wzSkipTag: "Skipped",
+  ckQ1Other: "Other (a reason not listed)",
+  ckQ1OtherPh: "Briefly describe your situation (optional)",
+  ckQ2d: "Not sure",
+  ckQ3e: "Not sure",
+  pyQtypeD: "Not decided yet",
+  resOtherTag: "Get advice",
+  resOtherTitle: "The answer depends on your situation",
+  resOtherBody: "For a reason not listed here, we cannot tell whether it was the company's fault. Talk to a Job Center or call 1345 first, with what you wrote and any records you have.",
+  evUnsure: "If you are not sure you have records, start by collecting your contract, pay slips, bank deposit records and text messages.",
+  countUnsure: "You can check how many times you have changed workplaces at a Job Center or on the EPS website (eps.go.kr).",
+  ckOtherNote: "What you wrote"
+});

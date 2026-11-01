@@ -34,3 +34,33 @@ I18N.my = {
   chips: ['လျှောက်ထားရန် ရက်ဘယ်နှစ်ရက် ရှိသလဲ?', '3 လအတွင်း အလုပ်မရရင် ဘာဖြစ်မလဲ?', 'ဘယ်နှစ်ကြိမ်အထိ ပြောင်းလို့ရသလဲ?', 'လုပ်ခ မရခဲ့ပါ', 'ပြန်ထွက်ခွာမှုအာမခံနှင့် လုပ်သက်ဆုကြေး ဘယ်လိုရမလဲ?', 'ဘယ်မှာ ဘယ်လို လျှောက်ရမလဲ? ဘာစာရွက်စာတမ်း လိုသလဲ?', 'အလုပ်ရှင်အပြစ်ကြောင့် ပြောင်းရင် အကြိမ်ရေထဲ ထည့်တွက်သလား?', 'E-7-4 ဗီဇာသို့ ပြောင်းလို့ရသလား?'],
   disclaimer: 'ဤအချက်အလက်မှာ ရည်ညွှန်းရန်သာဖြစ်ပြီး ဥပဒေအကြံဉာဏ်မဟုတ်ပါ။ နောက်ဆုံးအတည်ပြုချက်ကို အလုပ်အကိုင်စင်တာ သို့မဟုတ် 1345 တွင် ရယူပါ။'
 };
+
+/* 내 상황 확인 */
+Object.assign(I18N.my, {
+  navCheck: "Check my situation",
+  wzLead: "Check your deadlines, your reason and your departure payments in order. You can skip any step you do not need.",
+  wzStepResult: "Summary",
+  wzPrev: "← Back",
+  wzNext: "Next step →",
+  wzSkip: "Skip this step",
+  wzSeeResult: "See summary",
+  wzSkipped: "You skipped this step.",
+  wzRestart: "Start over",
+  wzResultLead: "This summary is made from what you entered. You can go back to a skipped step at any time by tapping its number above.",
+  wzLoginHint: "Log in to save this result to your account and receive it by email.",
+  wzStart: "Start",
+  wzHomeLead: "Check deadlines, the reason self-check and departure payments in order on one page. You can skip any step you do not need.",
+  wzDone: "Done",
+  wzSkipTag: "Skipped",
+  ckQ1Other: "Other (a reason not listed)",
+  ckQ1OtherPh: "Briefly describe your situation (optional)",
+  ckQ2d: "Not sure",
+  ckQ3e: "Not sure",
+  pyQtypeD: "Not decided yet",
+  resOtherTag: "Get advice",
+  resOtherTitle: "The answer depends on your situation",
+  resOtherBody: "For a reason not listed here, we cannot tell whether it was the company's fault. Talk to a Job Center or call 1345 first, with what you wrote and any records you have.",
+  evUnsure: "If you are not sure you have records, start by collecting your contract, pay slips, bank deposit records and text messages.",
+  countUnsure: "You can check how many times you have changed workplaces at a Job Center or on the EPS website (eps.go.kr).",
+  ckOtherNote: "What you wrote"
+});
