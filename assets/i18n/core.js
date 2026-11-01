@@ -66,6 +66,24 @@ var EUM_LANG = (function () {
    새 언어를 반쯤만 번역해 넣을 때 여기에 코드를 적으면 빠진 문장을 영어로 메웁니다. */
 var EUM_DRAFT_LANGS = [];
 
+/* 첫 화면에서 초안 언어로 시작하면 영어 파일도 함께 받습니다.
+   각 페이지는 이 파일 바로 뒤에서 고른 언어 파일 하나만 document.write 로
+   부릅니다. 그래서 영어를 안 받아 두면 빠진 문장을 메울 수 없어,
+   화면에 적힌 한국어 원문(제목·보내기 버튼 등)이 그대로 남습니다.
+   여기서 쓰면 영어가 언어 파일보다 먼저 실행됩니다. */
+if (EUM_DRAFT_LANGS.indexOf(EUM_LANG) !== -1 && document.readyState === 'loading') {
+  document.write('<scr' + 'ipt src="assets/i18n/en.js"><\/scr' + 'ipt>');
+}
+
+/* 영어를 바탕에 깔고 그 위에 번역된 것만 덮어씁니다. */
+function eumMergeDraft(code) {
+  if (!I18N[code] || !I18N.en || EUM_DRAFT_LANGS.indexOf(code) === -1) return;
+  var merged = {}, k;
+  for (k in I18N.en) merged[k] = I18N.en[k];
+  for (k in I18N[code]) merged[k] = I18N[code][k];
+  I18N[code] = merged;
+}
+
 /* 언어를 나중에 바꿀 때 그 언어 파일을 그때 받아 옵니다.
    이미 받아 둔 언어면 곧바로 콜백을 부릅니다. */
 function eumLoadLang(code, cb) {
@@ -85,13 +103,7 @@ function eumLoadLang(code, cb) {
 
   function after() {
     grab(code, function (ok) {
-      if (ok && I18N.en && EUM_DRAFT_LANGS.indexOf(code) !== -1) {
-        // 영어를 바탕에 깔고 그 위에 번역된 것만 덮어씁니다.
-        var merged = {}, k;
-        for (k in I18N.en) merged[k] = I18N.en[k];
-        for (k in I18N[code]) merged[k] = I18N[code][k];
-        I18N[code] = merged;
-      }
+      if (ok) eumMergeDraft(code);
       cb(ok);
     });
   }
