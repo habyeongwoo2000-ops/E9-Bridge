@@ -891,7 +891,7 @@
         : ((T.noticeTags && T.noticeTags[n.tagKey]) || n.tagKey);
       head.appendChild(el('span', 'notice-tag' + (n.region ? ' is-local' : ''), tagLabel));
       // 날짜를 제목 옆에 크게 둡니다. "언제 바뀐 것인가" 가 이 쪽의 핵심입니다.
-      if (n.date) head.appendChild(el('span', 'notice-date', n.date));
+      if (n.date) head.appendChild(el('span', 'notice-date', (T.ntDateLabel ? T.ntDateLabel + ' ' : '') + n.date));
       if (closed) head.appendChild(el('span', 'notice-closed', T.ntClosed));
       head.appendChild(el('p', 'notice-t', body.title));
       // 언제 마지막으로 확인했는지 — 펼치지 않아도 보이게 줄 오른쪽에 둡니다.
@@ -920,6 +920,7 @@
 
       var meta = el('div', 'notice-meta');
       meta.appendChild(el('span', null, T.ntSourceLabel + ': ' + ((lang !== 'ko' && n.sourceL && n.sourceL[lang]) || n.source)));
+      if (n.date && T.ntDateLabel) meta.appendChild(el('span', null, T.ntDateLabel + ': ' + n.date));
       meta.appendChild(el('span', null, T.ntCheckedLabel + ': ' + n.checked));
       if (n.until) meta.appendChild(el('span', null, T.ntUntil + ': ' + n.until));
       var a = el('a', null, T.ntOriginal);

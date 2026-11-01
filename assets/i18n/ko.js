@@ -367,7 +367,7 @@ I18N.ko = {
   ntNoMatch: '검색어에 맞는 제도가 없습니다. 다른 낱말로 찾아보세요.',
   ntPrevBlock: '이전 10쪽', ntNextBlock: '다음 10쪽',
   ntRegions: { seoul: '서울', busan: '부산', daegu: '대구', incheon: '인천', daejeon: '대전', ulsan: '울산', sejong: '세종', gyeonggi: '경기', gangwon: '강원', chungbuk: '충북', chungnam: '충남', jeonbuk: '전북', jeonnamgwangju: '전남광주', gyeongbuk: '경북', gyeongnam: '경남', jeju: '제주' },
-  ntSourceLabel: '출처', ntCheckedLabel: '확인일', ntOriginal: '원문 보기 ↗', ntAskBtn: '이 공지에 대해 질문하기',
+  ntSourceLabel: '출처', ntDateLabel: '발표일', ntCheckedLabel: '확인일', ntOriginal: '원문 보기 ↗', ntAskBtn: '이 공지에 대해 질문하기',
 
   askTitle: '질문하기',
   askLead: '궁금한 점을 적어 주세요. 확인된 법령과 공지 안에서만 답하고, 답할 수 없으면 공식 창구를 알려 줍니다.',

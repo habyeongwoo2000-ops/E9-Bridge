@@ -367,7 +367,7 @@ I18N.vi = {
   ntNoMatch: 'Không có chính sách phù hợp. Hãy thử từ khác.',
   ntPrevBlock: '10 trang trước', ntNextBlock: '10 trang sau',
   ntRegions: { seoul: 'Seoul', busan: 'Busan', daegu: 'Daegu', incheon: 'Incheon', daejeon: 'Daejeon', ulsan: 'Ulsan', sejong: 'Sejong', gyeonggi: 'Gyeonggi', gangwon: 'Gangwon', chungbuk: 'Bắc Chungcheong', chungnam: 'Nam Chungcheong', jeonbuk: 'Jeonbuk', jeonnamgwangju: 'Jeonnam-Gwangju', gyeongbuk: 'Bắc Gyeongsang', gyeongnam: 'Nam Gyeongsang', jeju: 'Jeju' },
-  ntSourceLabel: 'Nguồn', ntCheckedLabel: 'Ngày kiểm tra', ntOriginal: 'Xem bản gốc ↗', ntAskBtn: 'Hỏi về thông báo này',
+  ntSourceLabel: 'Nguồn', ntDateLabel: 'Ngày công bố', ntCheckedLabel: 'Ngày kiểm tra', ntOriginal: 'Xem bản gốc ↗', ntAskBtn: 'Hỏi về thông báo này',
 
   askTitle: 'Đặt câu hỏi',
   askLead: 'Hãy viết câu hỏi. Câu trả lời chỉ dựa trên luật và thông báo đã kiểm chứng; nếu không có, chúng tôi chỉ bạn đến kênh chính thức.',

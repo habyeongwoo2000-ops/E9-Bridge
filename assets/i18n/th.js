@@ -373,7 +373,7 @@ I18N.th = {
   ntNoMatch: 'ไม่พบนโยบายที่ตรงกับคำค้น ลองใช้คำอื่น',
   ntPrevBlock: '10 หน้าก่อนหน้า', ntNextBlock: '10 หน้าถัดไป',
   ntRegions: { seoul: 'โซล', busan: 'ปูซาน', daegu: 'แทกู', incheon: 'อินชอน', daejeon: 'แทจอน', ulsan: 'อุลซาน', sejong: 'เซจง', gyeonggi: 'คยองกี', gangwon: 'คังวอน', chungbuk: 'ชุงชองเหนือ', chungnam: 'ชุงชองใต้', jeonbuk: 'ชอนบุก', jeonnamgwangju: 'ชอนนัม-ควังจู', gyeongbuk: 'คยองซังเหนือ', gyeongnam: 'คยองซังใต้', jeju: 'เชจู' },
-  ntSourceLabel: 'แหล่งที่มา', ntCheckedLabel: 'วันที่ตรวจสอบ', ntOriginal: 'ดูต้นฉบับ ↗', ntAskBtn: 'ถามเกี่ยวกับประกาศนี้',
+  ntSourceLabel: 'แหล่งที่มา', ntDateLabel: 'วันที่ประกาศ', ntCheckedLabel: 'วันที่ตรวจสอบ', ntOriginal: 'ดูต้นฉบับ ↗', ntAskBtn: 'ถามเกี่ยวกับประกาศนี้',
 
   askTitle: 'ถามคำถาม',
   askLead: 'พิมพ์คำถามของคุณ ระบบตอบจากกฎหมายและประกาศที่ตรวจสอบแล้วเท่านั้น ถ้าไม่มีคำตอบจะแนะนำช่องทางราชการให้',

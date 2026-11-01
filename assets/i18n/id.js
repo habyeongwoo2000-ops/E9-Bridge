@@ -367,7 +367,7 @@ I18N.id = {
   ntNoMatch: 'Tidak ada kebijakan yang cocok. Coba kata lain.',
   ntPrevBlock: '10 halaman sebelumnya', ntNextBlock: '10 halaman berikutnya',
   ntRegions: { seoul: 'Seoul', busan: 'Busan', daegu: 'Daegu', incheon: 'Incheon', daejeon: 'Daejeon', ulsan: 'Ulsan', sejong: 'Sejong', gyeonggi: 'Gyeonggi', gangwon: 'Gangwon', chungbuk: 'Chungcheong Utara', chungnam: 'Chungcheong Selatan', jeonbuk: 'Jeonbuk', jeonnamgwangju: 'Jeonnam-Gwangju', gyeongbuk: 'Gyeongsang Utara', gyeongnam: 'Gyeongsang Selatan', jeju: 'Jeju' },
-  ntSourceLabel: 'Sumber', ntCheckedLabel: 'Diperiksa', ntOriginal: 'Baca aslinya ↗', ntAskBtn: 'Tanya soal pengumuman ini',
+  ntSourceLabel: 'Sumber', ntDateLabel: 'Diumumkan', ntCheckedLabel: 'Diperiksa', ntOriginal: 'Baca aslinya ↗', ntAskBtn: 'Tanya soal pengumuman ini',
 
   askTitle: 'Ajukan pertanyaan',
   askLead: 'Tulis pertanyaan Anda. Jawaban hanya diambil dari peraturan dan pengumuman yang sudah diperiksa; bila tidak ada, kami arahkan ke kanal resmi.',

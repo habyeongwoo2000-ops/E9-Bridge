@@ -367,7 +367,7 @@ I18N.en = {
   ntNoMatch: 'No policies match your search. Try other words.',
   ntPrevBlock: 'Previous 10 pages', ntNextBlock: 'Next 10 pages',
   ntRegions: { seoul: 'Seoul', busan: 'Busan', daegu: 'Daegu', incheon: 'Incheon', daejeon: 'Daejeon', ulsan: 'Ulsan', sejong: 'Sejong', gyeonggi: 'Gyeonggi', gangwon: 'Gangwon', chungbuk: 'North Chungcheong', chungnam: 'South Chungcheong', jeonbuk: 'Jeonbuk', jeonnamgwangju: 'Jeonnam-Gwangju', gyeongbuk: 'North Gyeongsang', gyeongnam: 'South Gyeongsang', jeju: 'Jeju' },
-  ntSourceLabel: 'Source', ntCheckedLabel: 'Checked', ntOriginal: 'Read the original ↗', ntAskBtn: 'Ask about this notice',
+  ntSourceLabel: 'Source', ntDateLabel: 'Announced', ntCheckedLabel: 'Checked', ntOriginal: 'Read the original ↗', ntAskBtn: 'Ask about this notice',
 
   askTitle: 'Ask a question',
   askLead: 'Type your question. Answers come only from checked laws and notices — if there is no answer, we point you to the official line.',
