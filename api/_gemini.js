@@ -112,6 +112,7 @@ function sleep(ms) {
    돌려주는 값: { ok, status, data, detail, keyIndex, triedKeys } */
 async function generate(payload, opts) {
   const options = opts || {};
+  const totalMs = Math.min(TOTAL_MS, Math.max(1000, Number(options.totalMs) || TOTAL_MS));
   const model = options.model || MODEL;
   const keys = loadKeys();
 
@@ -139,7 +140,7 @@ async function generate(payload, opts) {
   const useModels = models.length ? models : chain.slice();
 
   for (const m of useModels) {
-    if (timedOut || Date.now() - startedAt > TOTAL_MS) { timedOut = true; break; }
+    if (timedOut || Date.now() - startedAt >= totalMs) { timedOut = true; break; }
     let modelBusy = 0;
 
     for (const key of order) {
@@ -154,15 +155,15 @@ async function generate(payload, opts) {
       for (let attempt = 0; attempt <= WAITS.length; attempt++) {
         /* 전체 시간을 넘겼으면 더 시도하지 않고 나갑니다.
            여기서 멈춰야 함수가 죽는 대신 "지금 붐빈다"는 안내를 돌려줄 수 있습니다. */
-        if (Date.now() - startedAt > TOTAL_MS) {
-          console.warn('gemini timeout: 전체 제한 ' + TOTAL_MS + 'ms 초과 — 중단');
+        if (Date.now() - startedAt >= totalMs) {
+          console.warn('gemini timeout: 전체 제한 ' + totalMs + 'ms 초과 — 중단');
           timedOut = true;
           break;
         }
 
         let r;
         const ac = new AbortController();
-        const killer = setTimeout(function () { ac.abort(); }, CALL_MS);
+        const killer = setTimeout(function () { ac.abort(); }, Math.min(CALL_MS, Math.max(1, totalMs - (Date.now() - startedAt))));
         try {
           r = await fetch(url, {
             method: 'POST',

@@ -1288,3 +1288,9 @@ html.is-previewing body{overflow:hidden}
 @media (max-width:600px){
   .view-switch.in-foot{position:static;margin-top:10px;justify-content:flex-start}
 }
+
+/* Chat source links follow the answer, evidence and disclaimer. */
+.bubble-sources { margin-top: 14px; padding-top: 12px; border-top: 1px solid #d9e0eb; }
+.bubble-sources ul { margin: 6px 0 0; padding-left: 22px; }
+.bubble-sources a { color: #164d9c; text-decoration: underline; overflow-wrap: anywhere; }
+.bubble-sources a:focus-visible { outline: 2px solid #164d9c; outline-offset: 3px; }

@@ -2256,7 +2256,7 @@
     thread.appendChild(el('div', 'bubble bubble-u', question));
     var box = el('div', 'bubble bubble-a');
     thread.appendChild(box);
-    fillAnswer(box, hit[lang] || hit.en, hit.src, false, hit.review, null, isMt(hit));
+    fillAnswer(box, hit[lang] || hit.en, hit.src, false, hit.review, null, isMt(hit), typeof EUM_CHAT_SOURCES !== 'undefined' ? EUM_CHAT_SOURCES.byKey[hit.key] : []);
   }
 
   /* 이 언어의 답이 기계 번역 초안인지 — 그렇다면 "번역 검토 필요"를 붙입니다. */
@@ -2373,21 +2373,8 @@
     if (!thread) return;
     thread.appendChild(el('div', 'bubble bubble-u', question));
 
-    /* 자주 묻는 질문이면 기다리지 않고 바로 답합니다. */
-    var faq = faqMatch(question);
-    if (faq) {
-      var fbox = el('div', 'bubble bubble-a');
-      thread.appendChild(fbox);
-      fillAnswer(fbox, T['faqA_' + faq.key], faq.src, false, false, T.askFaqHit);
-      var more = el('button', 'btn btn-ghost btn-sm ask-more', T.askAskAi);
-      more.type = 'button';
-      more.addEventListener('click', function () {
-        more.remove();
-        askAi(question);
-      });
-      fbox.appendChild(more);
-      return;
-    }
+    /* 직접 입력한 질문은 서버의 범위·근거 검사를 반드시 거칩니다.
+       추천 질문 버튼의 answerLocal 경로만 즉시 답변을 유지합니다. */
     askAi(question);
   }
 
@@ -2405,22 +2392,20 @@
     apiPost('/api/ask', { question: question, lang: lang })
       .then(function (data) {
         if (!data || !data.answer) throw new Error('empty');
-        fillAnswer(box, data.answer, null, false);
+        var links = [];
+        (Array.isArray(data.sources) ? data.sources : []).forEach(function (source) {
+          if (source && Array.isArray(source.links)) links = links.concat(source.links);
+        });
+        fillAnswer(box, data.answer, null, false, false, null, false, links);
       })
       .catch(function (e) {
-        /* 먼저 브라우저 안의 지식베이스에서 찾아 봅니다. 답이 있으면
-           서버가 잠깐 안 되더라도 사용자는 답을 얻습니다. */
-        var hit = findEntry(question);
-        if (hit) { fillAnswer(box, hit[lang] || hit.en, hit.src, true, hit.review, null, isMt(hit)); return; }
-
-        /* 지식베이스에도 없을 때 — 몰려서 실패한 것이면 그렇게 말해 줍니다.
-           "답을 못 찾았다" 고만 하면 다시 눌러 볼 생각을 못 합니다. */
+        /* 실패해도 느슨한 키워드 매칭으로 범위 검사를 우회하지 않습니다. */
         if (e && e.retryable) fillAnswer(box, T.askBusy, null, true);
         else fillAnswer(box, T.askFallback, null, true);
       });
   }
 
-  function fillAnswer(box, text, src, offline, review, tag, mt) {
+  function fillAnswer(box, text, src, offline, review, tag, mt, links) {
     box.innerHTML = '';
     if (tag) box.appendChild(el('span', 'flag flag-faq', tag));
     if (review) box.appendChild(el('span', 'flag', T.askReview));
@@ -2431,6 +2416,26 @@
     if (src) box.appendChild(el('p', 'bubble-src', T.askSourceLabel + ': ' + src));
     if (offline) box.appendChild(el('p', 'bubble-dis', T.askOffline));
     box.appendChild(el('p', 'bubble-dis', T.disclaimer));
+    if (typeof EUM_CHAT_SOURCES !== 'undefined') {
+      var sources = EUM_CHAT_SOURCES.safe(links);
+      if (sources.length) {
+        var sourceBox = el('div', 'bubble-sources');
+        sourceBox.appendChild(el('p', 'bubble-src', EUM_CHAT_SOURCES.labels[lang] || EUM_CHAT_SOURCES.labels.en));
+        var sourceList = el('ul');
+        sources.forEach(function (source) {
+          var item = el('li');
+          var link = el('a', null, source.label);
+          link.href = source.url;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          item.appendChild(link);
+          sourceList.appendChild(item);
+        });
+        sourceBox.appendChild(sourceList);
+        box.appendChild(sourceBox);
+      }
+    }
+
     box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
