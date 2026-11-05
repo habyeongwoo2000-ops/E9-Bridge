@@ -1,0 +1,74 @@
+import { CHECKED_ON, PAY_CHECKED, LEGAL_CHECKED, PAY_SRC } from '../core.js';
+
+/* 예전 전역 I18N 객체 모양을 그대로 둡니다. 번역 도구(make-lang)와 사람이 고치던
+   방식이 바뀌지 않게 하려는 것입니다. 맨 아래에서 이 언어 묶음 하나만 내보냅니다. */
+const I18N = {};
+
+/* E9-Bridge — UI 문자열 (my · မြန်မာ)
+   ⚠ 초안입니다. 여기 없는 문장은 core.js 가 영어로 메웁니다.
+      전체 번역은 tools/make-lang.mjs 로 채우고, 사람이 검수한 뒤
+      core.js 의 EUM_DRAFT_LANGS 에서 이 코드를 빼세요.
+   공용 상수(CHECKED_ON 등)는 core.js 에 있습니다. */
+
+I18N.my = {
+  daysUnit: 'ရက် ကျန်',
+  daysOver: 'ရက် ကျော်',
+  dlLeaveDate: 'အလုပ်ထွက်သည့်ရက် (စာချုပ်ပြီးဆုံးသည့်ရက်)',
+  docTitle: 'E9-Bridge — အလုပ်ခွင်ပြောင်းခြင်း',
+  brandSub: 'အလုပ်ခွင်ပြောင်းလဲမှု လမ်းညွှန်',
+  draftNote: 'ဤဘာသာစကားမှာ မူကြမ်းအဆင့်ဖြစ်သည်။ အချို့စာကြောင်းများ အင်္ဂလိပ်လိုဖြစ်နေပါသည်။',
+  secNo1: 'သတ်မှတ်ရက်',
+  secNo2: 'အကြောင်းရင်း',
+  secNoPay: 'ထွက်ခွာမီ ရှင်းတမ်း',
+  navFaq: 'မေးလေ့ရှိသောမေးခွန်း',
+  navChatbot: 'ချက်ဘော့ကို မေးရန်',
+  navBoard: 'မေးခွန်းဘုတ်',
+  navUpdates: 'နောက်ဆုံးပြောင်းလဲမှု',
+  secNoLegal: 'ဥပဒေအကြံပေး',
+  navInterview: 'အင်တာဗျူး',
+  heroTitle: 'အလုပ်ခွင်ပြောင်းခြင်း၊<br>နောက်ထပ် မလွဲတော့ပါ',
+  heroLead: 'အလုပ်ထွက်သည့်ရက်ကို ထည့်လိုက်ရုံဖြင့် ကျန်ရက်များကို မြင်ရပါမည်။',
+  heroCta: 'ကျွန်ုပ်၏သတ်မှတ်ရက်ကို တွက်ရန်',
+  heroCta2: 'မေးခွန်းမေးရန်',
+  homePick: 'ဘာများ ထပ်သိချင်ပါသလဲ?',
+  langLabel: 'ဘာသာစကား',
+  reset: 'ရှင်းရန်',
+  errNet: 'ပြဿနာရှိနေသည်။ ထပ်မံကြိုးစားပါ။',
+  ofTitle: 'တရားဝင်ဌာနများ',
+  askSourceLabel: 'ရင်းမြစ်',
+  askMtReview: 'ဘာသာပြန်ကို စစ်ဆေးရန် ကျန်ပါသည်',
+  chips: ['လျှောက်ထားရန် ရက်ဘယ်နှစ်ရက် ရှိသလဲ?', '3 လအတွင်း အလုပ်မရရင် ဘာဖြစ်မလဲ?', 'ဘယ်နှစ်ကြိမ်အထိ ပြောင်းလို့ရသလဲ?', 'လုပ်ခ မရခဲ့ပါ', 'ပြန်ထွက်ခွာမှုအာမခံနှင့် လုပ်သက်ဆုကြေး ဘယ်လိုရမလဲ?', 'ဘယ်မှာ ဘယ်လို လျှောက်ရမလဲ? ဘာစာရွက်စာတမ်း လိုသလဲ?', 'အလုပ်ရှင်အပြစ်ကြောင့် ပြောင်းရင် အကြိမ်ရေထဲ ထည့်တွက်သလား?', 'E-7-4 ဗီဇာသို့ ပြောင်းလို့ရသလား?'],
+  disclaimer: 'ဤအချက်အလက်မှာ ရည်ညွှန်းရန်သာဖြစ်ပြီး ဥပဒေအကြံဉာဏ်မဟုတ်ပါ။ နောက်ဆုံးအတည်ပြုချက်ကို အလုပ်အကိုင်စင်တာ သို့မဟုတ် 1345 တွင် ရယူပါ။'
+};
+
+/* 내 상황 확인 */
+Object.assign(I18N.my, {
+  navCheck: "Check my situation",
+  wzLead: "Check your deadlines, your reason and your departure payments in order. You can skip any step you do not need.",
+  wzStepResult: "Summary",
+  wzPrev: "← Back",
+  wzNext: "Next step →",
+  wzSkip: "Skip this step",
+  wzSeeResult: "See summary",
+  wzSkipped: "You skipped this step.",
+  wzRestart: "Start over",
+  wzResultLead: "This summary is made from what you entered. You can go back to a skipped step at any time by tapping its number above.",
+  wzLoginHint: "Log in to save this result to your account and receive it by email.",
+  wzStart: "Start",
+  wzHomeLead: "Check deadlines, the reason self-check and departure payments in order on one page. You can skip any step you do not need.",
+  wzDone: "Done",
+  wzSkipTag: "Skipped",
+  ckQ1Other: "Other (a reason not listed)",
+  ckQ1OtherPh: "Briefly describe your situation (optional)",
+  ckQ2d: "Not sure",
+  ckQ3e: "Not sure",
+  pyQtypeD: "Not decided yet",
+  resOtherTag: "Get advice",
+  resOtherTitle: "The answer depends on your situation",
+  resOtherBody: "For a reason not listed here, we cannot tell whether it was the company's fault. Talk to a Job Center or call 1345 first, with what you wrote and any records you have.",
+  evUnsure: "If you are not sure you have records, start by collecting your contract, pay slips, bank deposit records and text messages.",
+  countUnsure: "You can check how many times you have changed workplaces at a Job Center or on the EPS website (eps.go.kr).",
+  ckOtherNote: "What you wrote"
+});
+
+export default I18N.my;

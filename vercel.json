@@ -1,5 +1,101 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "frontend/dist",
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 60
+    }
+  },
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/check.html",
+      "destination": "/check",
+      "permanent": true
+    },
+    {
+      "source": "/reason.html",
+      "destination": "/reason",
+      "permanent": true
+    },
+    {
+      "source": "/payout.html",
+      "destination": "/payout",
+      "permanent": true
+    },
+    {
+      "source": "/notices.html",
+      "destination": "/notices",
+      "permanent": true
+    },
+    {
+      "source": "/legal.html",
+      "destination": "/legal",
+      "permanent": true
+    },
+    {
+      "source": "/faq.html",
+      "destination": "/faq",
+      "permanent": true
+    },
+    {
+      "source": "/board.html",
+      "destination": "/board",
+      "permanent": true
+    },
+    {
+      "source": "/interviews.html",
+      "destination": "/interviews",
+      "permanent": true
+    },
+    {
+      "source": "/login.html",
+      "destination": "/login",
+      "permanent": true
+    },
+    {
+      "source": "/signup.html",
+      "destination": "/signup",
+      "permanent": true
+    },
+    {
+      "source": "/account.html",
+      "destination": "/account",
+      "permanent": true
+    },
+    {
+      "source": "/privacy.html",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/ask.html",
+      "destination": "/ask",
+      "permanent": true
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/admin",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/((?!api/|static/|assets/|\\.well-known/).*)",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/.well-known/assetlinks.json",
@@ -56,17 +152,15 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
-    }
-  ],
-  "functions": {
-    "api/ask.js": {
-      "maxDuration": 60
     },
-    "api/read-doc.js": {
-      "maxDuration": 60
-    },
-    "api/posts.js": {
-      "maxDuration": 60
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
-  }
+  ]
 }

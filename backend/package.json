@@ -1,0 +1,19 @@
+{
+  "name": "e9-bridge-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "E9-Bridge REST API (Express)",
+  "type": "commonjs",
+  "main": "src/app.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "5.2.1",
+    "nodemailer": "10.0.16"
+  }
+}

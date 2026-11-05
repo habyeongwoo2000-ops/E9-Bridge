@@ -1,0 +1,11 @@
+/* 법률 자문 — 2026-11-04 고용노동부 추가로 무료 기관이 세 곳이 됐습니다.
+   넓은 화면에서는 세 칸으로 나란히 둡니다(두 칸이면 마지막 카드 하나만 외롭게 남습니다). */
+@media (min-width:1100px){ .legal-list.is-3{grid-template-columns:repeat(3,1fr)} }
+
+/* "월급을 못 받았습니다" 카드 아래의 고용노동부 누리집 줄 */
+.legal-pick-web{margin:12px 0 0;font-size:13.5px;color:var(--ink-3)}
+.legal-pick-web a{color:var(--blue);font-weight:700;text-decoration:none}
+.legal-pick-web a:hover{text-decoration:underline}
+
+.legal-link-sep{color:var(--ink-3)}
+.legal-link-note{font-size:13px;color:var(--ink-3)}

@@ -1,8 +1,17 @@
 {
-  "name": "eum",
+  "name": "e9-bridge",
   "private": true,
-  "engines": { "node": ">=20" },
-  "dependencies": {
-    "nodemailer": "10.0.16"
+  "description": "E9-Bridge — frontend(React) + backend(Express) monorepo",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:api": "npm run dev -w backend",
+    "dev:web": "npm run dev -w frontend",
+    "build": "npm run build -w frontend"
   }
 }

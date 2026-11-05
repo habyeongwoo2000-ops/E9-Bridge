@@ -1,0 +1,7 @@
+/* #앵커로 이동했을 때(첫 화면 최신 제도 → /notices#키, /faq#faq-키) 항목 제목이
+   위에 붙은 머리말(sticky)에 가려지지 않게, 머리말 높이만큼 띄워서 멈춥니다.
+   --stick 은 Header.jsx 가 실제 머리말 높이를 재서 넣어 둡니다. */
+.notice[id],
+.faq-item[id],
+.itv-card[id],
+#ntFilter{scroll-margin-top:calc(var(--stick,var(--hh)) + 12px)}
