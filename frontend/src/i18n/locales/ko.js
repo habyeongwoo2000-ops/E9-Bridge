@@ -702,4 +702,10 @@ Object.assign(I18N.ko, {
   nwArtNote: "카드 그림은 기사 내용을 바탕으로 E9-Bridge가 직접 그린 것이며, 언론사 사진이 아닙니다."
 });
 
+/* 기사 카드 무료 사진 — 찍은 사람 표시와 안내 */
+Object.assign(I18N.ko, {
+  nwPhoto: "사진",
+  nwArtNote: "카드 사진은 기사 속 사진이 아니라 비슷한 장면의 무료 사진(Unsplash·PAKUTASO)입니다. 사진이 없을 때는 E9-Bridge가 그린 그림이 나옵니다."
+});
+
 export default I18N.ko;

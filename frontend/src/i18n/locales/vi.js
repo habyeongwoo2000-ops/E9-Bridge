@@ -702,4 +702,10 @@ Object.assign(I18N.vi, {
   nwArtNote: "Hình trên thẻ do E9-Bridge tự vẽ dựa trên nội dung bài báo, không phải ảnh của tòa soạn."
 });
 
+/* 기사 카드 무료 사진 — 찍은 사람 표시와 안내 */
+Object.assign(I18N.vi, {
+  nwPhoto: "Ảnh:",
+  nwArtNote: "Ảnh trên thẻ không phải ảnh trong bài báo mà là ảnh miễn phí có cảnh tương tự (Unsplash, PAKUTASO). Nếu thiếu ảnh, hình minh họa của E9-Bridge sẽ hiện ra."
+});
+
 export default I18N.vi;

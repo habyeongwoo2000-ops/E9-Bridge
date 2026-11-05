@@ -796,4 +796,10 @@ Object.assign(I18N.ne, {
   nwArtNote: "कार्डका चित्रहरू समाचारका आधारमा E9-Bridge आफैंले बनाएका हुन्, सञ्चारमाध्यमका फोटो होइनन्।"
 });
 
+/* 기사 카드 무료 사진 — 찍은 사람 표시와 안내 */
+Object.assign(I18N.ne, {
+  nwPhoto: "फोटो:",
+  nwArtNote: "कार्डका फोटो समाचारकै होइनन्; उस्तै दृश्यका निःशुल्क फोटो (Unsplash, PAKUTASO) हुन्। फोटो नभए E9-Bridge को चित्र देखिन्छ।"
+});
+
 export default I18N.ne;

@@ -702,4 +702,10 @@ Object.assign(I18N.id, {
   nwArtNote: "Gambar pada kartu adalah ilustrasi buatan E9-Bridge berdasarkan isi artikel, bukan foto dari media."
 });
 
+/* 기사 카드 무료 사진 — 찍은 사람 표시와 안내 */
+Object.assign(I18N.id, {
+  nwPhoto: "Foto:",
+  nwArtNote: "Foto kartu bukan dari artikel, melainkan foto berlisensi gratis dengan suasana serupa (Unsplash, PAKUTASO). Jika foto tidak ada, ilustrasi E9-Bridge yang ditampilkan."
+});
+
 export default I18N.id;

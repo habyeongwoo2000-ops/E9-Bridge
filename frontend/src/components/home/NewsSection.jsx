@@ -5,7 +5,9 @@
      카드를 누르거나 밀어서(휴대폰) 넘기면 왼쪽 기사가 바뀝니다.
    · 기사 제목은 언론사가 쓴 한국어 제목을 그대로 옮깁니다(번역하지 않음, lang="ko").
      요약(nwS…)과 카드 위 핵심 숫자(nwK…)는 E9-Bridge가 쓴 문장이고 6개 언어로 번역해 둡니다.
-   · 그림은 NewsArt.jsx — 언론사 사진은 저작권 때문에 쓰지 않습니다.
+   · 사진: 기사와 비슷한 장면의 "무료 사용 허락" 사진(Unsplash 라이선스·PAKUTASO 이용약관)을
+     frontend/public/assets/news/ 에 둡니다. 언론사 기사 사진은 저작권 때문에 쓰지 않습니다.
+     사진 파일이 없거나 못 불러오면 직접 그린 그림(NewsArt.jsx)이 대신 나옵니다.
 
    ■ 기사를 바꿀 때: ARTICLES 의 제목·날짜·주소를 원문과 똑같이 적고,
      요약(nwS…)·핵심 숫자(nwK…)를 6개 언어 파일에서 함께 고치세요.
@@ -16,23 +18,36 @@ import { Link } from 'react-router-dom';
 import { useI18n } from '../../i18n/I18nProvider.jsx';
 import NewsArt from './NewsArt.jsx';
 
+/* 사진이 있으면 사진, 못 불러오면 그림으로 바꿉니다(파일을 아직 안 넣었을 때도 화면이 비지 않게). */
+function CardPic({ a, label }) {
+  const [broken, setBroken] = useState(false);
+  if (!a.img || broken) return <span className="nwx-img"><NewsArt kind={a.art} /></span>;
+  return (
+    <>
+      <span className="nwx-img"><img src={a.img} alt="" loading="lazy" onError={() => setBroken(true)} /></span>
+      {/* 무료 사진이라도 찍은 사람을 밝혀 둡니다 */}
+      <span className="nwx-credit">{label} {a.credit}</span>
+    </>
+  );
+}
+
 const ARTICLES = [
-  { id: 'a', tab: 'change', art: 'change', outlet: '뉴시스', date: '2026-07-30', tag: 'nwTagChange',
+  { id: 'a', img: '/assets/news/a-documents.jpg', credit: 'Wesley Tingey / Unsplash', tab: 'change', art: 'change', outlet: '뉴시스', date: '2026-07-30', tag: 'nwTagChange',
     title: '"회사 바꿔달라" 외국인력 민원 3년새 3배…의무근무 \'1.5년\' 단축 추진',
     url: 'https://www.newsis.com/view/NISX20260729_0003728864', to: '/check#deadline', toKey: 'dlTitle' },
-  { id: 'b', tab: 'change', art: 'deadline', outlet: 'CBS노컷뉴스', date: '2025-07-27', tag: 'nwTagChange',
+  { id: 'b', img: '/assets/news/b-warehouse.jpg', credit: 'Bernd Dittrich / Unsplash', tab: 'change', art: 'deadline', outlet: 'CBS노컷뉴스', date: '2025-07-27', tag: 'nwTagChange',
     title: '지게차에 결박 당하고, 조롱당해도…왜 가만히 있었을까',
     url: 'https://www.nocutnews.co.kr/news/6375895', to: '/check#reason', toKey: 'ckTitle' },
-  { id: 'c', tab: 'money', art: 'wage', outlet: '서울경제', date: '2026-05-18', tag: 'nwTagWage',
+  { id: 'c', img: '/assets/news/c-won.jpg', credit: 'susi-paku / PAKUTASO', tab: 'money', art: 'wage', outlet: '서울경제', date: '2026-05-18', tag: 'nwTagWage',
     title: '외국인 체불 1600억…\'이직 제한\' 약점 파고든 사업주',
     url: 'https://www.sedaily.com/article/20045502', to: '/legal', toKey: 'secNoLegal' },
-  { id: 'd', tab: 'money', art: 'payout', outlet: '헤럴드경제', date: '2026-09-07', tag: 'secNoPay',
+  { id: 'd', img: '/assets/news/d-airport.jpg', credit: 'Artur Tumasjan / Unsplash', tab: 'money', art: 'payout', outlet: '헤럴드경제', date: '2026-09-07', tag: 'secNoPay',
     title: '외국인 노동자 휴면보험금 323억 \'역대최대\'…보험금 찾아주기 \'비상\'',
     url: 'https://biz.heraldcorp.com/article/10864625', to: '/check#payout', toKey: 'secNoPay' },
-  { id: 'e', tab: 'safe', art: 'safety', outlet: '한국경제', date: '2026-07-21', tag: 'nwTagAcc',
+  { id: 'e', img: '/assets/news/e-hardhats.jpg', credit: 'Pop & Zebra / Unsplash', tab: 'safe', art: 'safety', outlet: '한국경제', date: '2026-07-21', tag: 'nwTagAcc',
     title: '올 중대재해 사망 6명 중 1명 외국인',
     url: 'https://www.hankyung.com/article/2026072176631', to: '/legal', toKey: 'secNoLegal' },
-  { id: 'f', tab: 'safe', art: 'heat', outlet: '한겨레', date: '2026-08-04', tag: 'nwTagHouse',
+  { id: 'f', img: '/assets/news/f-greenhouse.jpg', credit: 'ELFA / PAKUTASO', tab: 'safe', art: 'heat', outlet: '한겨레', date: '2026-08-04', tag: 'nwTagHouse',
     title: '46.7도 치솟는 비닐하우스 \'집\'…이주노동자의 \'폭염과 사투\' [현장]',
     url: 'https://v.daum.net/v/20260804050659632', to: '/faq#faq-dorm_standard', toKey: 'faqTitle' }
 ];
@@ -126,9 +141,7 @@ export default function NewsSection() {
             {list.map((a, k) => (
               <button key={a.id} type="button" className={'nwx-card' + (k === i ? ' is-on' : '')}
                       aria-label={a.title} aria-pressed={k === i} onClick={() => go(k)}>
-                <span className="nwx-img">
-                  {a.img ? <img src={a.img} alt="" loading="lazy" /> : <NewsArt kind={a.art} />}
-                </span>
+                <CardPic a={a} label={T.nwPhoto} />
                 <span className="nwx-cap">
                   <span className="nwx-cap-tag">{T[a.tag]}</span>
                   <span className="nwx-cap-k">{T['nwK' + a.id]}</span>

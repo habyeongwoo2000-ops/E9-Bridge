@@ -702,4 +702,10 @@ Object.assign(I18N.en, {
   nwArtNote: "The card pictures are illustrations drawn by E9-Bridge from each article. They are not the outlets' photos."
 });
 
+/* 기사 카드 무료 사진 — 찍은 사람 표시와 안내 */
+Object.assign(I18N.en, {
+  nwPhoto: "Photo:",
+  nwArtNote: "Card photos are not from the articles; they are free-licensed photos of similar scenes (Unsplash, PAKUTASO). If a photo is missing, an E9-Bridge illustration is shown."
+});
+
 export default I18N.en;
