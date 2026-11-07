@@ -1,10 +1,29 @@
 /* 백엔드(Express, /api) 호출 도우미
    ------------------------------------------------------------------
    · 주소는 늘 '/api/…' 절대 경로로 씁니다. (화면 주소가 /check 처럼 바뀌어도 같은 곳으로 갑니다)
-   · 로그인은 서버가 심는 쿠키(HttpOnly)로 확인합니다. 브라우저 쪽에는 토큰을 두지 않습니다.
+   · 웹은 같은 출처로 요청하고, Android는 배포 서버에 네이티브 HTTP로 요청합니다.
+   · 로그인은 서버가 심는 쿠키(HttpOnly)로 확인합니다. 토큰을 직접 저장하지 않습니다.
    · 서버가 답을 안 주면 무한정 기다리지 않습니다. 고장 난 줄 알고 창을 닫아 버리기 전에
      일찍 안내하는 편이 낫습니다.
    ------------------------------------------------------------------ */
+
+import { CapacitorHttp } from '@capacitor/core';
+import { isAndroidApp } from '../config/platform.js';
+
+export const webOrigin = 'https://eum-six.vercel.app';
+
+function nativeRequest(path, method, timeout, data) {
+  return CapacitorHttp.request({
+    url: webOrigin + path,
+    method,
+    data,
+    headers: { accept: 'application/json', ...(data ? { 'content-type': 'application/json' } : {}) },
+    responseType: 'json',
+    disableRedirects: true,
+    connectTimeout: timeout,
+    readTimeout: timeout
+  });
+}
 
 function withTimeout(ms) {
   const ac = typeof AbortController === 'function' ? new AbortController() : null;
@@ -16,8 +35,12 @@ function withTimeout(ms) {
 export async function getJSON(path, { timeout = 15000, tries = 0 } = {}) {
   const t = withTimeout(timeout);
   try {
+    if (isAndroidApp) {
+      const response = await nativeRequest(path, 'GET', timeout);
+      if (response.status >= 200 && response.status < 300) return response.data;
+      throw Object.assign(new Error('http ' + response.status), { status: response.status });
+    }
     const r = await fetch(path, { headers: { accept: 'application/json' }, credentials: 'same-origin', signal: t.signal });
-    t.done();
     if (!r.ok) {
       const err = new Error('http ' + r.status);
       err.status = r.status;
@@ -31,6 +54,8 @@ export async function getJSON(path, { timeout = 15000, tries = 0 } = {}) {
       return getJSON(path, { timeout, tries: tries - 1 });
     }
     throw e;
+  } finally {
+    t.done();
   }
 }
 
@@ -38,6 +63,10 @@ export async function getJSON(path, { timeout = 15000, tries = 0 } = {}) {
 export async function postJSON(path, payload, { timeout = 70000 } = {}) {
   const t = withTimeout(timeout);
   try {
+    if (isAndroidApp) {
+      const { status, data } = await nativeRequest(path, 'POST', timeout, payload || {});
+      return { ok: status >= 200 && status < 300, status, data };
+    }
     const r = await fetch(path, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -45,14 +74,14 @@ export async function postJSON(path, payload, { timeout = 70000 } = {}) {
       body: JSON.stringify(payload || {}),
       signal: t.signal
     });
-    t.done();
     let data = {};
     try { data = await r.json(); } catch (e) { data = {}; }
     return { ok: r.ok, status: r.status, data };
   } catch (e) {
-    t.done();
     const aborted = e && (e.name === 'AbortError' || /abort/i.test(String(e.message || '')));
     return { ok: false, status: 0, data: { error: aborted ? 'timeout' : 'errNet' }, timeout: aborted };
+  } finally {
+    t.done();
   }
 }
 

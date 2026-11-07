@@ -18,6 +18,7 @@ import { DCard, MyNote, Question, shrink } from '../components/check/parts.jsx';
 import { useI18n, useDocTitle } from '../i18n/I18nProvider.jsx';
 import { CHECKED_ON, PAY_CHECKED, PAY_SRC } from '../i18n/core.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { isAndroidApp } from '../config/platform.js';
 import { useSummary } from '../context/SummaryContext.jsx';
 import {
   deadlineCompute, deadlineMessage, quizCompute, payoutCompute, payoutMessage,
@@ -135,7 +136,10 @@ export default function Check() {
   /* ---------- 단계 이동 ---------- */
   function go(s, focus) {
     const to = STEPS.indexOf(s) === -1 ? 'deadline' : s;
-    navigate({ pathname: loc.pathname, search: loc.search, hash: '#' + to }, { replace: true });
+    if (!isAndroidApp || loc.hash !== '#' + to) {
+      const replace = !isAndroidApp || !STEPS.includes(hashStep);
+      navigate({ pathname: loc.pathname, search: loc.search, hash: '#' + to }, { replace });
+    }
     if (focus && stepsRef.current) stepsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function move(dir) {
@@ -495,7 +499,7 @@ export default function Check() {
                   <Question n={2} legend="ckQ2" name="q2" opts={Q2} value={q.q2} onChange={(v) => setQ((x) => ({ ...x, q2: v }))} />
                   <Question n={3} legend="ckQ3" name="q3" opts={Q3} value={q.q3} onChange={(v) => setQ((x) => ({ ...x, q3: v }))} />
 
-                  <div className="upload">
+                  {!isAndroidApp && <div className="upload">
                     <label className="up-drop" htmlFor="docFile">
                       <span className="up-ic" aria-hidden="true">＋</span>
                       <span>{T.ckUpload}</span>
@@ -530,7 +534,7 @@ export default function Check() {
                         )}
                       </div>
                     )}
-                  </div>
+                  </div>}
 
                   <div className="form-actions">
                     <button type="submit" className="btn btn-go">{T.ckSubmit}</button>
@@ -758,7 +762,7 @@ export default function Check() {
                 <div className="wz-sum" id="wzSummary">
                   {step === 'result' && <SummaryRows rows={myRows(T, lang, sum, skip)} />}
                 </div>
-                {!me && (
+                {!isAndroidApp && !me && (
                   <p className="wz-login" id="wzLogin">
                     <span>{T.wzLoginHint}</span>
                     <Link className="btn btn-go btn-sm" to="/login?next=check">{T.myLoginBtn}</Link>

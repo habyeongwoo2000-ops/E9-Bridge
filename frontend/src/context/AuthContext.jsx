@@ -8,6 +8,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getJSON, postJSON } from '../lib/api.js';
 import { isLang, useI18n } from '../i18n/I18nProvider.jsx';
+import { isAndroidApp } from '../config/platform.js';
 
 const AuthCtx = createContext(null);
 
@@ -47,7 +48,11 @@ export function AuthProvider({ children }) {
   useEffect(() => { refresh(); }, [refresh]);
 
   const logout = useCallback(() => {
-    return postJSON('/api/auth', { action: 'logout' }).catch(() => {}).then(() => setMe(null));
+    return postJSON('/api/auth', { action: 'logout' }).then((out) => {
+      if (isAndroidApp && !out.ok) return false;
+      setMe(null);
+      return true;
+    });
   }, []);
 
   /* 로그인·회원가입 — 성공하면 user 를 돌려줍니다. 실패하면 error 키(errLoginFail 등). */

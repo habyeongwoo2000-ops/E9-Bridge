@@ -1,0 +1,68 @@
+.android-header {
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-2);
+  box-shadow: 0 4px 18px rgba(11, 45, 92, .06);
+}
+.android-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  min-height: 66px;
+}
+.android-header .brand-mark { width: 36px; height: 36px; }
+.android-header .lang select { min-height: 44px; max-width: 110px; }
+.android-header .auth-btn { min-height: 44px; height: auto; padding: .25rem .55rem; white-space: normal; text-align: center; }
+@media (max-width: 430px) {
+  .android-header-row { gap: .4rem; }
+  .android-header .brand { gap: .35rem; }
+  .android-header .brand-mark { width: 28px; height: 28px; }
+  .android-header .brand-text strong { font-size: 16px; }
+  .android-header .lang-label { display: none; }
+  .android-header .lang select { max-width: 95px; }
+}
+.android-app { --android-nav-space: calc(78px + env(safe-area-inset-bottom, 0px)); }
+.android-app #root { padding-bottom: var(--android-nav-space); }
+.android-app .to-top { bottom: calc(var(--android-nav-space) + 12px); }
+.android-nav {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 70;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -6px 24px rgba(11, 45, 92, .08);
+}
+.android-nav-items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.android-nav a {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: .15rem;
+  min-height: 72px;
+  padding: .35rem .25rem;
+  color: var(--ink-2);
+  font-size: .8125rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.android-nav a[aria-current="page"] { color: var(--navy); }
+.android-nav-icon { display: grid; place-items: center; width: 52px; height: 30px; border-radius: 999px; }
+.android-nav-icon svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+.android-nav a[aria-current="page"] .android-nav-icon { background: var(--blue-l); }
+.android-hero {
+  padding-block: clamp(3rem, 10vw, 7rem);
+  color: white;
+  background: linear-gradient(100deg, var(--navy-d), rgba(11, 45, 92, .62)),
+    url('/assets/itv-sohee.jpg') center 40% / cover;
+}
+.android-hero h1 { margin: 0; font-size: clamp(36px, 8vw, 68px); line-height: 1.1; }
+.android-hero p { margin: .75rem 0 0; color: var(--sky-2); }
+.android-home .android-services { padding-block: 2rem 3rem; }
+.android-services .svc-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.android-services .svc-list a { min-height: 104px; border-radius: var(--r); }
+.android-header ~ .subvis, .android-header ~ main .subvis { height: 88px; }
+.android-header ~ .subvis .wrap, .android-header ~ main .subvis .wrap { padding-bottom: 1rem; }
+.android-header ~ .page-head, .android-header ~ main .page-head { padding-top: 1.5rem; }

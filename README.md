@@ -130,3 +130,63 @@ Vercel 화면에서 따로 바꿀 것은 없습니다. (Framework Preset 이 다
 본명·여권번호·외국인등록번호·전화번호·이메일(소셜 로그인 포함)을 받지 않습니다.
 로그인하지 않으면 입력한 날짜는 기기 안에만 남습니다. 서류 사진은 읽는 동안만 쓰고 저장하지 않습니다.
 자세한 내용은 화면의 개인정보처리방침(`/privacy`)과 `docs/legacy-README.md` 를 보세요.
+
+## 생활 정보 · 귀국 및 정착 데모
+
+웹에서 `npm run dev:web`을 실행하고 `/nearby` 또는 `/guide`를 엽니다. 공통 메뉴에서도 접근할 수 있습니다.
+
+- 주변 검색은 안산의 예시 좌표를 사용합니다. 현재 위치 검색은 직선거리와 반경을 적용하고, 지역 직접 선택은 지정 지역의 장소를 표시합니다. 현재 위치는 검색 화면에서만 사용합니다.
+- 예시 레코드에는 실제 업체명과 전화번호가 없습니다. 지도 링크는 예시 지점을 열며, 전화 버튼은 데모를 끄고 확인된 연락처를 등록한 장소에서 표시됩니다.
+- 귀국·정착 체크 항목은 기기 내에 저장됩니다. 정산은 기존 `/check#payout`, 지역 지원은 `/notices`로 연결됩니다. 신규 화면의 한국어·영어·베트남어 문구를 제공하고 다른 언어에서는 영어를 사용합니다.
+
+운영 전에는 아래 순서로 준비합니다.
+
+1. **지역과 카테고리 선택** — `frontend/src/config/nearby.js`에서 지역, 활성 카테고리, 검색 반경, 최대 결과 수를 조정합니다.
+2. **장소 확인 및 교체** — `frontend/src/data/places.js`의 예시 레코드를 모두 교체하고 장소명(`name`), 지역, 좌표, 주소, 연락처(`phone`), 확인일(`checked`)을 확인한 뒤 데모 표시를 끕니다.
+3. **검색 공급자 결정** — 데모는 브라우저와 앱에 포함된 장소 목록을 검색합니다. 외부 지도 표시 또는 자동 장소 검색이 필요한 경우 공급자를 확정하고, 비밀 키가 필요한 조회는 서버에서 연결합니다. 현재 외부 지도 연결은 네이버 지도 검색 링크입니다.
+4. **귀국·정착 콘텐츠 확인** — `frontend/src/data/lifeGuide.js`의 안내 단계와 공식 출처를 검토하고 확인일을 기록합니다. 문구는 `frontend/src/i18n/life.js`에서 관리합니다.
+5. **Android 실기기 검증** — 아래 절차로 디버그 앱을 빌드하고 위치 권한과 외부 지도 링크를 확인합니다. 앱에서 기존 웹 로그인과 서버 기능을 제공하려면 배포 API 및 인증 복귀 흐름을 별도로 연결하고 검증합니다.
+
+### Android 데모 빌드
+
+프로젝트 루트에서 웹을 빌드한 뒤 Android 프로젝트를 동기화합니다. APK 빌드에는 Android SDK와 프로젝트 Gradle 요구사항에 맞는 JDK가 필요합니다.
+
+```powershell
+npm install
+npm run build
+Set-Location frontend
+npx cap sync android
+npx cap open android
+```
+
+Android Studio에서 실행하거나 `frontend/android`에서 `.\gradlew.bat assembleDebug`를 실행합니다. 위치 허용·거부, 지역 직접 선택, 외부 지도 열기, 체크리스트 유지 여부를 실기기에서 확인합니다.
+
+Android MVP는 전용 홈에서 근로·체류, 내 주변, 귀국·정착을 엽니다. Windows에서 이번 빌드에 사용한 JDK 21과 Android SDK는 `%LOCALAPPDATA%\E9Bridge-Android`에 있습니다. 새 PowerShell 창에서 아래처럼 현재 세션의 도구 경로를 지정한 뒤 빌드합니다.
+
+```powershell
+$androidTools = Join-Path $env:LOCALAPPDATA 'E9Bridge-Android'
+$env:JAVA_HOME = (Get-ChildItem $androidTools -Directory -Filter 'jdk-21*' | Select-Object -First 1).FullName
+$env:ANDROID_HOME = Join-Path $androidTools 'sdk'
+npm run build
+npm exec --workspace frontend -- cap sync android
+Set-Location frontend/android
+.\gradlew.bat assembleDebug
+& "$env:ANDROID_HOME/platform-tools/adb.exe" devices
+```
+
+APK는 `frontend/android/app/build/outputs/apk/debug/app-debug.apk`에 생성됩니다.
+
+### Codex CLI로 작업 이어가기
+
+[작업 인계 문서](docs/codex-handoff.md)에 검증 상태와 CLI가 실행할 현재 단계를 기록합니다. 프로젝트 루트에서 ChatGPT에 로그인된 Codex CLI로 실행합니다.
+
+```powershell
+# 별도 설치본이 없는 Windows 환경에서 최초 1회 실행
+npm install --prefix "$env:LOCALAPPDATA/E9Bridge-Codex" @openai/codex@0.167.0
+```
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-E9Codex.ps1
+```
+
+CLI가 JSON 이벤트로 사용 한도 오류를 보고하고 세션 ID를 저장한 경우, 실행 중인 스크립트는 기본 1시간 간격으로 같은 세션을 최대 6회 재시도합니다. 완료 또는 다른 오류에는 종료합니다. 중단 후 이어갈 때는 `.codex-run/session-id.txt`의 ID를 `-SessionId`로 지정합니다. 실행 로그는 `.codex-run`에 저장됩니다.
