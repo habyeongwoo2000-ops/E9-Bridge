@@ -8,6 +8,8 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import ExternalLink from '../components/ExternalLink.jsx';
+import { isAndroidApp } from '../config/platform.js';
 import SubVisual from '../components/SubVisual.jsx';
 import Pager from '../components/Pager.jsx';
 import { useI18n, useDocTitle } from '../i18n/I18nProvider.jsx';
@@ -191,7 +193,7 @@ export default function Notices() {
                     <div className="notice-body">
                       <ul>{(body.points || []).map((p, i) => <li key={i}>{p}</li>)}</ul>
                       {/* 챗봇으로 넘기는 버튼 — 2026-11 멘토링 의견으로 숨겨 둡니다(config/features.js). */}
-                      {FEATURES.noticeAsk && (
+                      {!isAndroidApp && FEATURES.noticeAsk && (
                         <Link className="btn btn-ghost btn-sm" to={'/ask?q=' + encodeURIComponent(body.title)}
                               onClick={() => sSet('eum.carryQ', body.title)}>{T.ntAskBtn}</Link>
                       )}
@@ -200,7 +202,7 @@ export default function Notices() {
                         {n.date && T.ntDateLabel && <span>{T.ntDateLabel + ': ' + n.date}</span>}
                         <span>{T.ntCheckedLabel + ': ' + n.checked}</span>
                         {n.until && <span>{T.ntUntil + ': ' + n.until}</span>}
-                        <a href={n.url} target="_blank" rel="noopener noreferrer">{T.ntOriginal}</a>
+                        <ExternalLink href={n.url}>{T.ntOriginal}</ExternalLink>
                       </div>
                     </div>
                   </article>

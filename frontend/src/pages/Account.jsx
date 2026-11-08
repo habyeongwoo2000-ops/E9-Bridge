@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import SubVisual from '../components/SubVisual.jsx';
 import BoardRow from '../components/BoardRow.jsx';
 import Pager from '../components/Pager.jsx';
+import FavoritePlaces from '../components/FavoritePlaces.jsx';
 import { AuthMsg } from '../components/auth/AuthShared.jsx';
 import { useI18n, useDocTitle } from '../i18n/I18nProvider.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -271,6 +272,7 @@ export default function Account() {
                   <AuthMsg msg={profileMsg} id="profileMsg" />
                 </form>
 
+                <FavoritePlaces key={me.username} username={me.username} />
                 <h3 className="ac-head">{T.acSecMyQ}</h3>
                 <p className="sec-lead">{T.acMyQLead}</p>
                 <MyQuestions />

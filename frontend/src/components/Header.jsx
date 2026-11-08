@@ -11,6 +11,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '../i18n/I18nProvider.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { FEATURES } from '../config/features.js';
+import { lifeLabels } from '../i18n/life.js';
 
 /* 주소의 첫 마디로 지금 위치를 정합니다. "/" 는 home. */
 function here(pathname) {
@@ -118,12 +119,12 @@ export default function Header({ menuOpen, setMenuOpen }) {
   };
 
   /* 메뉴 링크 하나 — 지금 있는 쪽이면 is-on + aria-current */
-  const nav = (to, key, extra) => {
+  const nav = (to, key, extra, label = T[key]) => {
     const name = to === '/' ? 'home' : to.split('/')[1];
     const on = name === cur;
     return (
       <Link to={to} className={on || extra ? 'is-on' : undefined} aria-current={on ? 'page' : undefined}
-            onClick={() => setMenuOpen(false)}>{T[key]}</Link>
+            onClick={() => setMenuOpen(false)}>{label}</Link>
     );
   };
   const inFaqGroup = cur === 'faq' || cur === 'board' || cur === 'ask';
@@ -143,6 +144,8 @@ export default function Header({ menuOpen, setMenuOpen }) {
         <nav className="secnav" id="siteNav" aria-label={T.navLabel} ref={siteNavRef}>
           <div className="secnav-in" id="secnav" ref={navInRef}>
             {nav('/check', 'navCheck')}
+            {nav('/guide', 'guide', false, lifeLabels(lang).guide)}
+            {nav('/nearby', 'nearby', false, lifeLabels(lang).nearby)}
             <DropItem active={inFaqGroup} trigger={(active) => (
               <Link to="/faq" className={active ? 'is-on' : undefined} aria-current={cur === 'faq' ? 'page' : undefined}
                     onClick={() => setMenuOpen(false)}>{T.navFaq}</Link>

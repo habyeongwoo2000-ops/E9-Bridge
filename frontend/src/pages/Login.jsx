@@ -11,10 +11,11 @@ import SubVisual from '../components/SubVisual.jsx';
 import { AuthMsg, SocialBox, nextName, nextPath } from '../components/auth/AuthShared.jsx';
 import { useI18n, useDocTitle } from '../i18n/I18nProvider.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { isAndroidApp } from '../config/platform.js';
 
 export default function Login() {
   const { T } = useI18n();
-  const { authSend } = useAuth();
+  const { authSend, ready } = useAuth();
   const loc = useLocation();
   const navigate = useNavigate();
   useDocTitle('authLoginTitle');
@@ -40,6 +41,7 @@ export default function Login() {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (busy || (isAndroidApp && !ready)) return;
     setBusy(true);
     setMsg({ key: 'authWorking', kind: null });
     const out = await authSend('login', { username: id.trim(), password: pw });
@@ -71,7 +73,7 @@ export default function Login() {
                        value={pw} onChange={(e) => setPw(e.target.value)} />
               </div>
               <div className="form-actions">
-                <button type="submit" className="btn btn-go" disabled={busy}>{T.authLoginBtn}</button>
+                <button type="submit" className="btn btn-go" disabled={busy || (isAndroidApp && !ready)}>{T.authLoginBtn}</button>
               </div>
               <AuthMsg msg={msg} />
             </form>

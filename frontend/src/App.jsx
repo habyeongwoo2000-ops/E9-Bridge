@@ -12,9 +12,13 @@ import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
 import { FEATURES } from './config/features.js';
+import { AndroidHome } from './components/AndroidShell.jsx';
+import { isAndroidApp } from './config/platform.js';
 
 const Home = lazy(() => import('./pages/Home.jsx'));
 const Check = lazy(() => import('./pages/Check.jsx'));
+const Nearby = lazy(() => import('./pages/Nearby.jsx'));
+const LifeGuide = lazy(() => import('./pages/LifeGuide.jsx'));
 const Notices = lazy(() => import('./pages/Notices.jsx'));
 const Legal = lazy(() => import('./pages/Legal.jsx'));
 const Faq = lazy(() => import('./pages/Faq.jsx'));
@@ -23,6 +27,7 @@ const Interviews = lazy(() => import('./pages/Interviews.jsx'));
 const Login = lazy(() => import('./pages/Login.jsx'));
 const Signup = lazy(() => import('./pages/Signup.jsx'));
 const Account = lazy(() => import('./pages/Account.jsx'));
+const AndroidAccount = lazy(() => import('./pages/AndroidAccount.jsx'));
 const Privacy = lazy(() => import('./pages/Privacy.jsx'));
 const Ask = lazy(() => import('./pages/Ask.jsx'));
 const Admin = lazy(() => import('./pages/Admin.jsx'));
@@ -51,11 +56,26 @@ export default function App() {
   return (
     <Suspense fallback={<div className="page-loading" aria-busy="true" />}>
       <Routes>
+        {isAndroidApp ? (
+          <Route element={<Layout />}>
+            <Route index element={<AndroidHome />} />
+            <Route path="check" element={<Check />} />
+            <Route path="nearby" element={<Nearby />} />
+            <Route path="guide" element={<LifeGuide />} />
+            <Route path="notices" element={<Notices />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="account" element={<AndroidAccount />} />
+            <Route path="*" element={<Navigate replace to="/" />} />
+          </Route>
+        ) : <>
         {/* 관리자 화면은 머리말·바닥글 없이 따로 둡니다(메뉴 어디에도 연결하지 않습니다). */}
         <Route path="/admin" element={<Admin />} />
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="check" element={<Check />} />
+          <Route path="nearby" element={<Nearby />} />
+          <Route path="guide" element={<LifeGuide />} />
           <Route path="reason" element={<Navigate replace to="/check#reason" />} />
           <Route path="payout" element={<Navigate replace to="/check#payout" />} />
           <Route path="notices" element={<Notices />} />
@@ -70,6 +90,7 @@ export default function App() {
           <Route path="ask" element={FEATURES.chatbot ? <Ask /> : <Navigate replace to="/faq" />} />
           <Route path="*" element={<Fallback />} />
         </Route>
+        </>}
       </Routes>
     </Suspense>
   );

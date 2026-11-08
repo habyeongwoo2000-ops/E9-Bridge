@@ -7,7 +7,7 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n/I18nProvider.jsx';
 
-export default function SubVisual({ crumbs = [], en, title }) {
+export default function SubVisual({ crumbs = [], en, title, label }) {
   const { T } = useI18n();
   return (
     <>
@@ -25,11 +25,12 @@ export default function SubVisual({ crumbs = [], en, title }) {
                 <span>{T[k]}</span>
               </Fragment>
             ))}
+            {label && <><span className="crumb-sep" aria-hidden="true" /><span>{label}</span></>}
           </nav>
           {en && <p className="subvis-en" aria-hidden="true">{en}</p>}
         </div>
       </div>
-      <div className="wrap page-head"><h1>{T[title]}</h1></div>
+      <div className="wrap page-head"><h1>{label || T[title]}</h1></div>
     </>
   );
 }

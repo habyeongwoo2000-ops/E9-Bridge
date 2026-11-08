@@ -5,6 +5,10 @@
 
 import { useI18n } from '../../i18n/I18nProvider.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { isAndroidApp } from '../../config/platform.js';
+import { webOrigin } from '../../lib/api.js';
+import ExternalLink from '../ExternalLink.jsx';
+import { lifeLabels } from '../../i18n/life.js';
 
 /* 예전 주소(account.html)로 온 값도 받되 .html 은 떼어 냅니다.
    그 밖의 값(다른 사이트 주소, 경로 문자 등)은 받지 않습니다 — 로그인 뒤 엉뚱한 곳으로 보내지 않게. */
@@ -16,7 +20,7 @@ export function nextName(search) {
 }
 
 export function nextPath(name) {
-  if (!name) return '/board';
+  if (!name) return isAndroidApp ? '/account' : '/board';
   if (name === 'index' || name === 'home') return '/';
   return '/' + name;
 }
@@ -24,9 +28,14 @@ export function nextPath(name) {
 /* 소셜 로그인 버튼 — 화면의 버튼은 그냥 서버 주소로 가는 링크입니다(자바스크립트가 필요 없습니다).
    ret 은 로그인을 마친 뒤 서버가 돌려보낼 화면 이름입니다. */
 export function SocialBox({ next }) {
-  const { T } = useI18n();
+  const { T, lang } = useI18n();
   const { methods } = useAuth();
   if (!methods || !methods.length) return null;
+  if (isAndroidApp) return (
+    <p className="auth-swap"><ExternalLink href={webOrigin + '/login?lang=' + encodeURIComponent(lang)}>
+      {lifeLabels(lang).webSocial}
+    </ExternalLink></p>
+  );
   const ret = encodeURIComponent(next || 'board');
   return (
     <div className="social" id="socialBox">

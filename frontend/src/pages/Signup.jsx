@@ -8,10 +8,11 @@ import SubVisual from '../components/SubVisual.jsx';
 import { AuthMsg, SocialBox, nextName, nextPath } from '../components/auth/AuthShared.jsx';
 import { useI18n, useDocTitle } from '../i18n/I18nProvider.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { isAndroidApp } from '../config/platform.js';
 
 export default function Signup() {
   const { T, lang } = useI18n();
-  const { authSend } = useAuth();
+  const { authSend, ready } = useAuth();
   const loc = useLocation();
   const navigate = useNavigate();
   useDocTitle('authSignupTitle');
@@ -27,6 +28,7 @@ export default function Signup() {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (busy || (isAndroidApp && !ready)) return;
     if (pw !== pw2) { setMsg({ key: 'errPwMatch', kind: 'bad' }); return; }
     if (pw.length < 8) { setMsg({ key: 'errPwRule', kind: 'bad' }); return; }
     setBusy(true);
@@ -67,7 +69,7 @@ export default function Signup() {
               </div>
               <p className="auth-safety">{T.authSafety}</p>
               <div className="form-actions">
-                <button type="submit" className="btn btn-go" disabled={busy}>{T.authSignupBtn}</button>
+                <button type="submit" className="btn btn-go" disabled={busy || (isAndroidApp && !ready)}>{T.authSignupBtn}</button>
               </div>
               <AuthMsg msg={msg} />
             </form>

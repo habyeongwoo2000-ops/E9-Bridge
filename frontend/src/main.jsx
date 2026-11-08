@@ -4,6 +4,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import App from './App.jsx';
 import { I18nProvider } from './i18n/I18nProvider.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
@@ -26,7 +27,7 @@ createRoot(document.getElementById('root')).render(
 
 /* 설치형 앱(PWA) — 서비스 워커를 등록합니다. 연결이 끊겨도 이미 연 화면과
    기한 계산은 계속 되고, 홈 화면에 추가할 수 있게 됩니다. 개발 서버에서는 켜지 않습니다. */
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+if ('serviceWorker' in navigator && import.meta.env.PROD && !Capacitor.isNativePlatform()) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch((e) => console.warn('service worker 등록 실패', e));
   });

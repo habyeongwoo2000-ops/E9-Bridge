@@ -12,18 +12,21 @@ import Footer from './Footer.jsx';
 import ToTop from './ToTop.jsx';
 import LangToast from './LangToast.jsx';
 import { useI18n } from '../i18n/I18nProvider.jsx';
+import { AndroidHeader, AndroidNavigation } from './AndroidShell.jsx';
+import { isAndroidApp } from '../config/platform.js';
 
 export default function Layout() {
   const { T, isDraft } = useI18n();
   const loc = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const isHome = loc.pathname === '/';
+  const isHome = !isAndroidApp && loc.pathname === '/';
 
   /* body 클래스 — CSS 가 이 이름으로 머리말 모양을 바꿉니다. */
   useEffect(() => {
     const b = document.body.classList;
     b.toggle('is-home', isHome);
     b.toggle('sub', !isHome);
+    b.toggle('android-app', isAndroidApp);
   }, [isHome]);
 
   useEffect(() => {
@@ -55,12 +58,12 @@ export default function Layout() {
   return (
     <>
       <a className="skip" href="#top">{T.skip}</a>
-      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      {isAndroidApp ? <AndroidHeader /> : <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />}
       <LangToast />
       {/* 검수 전 언어를 고르면 그 사실을 적어 둡니다. 영어로 남은 문장을 "내 언어로 확인했다"고 믿지 않게. */}
       {isDraft && <div className="draft-bar" id="draftBar">{T.draftNote || 'This language is a draft. Some sentences remain in English.'}</div>}
       <Outlet />
-      <Footer />
+      {isAndroidApp ? <AndroidNavigation /> : <Footer />}
       <ToTop />
     </>
   );
