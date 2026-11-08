@@ -12,6 +12,7 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { FEATURES } from '../config/features.js';
 import { lifeLabels } from '../i18n/life.js';
+import { recoLabels } from '../i18n/reco.js';
 
 /* 주소의 첫 마디로 지금 위치를 정합니다. "/" 는 home. */
 function here(pathname) {
@@ -144,6 +145,7 @@ export default function Header({ menuOpen, setMenuOpen }) {
         <nav className="secnav" id="siteNav" aria-label={T.navLabel} ref={siteNavRef}>
           <div className="secnav-in" id="secnav" ref={navInRef}>
             {nav('/check', 'navCheck')}
+            {nav('/recommend', 'navReco', false, recoLabels(lang).navReco)}
             {nav('/guide', 'guide', false, lifeLabels(lang).guide)}
             {nav('/nearby', 'nearby', false, lifeLabels(lang).nearby)}
             <DropItem active={inFaqGroup} trigger={(active) => (

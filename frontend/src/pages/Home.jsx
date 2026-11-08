@@ -19,6 +19,7 @@ import { FEATURES } from '../config/features.js';
 import { SNS } from '../components/Footer.jsx';
 import HeroSlider from '../components/home/HeroSlider.jsx';
 import ProblemSection from '../components/home/ProblemSection.jsx';
+import RecoTeaser from '../components/home/RecoTeaser.jsx';
 import NewsSection from '../components/home/NewsSection.jsx';
 import MyCard from '../components/home/MyCard.jsx';
 import FeatInterview from '../components/home/FeatInterview.jsx';
@@ -75,6 +76,7 @@ export default function Home() {
         </div>
       </section>
 
+      <RecoTeaser />
       <ProblemSection />
       <NewsSection />
 

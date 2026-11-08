@@ -19,6 +19,7 @@ const Home = lazy(() => import('./pages/Home.jsx'));
 const Check = lazy(() => import('./pages/Check.jsx'));
 const Nearby = lazy(() => import('./pages/Nearby.jsx'));
 const LifeGuide = lazy(() => import('./pages/LifeGuide.jsx'));
+const Recommend = lazy(() => import('./pages/Recommend.jsx'));
 const Notices = lazy(() => import('./pages/Notices.jsx'));
 const Legal = lazy(() => import('./pages/Legal.jsx'));
 const Faq = lazy(() => import('./pages/Faq.jsx'));
@@ -60,6 +61,7 @@ export default function App() {
           <Route element={<Layout />}>
             <Route index element={<AndroidHome />} />
             <Route path="check" element={<Check />} />
+            <Route path="recommend" element={<Recommend />} />
             <Route path="nearby" element={<Nearby />} />
             <Route path="guide" element={<LifeGuide />} />
             <Route path="notices" element={<Notices />} />
@@ -74,6 +76,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="check" element={<Check />} />
+          <Route path="recommend" element={<Recommend />} />
           <Route path="nearby" element={<Nearby />} />
           <Route path="guide" element={<LifeGuide />} />
           <Route path="reason" element={<Navigate replace to="/check#reason" />} />

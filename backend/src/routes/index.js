@@ -15,5 +15,6 @@ router.use('/qna-publish', require('./qnaPublish'));
 router.use('/ask', require('./ask'));
 router.use('/read-doc', require('./readDoc'));
 router.use('/oauth', require('./oauth'));
+router.use('/benefits', require('./benefits'));
 
 module.exports = router;

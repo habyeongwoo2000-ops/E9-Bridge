@@ -6,7 +6,7 @@
 
    ── 내 정보 한눈에 (로그인 개인화) ──
    GET  /api/account?part=summary                      → { summary }
-   POST /api/account { action:'summarySave', part, data } part = deadline | reason | payout
+   POST /api/account { action:'summarySave', part, data } part = deadline | reason | payout | reco
    POST /api/account { action:'summaryClear' }
    POST /api/account { action:'summaryMail', to, subject, text }
         저장한 요약을 본인 이메일로 보냅니다. 하루 5통까지. 주소는 저장하지 않습니다.
@@ -76,6 +76,20 @@ const CLEAN = {
       };
     }
     return Object.keys(out).length ? out : null;
+  },
+  /* 맞춤 지원 찾기 조건 — 정해 둔 값만 받습니다(화면 lib/reco.js 의 목록과 같음). */
+  reco: function (d) {
+    const SIDO = ['seoul', 'busan', 'daegu', 'incheon', 'daejeon', 'ulsan', 'sejong', 'gyeonggi', 'gangwon',
+      'chungbuk', 'chungnam', 'jeonbuk', 'jeonnamgwangju', 'gyeongbuk', 'gyeongnam', 'jeju'];
+    const many = (v, list) => (Array.isArray(v) ? v.filter((x) => list.indexOf(x) >= 0).slice(0, 12) : []);
+    const city = typeof d.city === 'string' && /^[가-힣]{1,8}$/.test(d.city) ? d.city : '';
+    return {
+      sido: pick(d.sido, SIDO), city: city,
+      ind: pick(d.ind, ['manu', 'agri', 'fish', 'build', 'service']),
+      stay: pick(d.stay, ['lt1', 'y1to4', 'y4plus']),
+      sits: many(d.sits, ['change', 'wage', 'hurt', 'housing', 'stay', 'return']),
+      needs: many(d.needs, ['counsel', 'korean', 'medical', 'shelter', 'emergency', 'visa', 'job', 'safety', 'life'])
+    };
   }
 };
 

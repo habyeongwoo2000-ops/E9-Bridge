@@ -48,7 +48,8 @@ const limits = {
   account: rateLimit('account', 30, MIN),    // 마이페이지 저장·메일: 1분 30번
   posts: rateLimit('posts', 10, MIN),        // 게시판 글·답변: 1분 10번
   qna: rateLimit('qna', 6, MIN),             // 질문 접수: 1분 6번
-  admin: rateLimit('admin', 10, MIN)         // 관리자 키 확인: 1분 10번
+  admin: rateLimit('admin', 10, MIN),        // 관리자 키 확인: 1분 10번
+  benefits: rateLimit('benefits', 30, MIN)   // 정부24 실시간 조회: 1분 30번 (결과는 6시간 캐시)
 };
 
 module.exports = { rateLimit, limits, clientIp };

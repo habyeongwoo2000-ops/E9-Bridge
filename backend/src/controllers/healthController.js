@@ -5,6 +5,7 @@
 const G = require('../services/gemini');
 const M = require('../services/mail');
 const O = require('../services/oauth');
+const GOV = require('../services/gov24');
 
 function handle(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -17,7 +18,8 @@ function handle(req, res) {
       session: !!(process.env.SESSION_SECRET && process.env.SESSION_SECRET.length >= 16),
       gemini: G.keyCount() > 0,
       mail: !!M.configured(),
-      oauth: O.enabledProviders()
+      oauth: O.enabledProviders(),
+      gov24: GOV.configured()
     }
   });
 }

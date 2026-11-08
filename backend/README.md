@@ -24,7 +24,8 @@ backend/
    │  ├─ gemini.js      Gemini 호출 (키 여러 개 순환, 모델 대체)
    │  ├─ kb.js          AI 답변 근거(지식베이스)
    │  ├─ qna.js         게시글 번역(등록·게시 때 1번만)
-   │  └─ mail.js        내 정보 요약 이메일 (Gmail SMTP / Resend)
+   │  ├─ mail.js        내 정보 요약 이메일 (Gmail SMTP / Resend)
+   │  └─ gov24.js       정부24 공공서비스 API (외국인 대상만 걸러 6시간 캐시)
    └─ middleware/
       ├─ securityHeaders.js   보안 헤더
       ├─ requestLogger.js     요청 기록 (쿼리·본문은 남기지 않음)
@@ -87,6 +88,7 @@ ask 20 · read-doc 8 · auth(POST) 20 · account(POST) 30 · posts(POST) 10 · q
 | `GEMINI_MODEL`, `GEMINI_MODELS` | 선택 | 모델 이름 / 대체 순서 |
 | `GEMINI_CALL_MS`, `GEMINI_TOTAL_MS` | 선택 | 호출 시간 제한(기본 12000 / 40000ms) |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | 메일 | Gmail: smtp.gmail.com / 465 / 주소 / 앱 비밀번호 |
+| `GOV24_API_KEY` | 맞춤 지원 실시간 | 공공데이터포털 "행정안전부_대한민국 공공서비스 정보" 일반 인증키(Decoding). 없으면 정부24 실시간 칸만 꺼짐 |
 | `MAIL_FROM` | 선택 | 보낸 사람 표시 |
 | `RESEND_API_KEY` | 선택 | SMTP 대신 Resend (도메인 인증 필요) |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | 소셜 | 없으면 구글 버튼이 숨습니다 |
