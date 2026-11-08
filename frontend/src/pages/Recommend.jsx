@@ -22,7 +22,7 @@ import { recoLabels, fill } from '../i18n/reco.js';
 import { isAndroidApp } from '../config/platform.js';
 import { currentPosition } from '../lib/location.js';
 import {
-  SIDO, CITIES, INDUSTRIES, STAYS, SITUATIONS, CATS, PROGRAMS,
+  SIDO, CITIES, CITY_COUNT, INDUSTRIES, STAYS, SITUATIONS, CATS, PROGRAMS,
   recommend, countBySido, alertsOf, markSeen, loadTrack, saveTrack, nearestSido, mapSearchUrl
 } from '../lib/reco.js';
 import '../styles/pages/reco.css';
@@ -131,7 +131,10 @@ export default function Recommend() {
                 <select value={profile.city} disabled={!profile.sido || !(CITIES[profile.sido] || []).length}
                         onChange={(e) => update({ city: e.target.value })}>
                   <option value="">{t.cityAny}</option>
-                  {(CITIES[profile.sido] || []).map((c) => <option key={c} value={c} lang="ko">{c}</option>)}
+                  {(CITIES[profile.sido] || []).map((c) => {
+                    const n = (CITY_COUNT[profile.sido] || {})[c];
+                    return <option key={c} value={c} lang="ko">{c}{n ? ' · ' + n : ''}</option>;
+                  })}
                 </select>
               </label>
             </div>

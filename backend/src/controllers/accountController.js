@@ -82,7 +82,7 @@ const CLEAN = {
     const SIDO = ['seoul', 'busan', 'daegu', 'incheon', 'daejeon', 'ulsan', 'sejong', 'gyeonggi', 'gangwon',
       'chungbuk', 'chungnam', 'jeonbuk', 'jeonnamgwangju', 'gyeongbuk', 'gyeongnam', 'jeju'];
     const many = (v, list) => (Array.isArray(v) ? v.filter((x) => list.indexOf(x) >= 0).slice(0, 12) : []);
-    const city = typeof d.city === 'string' && /^[가-힣]{1,8}$/.test(d.city) ? d.city : '';
+    const city = typeof d.city === 'string' && /^[가-힣]{1,6}( [가-힣]{1,6})?$/.test(d.city) ? d.city : '';
     return {
       sido: pick(d.sido, SIDO), city: city,
       ind: pick(d.ind, ['manu', 'agri', 'fish', 'build', 'service']),

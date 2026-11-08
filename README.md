@@ -36,12 +36,12 @@
 
 | 기능 | 하는 일 | 파일 |
 |---|---|---|
-| ① 맞춤 추천 | 시·도·시군구·업종·체류 기간·상황·관심 분야 → 최신 제도 179건 중 신청형 사업 142건에 점수 | `frontend/src/lib/reco.js` |
+| ① 맞춤 추천 | 시·도·시군구·업종·체류 기간·상황·관심 분야 → 최신 제도 179건 중 지금 시행 중인 신청형 사업에 점수(시행 전·추진 중인 제도는 빼고, 시행일이 지나면 저절로 들어감) | `frontend/src/lib/reco.js` |
 | ② 추천 근거 | 카드마다 ✓ 맞음 · ! 확인 필요 · ✕ 안 맞음 (규칙 엔진, AI 아님) | `components/reco/ProgramCard.jsx` |
 | ③ 알림 | 마감 14일 전 · 지난 방문 뒤 새로 생긴 사업 · 신청 진행 중, 브라우저 알림(하루 1번) | `pages/Recommend.jsx`, `components/reco/useRecoProfile.js` |
 | ④ 신청 체크리스트 | 전화 → 서류 → 방문 → 기록 + 가져갈 서류, 진행 상황(관심/신청함/받음) | `components/reco/ProgramCard.jsx` |
 | ⑤ 정부24 실시간 | 공공데이터포털 정부24 공공서비스 API → 외국인 대상만, 6시간 캐시 | `backend/src/services/gov24.js`, `GET /api/benefits?sido=` |
-| ⑥ 지역 지도 | 시·도마다 내 조건에 맞는 사업 수로 색칠, 누르면 그 지역, 내 위치로 찾기 | `components/reco/KoreaMap.jsx` |
+| ⑥ 지역 지도 | 시·군·구 전체 목록(`data/sigungu.js`) + 시·도마다 내 조건에 맞는 사업 수로 색칠, 누르면 그 지역, 내 위치로 찾기 | `components/reco/KoreaMap.jsx` |
 
 - 추천 데이터는 `frontend/src/data/notices.js` 를 그대로 읽습니다. **새 지자체 사업을 notices.js 에 넣으면 추천에도 자동으로 나옵니다.**
   분야(상담·한국어·의료…)·시군구·전화번호는 한국어 제목/내용에서 읽어 냅니다. 잘못 읽으면 `lib/reco.js` 위쪽 표(NATIONAL, CITY_EXTRA)를 고치세요.

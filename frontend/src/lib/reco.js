@@ -9,6 +9,7 @@
    ------------------------------------------------------------------ */
 
 import NOTICES from '../data/notices.js';
+import { SIGUNGU } from '../data/sigungu.js';
 import { fmt, today, asDay, diffDays } from './dates.js';
 import { load, save } from './storage.js';
 
@@ -43,18 +44,22 @@ const IND_RULES = [
 
 /* 사람이 신청하는 사업이 아닌 소식 */
 const POLICY_ONLY = /조례|설치 근거|운영 기관 선정|캠페인|개소$/;
+/* 아직 시행되지 않은 제도(개선 추진·예정·논의 중·입법예고)는 추천하지 않습니다. */
+const NOT_YET = /추진|예정|논의|입법예고|개정안|검토/;
 
 /* 전국 제도 가운데 근로자가 직접 쓸 수 있는 것만 골라 둡니다(나머지는 정책 소식).
-   cats·sit·ind 는 위 규칙으로 못 읽는 부분을 손으로 보탭니다. */
+   cats·sit·ind 는 위 규칙으로 못 읽는 부분을 손으로 보탭니다.
+   from: 시행일 — 그날이 되기 전에는 추천하지 않고, 지나면 저절로 추천에 나옵니다.
+   planned: 시행일이 정해지지 않은 개선 추진안 — 추천하지 않습니다. */
 const NATIONAL = {
   'n-no-report-2025': { cats: ['counsel'], sit: ['wage'] },
   'n-wage-guarantee-2026': { cats: ['counsel'], sit: ['wage'] },
-  'n-osh-workstop-2026': { cats: ['safety'], sit: ['hurt'] },
-  'n-safety-edu-2026': { cats: ['safety'] },
-  'n-housing-law-2026': { cats: ['shelter'], sit: ['housing'] },
-  'n-annual-leave-2026': { cats: ['counsel'] },
+  'n-osh-workstop-2026': { cats: ['safety'], sit: ['hurt'], from: '2027-01-28' },
+  'n-safety-edu-2026': { cats: ['safety'], from: '2027-01-08' },
+  'n-housing-law-2026': { cats: ['shelter'], sit: ['housing'], from: '2026-12-10' },
+  'n-annual-leave-2026': { cats: ['counsel'], from: '2027-06-10' },
   'n-kiip-decree-2026': { cats: ['korean', 'visa'], sit: ['stay'] },
-  'n-e74-reform-2026': { cats: ['visa'], sit: ['stay'] },
+  'n-e74-reform-2026': { cats: ['visa'], sit: ['stay'], planned: true },
   'n-e74-farm-2026': { cats: ['visa'], sit: ['stay'], ind: ['agri', 'fish'] },
   'n-construction-2026': { cats: ['counsel'], sit: ['change'], ind: ['build'] }
 };
@@ -69,27 +74,33 @@ const CITY_EXTRA = {
 /* 제목 첫 낱말이 시·군 이름에서 "시/군"이 빠진 경우 */
 const CITY_STEM = { 구미: '구미시', 경산: '경산시', 경주: '경주시', 칠곡: '칠곡군', 포항: '포항시', 성주: '성주군',
   김해: '김해시', 함안: '함안군', 거제: '거제시', 밀양: '밀양시', 속초: '속초시', 광주: '광주' };
-/* 큰 시 안의 구 → 프로필에서 큰 시를 골라도 맞게 */
-const CITY_PARENT = { 광산구: '광주' };
+/* 데이터의 이름 → 시·군·구 목록(data/sigungu.js)의 이름.
+   '광주'는 광주의 구 전체(광주 동구·서구·남구·북구·광산구)를 뜻합니다. */
+const CITY_CANON = { jeonnamgwangju: { 광산구: '광주 광산구' } };
+const canonCity = (region, c) => (CITY_CANON[region] && CITY_CANON[region][c]) || c;
+/* 사업이 열리는 곳(c)이 내가 고른 시·군·구(mine)에 해당하는지 */
+export const cityHits = (c, mine) => c === mine || mine.indexOf(c + ' ') === 0;
 const SIDO_KO = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주'];
-const SIGUNGU = /^[가-힣]+(시|군|구)$/;
+const SIGUNGU_RE = /^[가-힣]+(시|군|구)$/;
 
 function citiesOf(n) {
   if (CITY_EXTRA[n.key]) return CITY_EXTRA[n.key];
   if (!n.region) return [];
   const t = n.ko.title.split(/\s+/);
-  if (SIGUNGU.test(t[0]) && SIDO_KO.indexOf(t[0]) === -1) return [t[0]];
-  if (SIDO_KO.indexOf(t[0]) !== -1 && SIGUNGU.test(t[1] || '')) return [t[1]];
+  if (SIGUNGU_RE.test(t[0]) && SIDO_KO.indexOf(t[0]) === -1) return [t[0]];
+  if (SIDO_KO.indexOf(t[0]) !== -1 && SIGUNGU_RE.test(t[1] || '')) return [t[1]];
   if (CITY_STEM[t[0]] && !(t[0] === '광주' && n.region !== 'jeonnamgwangju')) return [CITY_STEM[t[0]]];
   return [];
 }
 
 const PHONE = /(?:^|[^\d])(1\d{3}-\d{4}|0\d{1,2}-\d{3,4}-\d{4}|13[45]\d)(?![\d-])/g;
 
-function metaOf(n) {
+function metaOf(n, nowStr) {
   const text = n.ko.title + ' ' + (n.ko.points || []).join(' ');
   const nat = NATIONAL[n.key];
   if (!n.region && !nat) return null;                         // 전국 정책 소식
+  if (nat && (nat.planned || (nat.from && nat.from > nowStr))) return null;   // 아직 시행 전
+  if (NOT_YET.test(n.ko.title)) return null;                  // 제목에 추진·예정·논의 중
   if (n.region && POLICY_ONLY.test(n.ko.title)) return null;   // 조례·개소 소식
   const cats = new Set(nat ? nat.cats : []);
   /* 제목에서 먼저 읽고, 제목만으로 모르면 내용까지 봅니다(내용은 곁가지 설명이 많아 분야가 부풀기 쉽습니다). */
@@ -103,25 +114,25 @@ function metaOf(n) {
   PHONE.lastIndex = 0;
   while ((m = PHONE.exec(text))) if (phones.indexOf(m[1]) === -1) phones.push(m[1]);
   return {
-    n, key: n.key, region: n.region || '', cities: citiesOf(n),
+    n, key: n.key, region: n.region || '', cities: citiesOf(n).map((c) => canonCity(n.region, c)),
     cats: [...cats], ind: [...ind], sit: (nat && nat.sit) || [], phones
   };
 }
 
 /* 프로그램 목록은 한 번만 만듭니다. */
-export const PROGRAMS = NOTICES.map(metaOf).filter(Boolean);
+const TODAY = fmt(today());
+export const PROGRAMS = NOTICES.map((n) => metaOf(n, TODAY)).filter(Boolean);
 
-/* 프로필 고르기 상자용: 시·도마다 데이터에 나오는 시·군·구 */
-export const CITIES = PROGRAMS.reduce((acc, p) => {
+/* 프로필 고르기 상자용: 시·도마다 시·군·구 전체(가나다순). 광주의 구는 앞에 모아 둡니다. */
+export const CITIES = Object.fromEntries(Object.entries(SIGUNGU).map(([k, list]) => [k,
+  list.slice().sort((a, b) => (b.indexOf('광주 ') === 0) - (a.indexOf('광주 ') === 0) || a.localeCompare(b, 'ko'))]));
+/* 시·군·구마다 그곳에서 열리는 사업 수 (고르기 상자에 함께 보여 줍니다) */
+export const CITY_COUNT = PROGRAMS.reduce((acc, p) => {
   if (!p.region) return acc;
-  const list = acc[p.region] || (acc[p.region] = []);
-  for (const c of p.cities) {
-    const name = CITY_PARENT[c] || c;
-    if (list.indexOf(name) === -1) list.push(name);
-  }
+  const m = acc[p.region] || (acc[p.region] = {});
+  for (const name of CITIES[p.region] || []) if (p.cities.some((c) => cityHits(c, name))) m[name] = (m[name] || 0) + 1;
   return acc;
 }, {});
-Object.values(CITIES).forEach((l) => l.sort((a, b) => a.localeCompare(b, 'ko')));
 
 /* ---------- 상황 → 더 챙길 분야 ---------- */
 const SIT_CATS = {
@@ -145,7 +156,7 @@ export function scoreProgram(p, profile, now = today()) {
     if (!pr.sido) reasons.push({ t: 'warn', k: 'rsRegionUnknown', v: { sido: p.region } });
     else if (pr.sido !== p.region) return null;
     else if (!p.cities.length) { score += 20; reasons.push({ t: 'ok', k: 'rsSido', v: { sido: p.region } }); }
-    else if (pr.city && p.cities.some((c) => c === pr.city || CITY_PARENT[c] === pr.city)) {
+    else if (pr.city && p.cities.some((c) => cityHits(c, pr.city))) {
       score += 40; reasons.push({ t: 'ok', k: 'rsCity', v: { city: pr.city } });
     } else {
       score -= 10; reasons.push({ t: 'warn', k: 'rsOtherCity', v: { city: p.cities.join('·') } });
