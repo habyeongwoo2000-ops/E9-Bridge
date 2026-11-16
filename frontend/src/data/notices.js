@@ -48,12 +48,178 @@
 
 const NOTICES = [
   {
+    key: 'n-coldwave-2026',
+    tagKey: 'eps',
+    source: '고용노동부 보도자료',
+    url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249',
+    date: '2026-11-13',
+    checked: '2026-11-16',
+    ko: { title: '한파 대비 노동자 건강보호 대책(11월 15일~3월 15일)',
+      points: [
+        '고용노동부가 범정부 한파 안전 대책기간(2026년 11월 15일~2027년 3월 15일) 동안 노동자 한랭질환 예방 대책을 시행합니다.',
+        '한파 안전 5대 기본수칙은 따뜻한 옷, 따뜻한 쉼터(휴식), 따뜻한 물, 작업시간대 조정, 119 신고입니다. 한파특보가 내리면 새벽 시간대 작업을 조정하도록 지도합니다.',
+        '외국인 고용 사업장 약 1만 곳과 외국인노동자지원센터·취업교육기관에 한랭질환 예방 가이드북 18개 언어 번역본을 나눠 줍니다.',
+        '한파 취약시기(12월~2월) 점검에서 농·축산업 외국인 고용 사업장 200곳은 지방정부와 함께 작업 시간대 조정과 숙소 난방·소방시설을 중점 확인합니다.',
+        '5대 기본수칙을 사업주 의무로 바꾸는 「산업안전보건기준에 관한 규칙」 개정은 입법예고(2026년 7월 14일~8월 24일)를 마치고 추진 중이며, 아직 시행 전입니다.'
+      ] },
+    en: { title: 'Cold-wave health protection for workers (15 Nov–15 Mar)',
+      points: [
+        'The Ministry of Employment and Labor is running measures to prevent cold-related illness during the government-wide cold-wave safety period (15 November 2026 – 15 March 2027).',
+        'The 5 basic cold-wave safety rules are: warm clothes, a warm shelter (rest), warm water, adjusted work hours, and calling 119. When a cold-wave warning is issued, workplaces will be guided to adjust early-morning work.',
+        'A cold-illness prevention guidebook translated into 18 languages will be handed out to about 10,000 workplaces employing foreigners, foreign worker support centers and pre-employment training institutions.',
+        'In inspections during the coldest months (December–February), 200 farming and livestock workplaces employing foreigners will be checked together with local governments, focusing on adjusted work hours and heating and fire safety in dormitories.',
+        'An amendment to the Rules on Occupational Safety and Health Standards to make the 5 rules a legal duty of employers has finished its pre-announcement (14 July – 24 August 2026) and is still in progress; it is not in force yet.'
+      ] },
+    vi: { title: 'Bảo vệ sức khỏe người lao động mùa rét (15/11–15/3)',
+      points: [
+        'Bộ Lao động và Việc làm triển khai biện pháp phòng bệnh do lạnh cho người lao động trong thời gian an toàn mùa rét của chính phủ (15/11/2026–15/3/2027).',
+        '5 quy tắc cơ bản khi rét đậm: quần áo ấm, nơi nghỉ ấm (nghỉ ngơi), nước ấm, điều chỉnh giờ làm và gọi 119. Khi có cảnh báo rét đậm, nơi làm việc sẽ được hướng dẫn điều chỉnh việc làm vào sáng sớm.',
+        'Sổ tay phòng bệnh do lạnh bản dịch 18 ngôn ngữ sẽ được phát cho khoảng 10.000 nơi làm việc có lao động nước ngoài, các trung tâm hỗ trợ lao động nước ngoài và cơ sở đào tạo trước khi làm việc.',
+        'Trong đợt kiểm tra thời kỳ rét nhất (tháng 12–tháng 2), 200 nơi làm việc nông nghiệp, chăn nuôi có lao động nước ngoài sẽ được kiểm tra cùng chính quyền địa phương, tập trung vào điều chỉnh giờ làm và sưởi ấm, phòng cháy ở chỗ ở.',
+        'Việc sửa Quy tắc về tiêu chuẩn an toàn và sức khỏe lao động để biến 5 quy tắc thành nghĩa vụ của chủ sử dụng đã xong giai đoạn thông báo dự thảo (14/7–24/8/2026) và đang được xúc tiến, chưa có hiệu lực.'
+      ] },
+    th: { title: 'มาตรการดูแลสุขภาพแรงงานช่วงอากาศหนาวจัด (15 พ.ย.–15 มี.ค.)',
+      points: [
+        'กระทรวงการจ้างงานและแรงงานดำเนินมาตรการป้องกันโรคจากความหนาวให้แรงงานในช่วงความปลอดภัยหน้าหนาวของรัฐบาล (15 พฤศจิกายน 2026 – 15 มีนาคม 2027)',
+        'กฎพื้นฐาน 5 ข้อช่วงอากาศหนาวจัด ได้แก่ เสื้อผ้าอบอุ่น ที่พักอบอุ่น (พักผ่อน) น้ำอุ่น ปรับเวลาทำงาน และโทร 119 เมื่อมีประกาศเตือนอากาศหนาวจัด จะแนะนำให้สถานประกอบการปรับงานช่วงเช้ามืด',
+        'แจกคู่มือป้องกันโรคจากความหนาวฉบับแปล 18 ภาษาให้สถานประกอบการที่จ้างชาวต่างชาติราว 10,000 แห่ง ศูนย์ช่วยเหลือแรงงานต่างชาติ และสถาบันอบรมก่อนเข้าทำงาน',
+        'ในการตรวจช่วงหนาวที่สุด (ธันวาคม–กุมภาพันธ์) สถานประกอบการเกษตรและปศุสัตว์ที่จ้างชาวต่างชาติ 200 แห่งจะถูกตรวจร่วมกับรัฐบาลท้องถิ่น โดยเน้นการปรับเวลาทำงาน และระบบทำความร้อนกับความปลอดภัยจากอัคคีภัยในที่พัก',
+        'การแก้ไขกฎว่าด้วยมาตรฐานความปลอดภัยและอาชีวอนามัยเพื่อให้กฎ 5 ข้อเป็นหน้าที่ของนายจ้าง ผ่านการประกาศร่างล่วงหน้า (14 กรกฎาคม – 24 สิงหาคม 2026) แล้วและยังอยู่ระหว่างดำเนินการ ยังไม่มีผลบังคับใช้'
+      ] },
+    id: { title: 'Perlindungan kesehatan pekerja saat cuaca sangat dingin (15 Nov–15 Mar)',
+      points: [
+        'Kementerian Ketenagakerjaan menjalankan langkah pencegahan penyakit akibat dingin bagi pekerja selama masa keselamatan musim dingin pemerintah (15 November 2026 – 15 Maret 2027).',
+        '5 aturan dasar saat cuaca sangat dingin: pakaian hangat, tempat istirahat hangat (istirahat), air hangat, penyesuaian jam kerja, dan menelepon 119. Bila ada peringatan cuaca sangat dingin, tempat kerja akan diarahkan menyesuaikan pekerjaan dini hari.',
+        'Buku panduan pencegahan penyakit akibat dingin terjemahan 18 bahasa akan dibagikan ke sekitar 10.000 tempat kerja yang mempekerjakan warga asing, pusat dukungan pekerja asing, dan lembaga pelatihan pra-kerja.',
+        'Dalam pemeriksaan masa paling dingin (Desember–Februari), 200 tempat kerja pertanian dan peternakan yang mempekerjakan warga asing akan diperiksa bersama pemerintah daerah, terutama penyesuaian jam kerja serta pemanas dan keselamatan kebakaran di asrama.',
+        'Perubahan Peraturan tentang Standar Keselamatan dan Kesehatan Kerja agar 5 aturan menjadi kewajiban pemberi kerja sudah selesai masa pra-pengumuman (14 Juli – 24 Agustus 2026) dan masih diproses; belum berlaku.'
+      ] }
+  },
+  {
+    key: 'l-jg-korean-special-2026-11',
+    tagKey: 'local',
+    region: 'jeonnamgwangju',
+    source: '전남광주외국인주민지원센터',
+    url: 'https://girc.or.kr/notice/318',
+    date: '2026-11-12',
+    checked: '2026-11-16',
+    until: '2026-11-22',
+    ko: { title: '외국인주민 한국어 특강(자모음·TOPIK I)',
+      points: [
+        '전남광주외국인주민지원센터가 한글을 처음 배우거나 TOPIK I(1~2급)을 준비하는 외국인 주민을 위해 주 1회, 4주 특강을 엽니다. 전남·광주에 사는 외국인 주민 누구나 신청할 수 있습니다.',
+        '자모음반: 11월 21일~12월 12일 매주 토요일 13:30~15:30. TOPIK I반: 11월 22일~12월 13일 매주 일요일 14:00~16:00. 장소는 센터 강의실입니다.',
+        '11월 12일부터 센터 공지의 온라인 신청으로 받으며 선착순으로 마감합니다(문의 외국인지원팀 1644-3828).'
+      ] },
+    en: { title: 'Special Korean classes for foreign residents (alphabet · TOPIK I)',
+      points: [
+        'The Jeonnam-Gwangju foreign resident support center is opening a 4-week special course, once a week, for foreign residents who are just starting Hangeul or preparing for TOPIK I (levels 1–2). Any foreign resident living in Jeonnam or Gwangju can apply.',
+        'Alphabet class: Saturdays 13:30–15:30, 21 November – 12 December. TOPIK I class: Sundays 14:00–16:00, 22 November – 13 December. Classes are in the center\'s classroom.',
+        'Applications are taken online through the center\'s notice from 12 November, first come, first served (contact: Foreigner Support Team 1644-3828).'
+      ] },
+    vi: { title: 'Lớp tiếng Hàn đặc biệt cho cư dân nước ngoài (chữ cái · TOPIK I)',
+      points: [
+        'Trung tâm hỗ trợ cư dân nước ngoài Jeonnam-Gwangju mở khóa đặc biệt 4 tuần, mỗi tuần 1 buổi, cho cư dân nước ngoài mới học Hangeul hoặc chuẩn bị TOPIK I (cấp 1–2). Mọi cư dân nước ngoài sống ở Jeonnam, Gwangju đều có thể đăng ký.',
+        'Lớp chữ cái: thứ Bảy 13:30–15:30, từ 21/11 đến 12/12. Lớp TOPIK I: Chủ nhật 14:00–16:00, từ 22/11 đến 13/12. Học tại phòng học của trung tâm.',
+        'Nhận đăng ký trực tuyến qua thông báo của trung tâm từ 12/11, ai đăng ký trước được nhận trước (liên hệ: Nhóm hỗ trợ người nước ngoài 1644-3828).'
+      ] },
+    th: { title: 'คอร์สพิเศษภาษาเกาหลีสำหรับชาวต่างชาติ (พยัญชนะ-สระ · TOPIK I)',
+      points: [
+        'ศูนย์ช่วยเหลือชาวต่างชาติชอนนัม-กวางจูเปิดคอร์สพิเศษ 4 สัปดาห์ สัปดาห์ละ 1 ครั้ง สำหรับชาวต่างชาติที่เพิ่งเริ่มเรียนอักษรฮันกึลหรือเตรียมสอบ TOPIK I (ระดับ 1–2) ชาวต่างชาติที่อาศัยในชอลลาใต้และควังจูสมัครได้ทุกคน',
+        'ชั้นพยัญชนะ-สระ: วันเสาร์ 13:30–15:30 ตั้งแต่ 21 พฤศจิกายน ถึง 12 ธันวาคม ชั้น TOPIK I: วันอาทิตย์ 14:00–16:00 ตั้งแต่ 22 พฤศจิกายน ถึง 13 ธันวาคม เรียนที่ห้องเรียนของศูนย์',
+        'รับสมัครออนไลน์ผ่านประกาศของศูนย์ตั้งแต่ 12 พฤศจิกายน ใครสมัครก่อนได้ก่อน (ติดต่อทีมช่วยเหลือชาวต่างชาติ 1644-3828)'
+      ] },
+    id: { title: 'Kelas khusus bahasa Korea untuk warga asing (huruf · TOPIK I)',
+      points: [
+        'Pusat warga asing Jeonnam-Gwangju membuka kursus khusus 4 minggu, seminggu sekali, untuk warga asing yang baru mulai belajar Hangeul atau bersiap TOPIK I (level 1–2). Semua warga asing yang tinggal di Jeonnam atau Gwangju dapat mendaftar.',
+        'Kelas huruf: Sabtu 13.30–15.30, 21 November – 12 Desember. Kelas TOPIK I: Minggu 14.00–16.00, 22 November – 13 Desember. Kelas di ruang belajar pusat.',
+        'Pendaftaran online lewat pengumuman pusat sejak 12 November, siapa cepat dia dapat (kontak: Tim Dukungan Warga Asing 1644-3828).'
+      ] }
+  },
+  {
+    key: 'l-gyeonggi-pyeongtaek-center-ord-2026',
+    tagKey: 'local',
+    region: 'gyeonggi',
+    source: '평택시조례 제2673호',
+    url: 'https://www.law.go.kr/LSW/ordinInfoP.do?ordinSeq=2177231',
+    date: '2026-10-08',
+    checked: '2026-11-16',
+    ko: { title: '평택시 외국인주민지원센터 설치 조례 제정',
+      points: [
+        '평택시가 2026년 10월 8일 외국인주민지원센터 설치 및 운영 조례를 제정·공포했습니다(평택시조례 제2673호). 공포한 날부터 시행합니다.',
+        '평택시에 사는 외국인과 그 가족이 센터를 이용할 수 있습니다. 조례가 정한 센터 위치는 평택로 71-7(평택동)입니다.',
+        '센터는 한국어·기초생활 적응교육, 생활·법률·노동 상담, 의료지원과 휴게시설 운영, 교육·문화·체육활동을 맡습니다. 문의: 평택시 여성보육과 031-8024-3056.'
+      ] },
+    en: { title: 'Pyeongtaek foreign residents support center ordinance enacted',
+      points: [
+        'Pyeongtaek City enacted and promulgated an ordinance on setting up and running a foreign residents support center on 8 October 2026 (Pyeongtaek Ordinance No. 2673). It took effect the same day.',
+        'Foreigners living in Pyeongtaek and their families can use the center. The ordinance places the center at 71-7 Pyeongtaek-ro (Pyeongtaek-dong).',
+        'The center provides Korean and basic daily-life classes, counseling on daily life, legal and labor issues, medical support and a rest area, and education, culture and sports activities. Contact: Pyeongtaek Women and Childcare Division 031-8024-3056.'
+      ] },
+    vi: { title: 'Pyeongtaek ban hành điều lệ lập trung tâm hỗ trợ cư dân nước ngoài',
+      points: [
+        'Thành phố Pyeongtaek ban hành và công bố điều lệ thành lập, vận hành trung tâm hỗ trợ cư dân nước ngoài ngày 8/10/2026 (Điều lệ Pyeongtaek số 2673), có hiệu lực ngay trong ngày.',
+        'Người nước ngoài sống ở Pyeongtaek và gia đình có thể sử dụng trung tâm. Theo điều lệ, trung tâm đặt tại 71-7 Pyeongtaek-ro (Pyeongtaek-dong).',
+        'Trung tâm dạy tiếng Hàn và kỹ năng sống cơ bản, tư vấn đời sống, pháp lý, lao động, hỗ trợ y tế và nơi nghỉ, cùng hoạt động giáo dục, văn hóa, thể thao. Liên hệ: Phòng Phụ nữ và Chăm sóc trẻ TP Pyeongtaek 031-8024-3056.'
+      ] },
+    th: { title: 'พย็องแทกออกข้อบัญญัติจัดตั้งศูนย์ช่วยเหลือผู้พำนักชาวต่างชาติ',
+      points: [
+        'เมืองพย็องแทกออกและประกาศใช้ข้อบัญญัติว่าด้วยการจัดตั้งและดำเนินงานศูนย์ช่วยเหลือผู้พำนักชาวต่างชาติเมื่อ 8 ตุลาคม 2026 (ข้อบัญญัติพย็องแทกฉบับที่ 2673) มีผลวันเดียวกัน',
+        'ชาวต่างชาติที่อาศัยในพย็องแทกและครอบครัวใช้บริการศูนย์ได้ ข้อบัญญัติกำหนดที่ตั้งศูนย์ไว้ที่ 71-7 พย็องแทก-โร (พย็องแทก-ดง)',
+        'ศูนย์สอนภาษาเกาหลีและการใช้ชีวิตพื้นฐาน ให้คำปรึกษาเรื่องชีวิตประจำวัน กฎหมาย และแรงงาน สนับสนุนการแพทย์และที่พักผ่อน และจัดกิจกรรมการศึกษา วัฒนธรรม กีฬา ติดต่อ: ฝ่ายสตรีและการดูแลเด็ก เมืองพย็องแทก 031-8024-3056'
+      ] },
+    id: { title: 'Perda pusat dukungan warga asing Pyeongtaek diterbitkan',
+      points: [
+        'Kota Pyeongtaek menerbitkan dan mengundangkan perda pendirian dan pengelolaan pusat dukungan warga asing pada 8 Oktober 2026 (Perda Pyeongtaek No. 2673), berlaku pada hari yang sama.',
+        'Warga asing yang tinggal di Pyeongtaek dan keluarganya dapat memakai pusat ini. Menurut perda, pusat berada di 71-7 Pyeongtaek-ro (Pyeongtaek-dong).',
+        'Pusat menyediakan kelas bahasa Korea dan adaptasi hidup dasar, konsultasi kehidupan sehari-hari, hukum, dan ketenagakerjaan, dukungan kesehatan dan tempat istirahat, serta kegiatan pendidikan, budaya, dan olahraga. Kontak: Divisi Perempuan dan Pengasuhan Anak Kota Pyeongtaek 031-8024-3056.'
+      ] }
+  },
+  {
+    key: 'l-gyeongnam-geoje-worker-center-ord-2026',
+    tagKey: 'local',
+    region: 'gyeongnam',
+    source: '거제시조례 제2416호',
+    url: 'https://www.law.go.kr/LSW/ordinInfoP.do?ordinSeq=2170203',
+    date: '2026-09-23',
+    checked: '2026-11-16',
+    ko: { title: '거제시 외국인노동자 지원센터 설치 조례 제정',
+      points: [
+        '거제시가 2026년 9월 23일 외국인노동자 지원센터 설치 및 운영에 관한 조례를 제정·공포했습니다(거제시조례 제2416호). 공포한 날부터 시행합니다.',
+        '거제시에 살면서 시내 사업장에서 일하거나 일하려는 사람 중 취업할 수 있는 체류자격을 가진 외국인노동자가 대상이라 E-9 근로자도 포함됩니다.',
+        '시는 센터를 설치·운영할 수 있고, 센터는 지역생활 적응 지원과 인권·권익 보호 사업 등을 맡습니다. 운영은 비영리 법인·단체에 맡길 수 있습니다. 센터 위치와 문을 여는 날은 조례에 없습니다. 문의: 거제시 조선지원과 055-639-4662.'
+      ] },
+    en: { title: 'Geoje foreign worker support center ordinance enacted',
+      points: [
+        'Geoje City enacted and promulgated an ordinance on setting up and running a foreign worker support center on 23 September 2026 (Geoje Ordinance No. 2416). It took effect the same day.',
+        'It covers foreign workers who live in Geoje, work or want to work at a workplace in the city, and hold a status of stay that allows employment, so E-9 workers are included.',
+        'The city may set up and run the center, which will support adjustment to local life and protect workers\' human rights and interests. Its operation may be entrusted to a non-profit corporation or group. The ordinance does not give the center\'s location or opening date. Contact: Geoje Shipbuilding Support Division 055-639-4662.'
+      ] },
+    vi: { title: 'Geoje ban hành điều lệ lập trung tâm hỗ trợ lao động nước ngoài',
+      points: [
+        'Thành phố Geoje ban hành và công bố điều lệ thành lập, vận hành trung tâm hỗ trợ lao động nước ngoài ngày 23/9/2026 (Điều lệ Geoje số 2416), có hiệu lực ngay trong ngày.',
+        'Đối tượng là lao động nước ngoài sống ở Geoje, đang làm hoặc muốn làm việc tại nơi làm việc trong thành phố và có tư cách lưu trú được phép làm việc, nên lao động E-9 cũng thuộc đối tượng.',
+        'Thành phố có thể lập và vận hành trung tâm; trung tâm hỗ trợ thích nghi cuộc sống địa phương và bảo vệ nhân quyền, quyền lợi. Có thể giao cho pháp nhân, tổ chức phi lợi nhuận vận hành. Điều lệ không ghi địa điểm và ngày mở cửa. Liên hệ: Phòng Hỗ trợ đóng tàu TP Geoje 055-639-4662.'
+      ] },
+    th: { title: 'คอเจออกข้อบัญญัติจัดตั้งศูนย์ช่วยเหลือแรงงานต่างชาติ',
+      points: [
+        'เมืองคอเจออกและประกาศใช้ข้อบัญญัติว่าด้วยการจัดตั้งและดำเนินงานศูนย์ช่วยเหลือแรงงานต่างชาติเมื่อ 23 กันยายน 2026 (ข้อบัญญัติคอเจฉบับที่ 2416) มีผลวันเดียวกัน',
+        'ครอบคลุมแรงงานต่างชาติที่อาศัยในคอเจ ทำงานหรือต้องการทำงานในสถานประกอบการในเมือง และมีสถานะพำนักที่ทำงานได้ แรงงาน E-9 จึงรวมอยู่ด้วย',
+        'เมืองจัดตั้งและดำเนินงานศูนย์ได้ ศูนย์ช่วยปรับตัวกับชีวิตในท้องถิ่นและคุ้มครองสิทธิมนุษยชนและสิทธิประโยชน์ และมอบให้นิติบุคคลหรือองค์กรไม่แสวงกำไรดำเนินงานได้ ข้อบัญญัติไม่ได้ระบุที่ตั้งและวันเปิดศูนย์ ติดต่อ: ฝ่ายสนับสนุนการต่อเรือ เมืองคอเจ 055-639-4662'
+      ] },
+    id: { title: 'Perda pusat dukungan pekerja asing Geoje diterbitkan',
+      points: [
+        'Kota Geoje menerbitkan dan mengundangkan perda pendirian dan pengelolaan pusat dukungan pekerja asing pada 23 September 2026 (Perda Geoje No. 2416), berlaku pada hari yang sama.',
+        'Sasarannya pekerja asing yang tinggal di Geoje, bekerja atau ingin bekerja di tempat kerja di kota itu, dan memiliki status tinggal yang boleh bekerja, sehingga pekerja E-9 termasuk.',
+        'Kota dapat mendirikan dan mengelola pusat ini, yang membantu adaptasi hidup di daerah serta melindungi hak asasi dan kepentingan pekerja. Pengelolaannya dapat diserahkan ke badan hukum atau kelompok nirlaba. Perda tidak mencantumkan lokasi dan tanggal pembukaan pusat. Kontak: Divisi Dukungan Industri Perkapalan Kota Geoje 055-639-4662.'
+      ] }
+  },
+  {
     key: 'n-round5-2026',
     tagKey: 'eps',
     source: '고용노동부 보도자료',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20243',
     date: '2026-11-12',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2026년 5회차 고용허가 6,699명 배정',
       points: [
         '올해 마지막인 5회차 신규 고용허가 신청을 11월 23일부터 27일까지 받습니다.',
@@ -96,7 +262,7 @@ const NOTICES = [
     source: '고용노동부 AI 노동법 상담',
     url: 'https://ai.moel.go.kr',
     date: '2026-11-10',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: 'AI 노동법 상담 34개 언어 지원',
       points: [
         '고용노동부 AI 노동법 상담(ai.moel.go.kr)은 노동법 질문에 24시간 답하는 서비스입니다. 최신 노동법·판례·행정해석을 근거로 답합니다.',
@@ -134,7 +300,7 @@ const NOTICES = [
     source: '고용노동부 보도자료(관계부처 합동)',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20160',
     date: '2026-10-29',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '퇴직급여 사외적립 단계적 의무화 추진',
       points: [
         '정부가 모든 사업장이 퇴직급여를 회사 밖 금융기관 등에 미리 쌓아 두도록 하는 방안을 발표했습니다. 퇴직금 체불을 막기 위한 것입니다.',
@@ -177,7 +343,7 @@ const NOTICES = [
     source: '고용노동부 보도자료 · 산업안전보건법',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20147',
     date: '2026-10-27',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '작업중지권 확대·안전 위반 신고 포상금 신설',
       points: [
         '개정 산업안전보건법(법률 제22122호)이 2026년 10월 27일 공포됐습니다.',
@@ -220,7 +386,7 @@ const NOTICES = [
     source: '법무부 보도자료',
     url: 'https://www.moj.go.kr/bbs/moj/182/611577/artclView.do',
     date: '2026-10-22',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '숙련기능인력(E-7-4) 제도 개선 추진',
       points: [
         '법무부가 E-9 근로자가 E-7-4로 바꾸는 길을 넓히는 개선안을 발표했습니다.',
@@ -269,7 +435,7 @@ const NOTICES = [
     sourceL: { en: 'News report (Segye Ilbo, 2026-10-18) · Ministry of Employment and Labor', vi: 'Báo chí (Segye Ilbo, 2026-10-18) · Bộ Việc làm và Lao động', id: 'Pemberitaan media (Segye Ilbo, 2026-10-18) · Kementerian Ketenagakerjaan', km: 'របាយការណ៍សារព័ត៌មាន (Segye Ilbo, 2026-10-18) · ក្រសួងការងារកូរ៉េ', ne: 'समाचार रिपोर्ट (Segye Ilbo, 2026-10-18) · रोजगार तथा श्रम मन्त्रालय' },
     url: 'https://www.segye.com/newsView/20261018513197',
     date: '2026-10-18',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: 'E-9 숙련도별 3단계 개편안 논의 중',
       points: [
         '고용노동부가 E-9을 숙련도에 따라 3단계로 나누는 안을 냈다고 보도됐습니다. 단계별 최장 체류는 6년, 12년, 기한 없음입니다.',
@@ -326,7 +492,7 @@ const NOTICES = [
     source: '고용노동부 보도자료 · 산업재해보상보험법',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20214',
     date: '2026-09-29',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '산재보상 무료 대리인 지원 신설(2027년 3월 시행)',
       points: [
         '산업재해보상보험법 개정안이 2026년 9월 29일 공포됐습니다(법률 제22025호). 2027년 3월 30일부터 시행합니다.',
@@ -369,7 +535,7 @@ const NOTICES = [
     source: '고용노동부 보도자료',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19873',
     date: '2026-09-03',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2026년 4회차 고용허가 1만 2,357명 배정',
       points: [
         '올해 네 번째 신규 고용허가 신청을 9월 14일부터 29일까지 받았습니다.',
@@ -413,7 +579,7 @@ const NOTICES = [
     sourceL: { en: 'Foreign Workforce Policy Committee · Ministry of Employment and Labor', vi: 'Ủy ban Chính sách Nhân lực Nước ngoài · Bộ Việc làm và Lao động', id: 'Komite Kebijakan Tenaga Kerja Asing · Kementerian Ketenagakerjaan', km: 'គណៈកម្មាធិការគោលនយោបាយកម្លាំងពលកម្មបរទេស · ក្រសួងការងារកូរ៉េ', ne: 'विदेशी जनशक्ति नीति समिति · रोजगार तथा श्रम मन्त्रालय' },
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19786',
     date: '2026-08-14',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '카자흐스탄 송출국 추가',
       points: [
         '제49차 외국인력정책위원회에서 카자흐스탄을 새 송출국으로 지정했습니다.',
@@ -457,7 +623,7 @@ const NOTICES = [
     sourceL: { en: 'Local Employment Center notice (2026-09-10) · News reports', vi: 'Thông báo của Trung tâm việc làm khu vực (2026-09-10) · Báo chí', id: 'Pemberitahuan Pusat Ketenagakerjaan setempat (2026-09-10) · Pemberitaan media', km: 'សេចក្តីជូនដំណឹងរបស់មជ្ឈមណ្ឌលការងារក្នុងតំបន់ (2026-09-10) · របាយការណ៍សារព័ត៌មាន', ne: 'स्थानीय रोजगार केन्द्रको सूचना (2026-09-10) · समाचार रिपोर्ट' },
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19786',
     date: '2026-08-14',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '건설업 현장 간 이동 요건 완화',
       points: [
         '건설업 E-9 근로자가 같은 사업주의 다른 공사 현장으로 옮기는 요건이 완화됐습니다.',
@@ -515,7 +681,7 @@ const NOTICES = [
     sourceL: { en: 'Ministry of Employment and Labor notice (2026-08-05) · Minimum Wage Commission', vi: 'Thông báo của Bộ Việc làm và Lao động (2026-08-05) · Ủy ban Lương tối thiểu', id: 'Pengumuman Kementerian Ketenagakerjaan (2026-08-05) · Komisi Upah Minimum', km: 'សេចក្តីប្រកាសរបស់ក្រសួងការងារកូរ៉េ (2026-08-05) · គណៈកម្មការប្រាក់ឈ្នួលអប្បបរមា', ne: 'रोजगार तथा श्रम मन्त्रालयको सूचना (2026-08-05) · न्यूनतम पारिश्रमिक आयोग' },
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19744',
     date: '2026-08-05',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2027년 최저임금 시급 10,700원',
       points: [
         '고용노동부가 2027년 최저임금을 시간급 10,700원으로 고시했습니다. 2026년보다 380원(3.7%) 오른 금액입니다.',
@@ -572,7 +738,7 @@ const NOTICES = [
     source: '고용노동부 2026 업무보고 · 언론 보도',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18725',
     date: '2025-12-11',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '출국 없는 장기근속·장기체류 허용 추진',
       points: [
         '고용노동부는 2026년 업무보고(2025년 12월 11일)에서 E-9 근로자가 출국·재입국 없이 오래 일하고 머물 수 있게 하겠다고 밝혔습니다.',
@@ -610,7 +776,7 @@ const NOTICES = [
     source: '법무부 보도자료',
     url: 'https://www.moj.go.kr/bbs/moj/182/607092/artclView.do',
     date: '2026-06-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '농축어업 E-7-4 고용 한도 50% 확대',
       points: [
         '농축어업 사업장이 숙련기능인력(E-7-4)을 고용할 수 있는 한도가 내국인 고용 인원의 30%에서 최대 50%로 늘었습니다.',
@@ -653,7 +819,7 @@ const NOTICES = [
     source: '관계부처 합동 발표 · 언론 보도',
     url: 'https://www.etoday.co.kr/news/view/2580776',
     date: '2026-04-30',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '사업장 이동 제한 완화 논의 중',
       points: [
         '정부가 \'외국인력 통합지원 로드맵 추진방향\'을 발표하고, 사업장 이동의 사유·횟수·권역 제한을 완화하는 방안을 검토한다고 밝혔습니다.',
@@ -697,7 +863,7 @@ const NOTICES = [
     sourceL: { en: 'Foreign Workforce Policy Committee · Ministry of Employment and Labor', vi: 'Ủy ban Chính sách Nhân lực Nước ngoài · Bộ Việc làm và Lao động', id: 'Komite Kebijakan Tenaga Kerja Asing · Kementerian Ketenagakerjaan', km: 'គណៈកម្មាធិការគោលនយោបាយកម្លាំងពលកម្មបរទេស · ក្រសួងការងារកូរ៉េ', ne: 'विदेशी जनशक्ति नीति समिति · रोजगार तथा श्रम मन्त्रालय' },
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18774',
     date: '2025-12-22',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2026년 신규 도입 인원 축소 (8만 명)',
       points: [
         '2026년 고용허가제(E-9) 쿼터가 8만 명으로 정해졌습니다.',
@@ -754,7 +920,7 @@ const NOTICES = [
     source: '외국인력정책위원회 · 고용노동부',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18774',
     date: '2025-12-22',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '곡물 재배업 외국인 고용 허용',
       points: [
         '벼·보리·밀·수수·감자 같은 곡물 재배 농가도 E-9 외국인을 고용할 수 있게 됐습니다.',
@@ -798,7 +964,7 @@ const NOTICES = [
     sourceL: { en: 'Foreign Workforce Policy Committee · Ministry of Employment and Labor', vi: 'Ủy ban Chính sách Nhân lực Nước ngoài · Bộ Việc làm và Lao động', id: 'Komite Kebijakan Tenaga Kerja Asing · Kementerian Ketenagakerjaan', km: 'គណៈកម្មាធិការគោលនយោបាយកម្លាំងពលកម្មបរទេស · ក្រសួងការងារកូរ៉េ', ne: 'विदेशी जनशक्ति नीति समिति · रोजगार तथा श्रम मन्त्रालय' },
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18774',
     date: '2025-12-22',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '비수도권 제조업 고용 한도 확대',
       points: [
         '비수도권 제조업체가 외국인을 추가로 고용할 수 있는 한도가 내국인 대비 20%에서 30%로 올랐습니다.',
@@ -848,7 +1014,7 @@ const NOTICES = [
     source: '외국인력정책위원회 · 고용노동부',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18774',
     date: '2025-12-22',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '조선업 별도 쿼터 종료',
       points: [
         '2023년 4월부터 한시로 운영된 조선업 별도 쿼터가 2025년 말로 끝났습니다.',
@@ -887,7 +1053,7 @@ const NOTICES = [
     sourceL: { en: 'Ministry of Employment and Labor notice · Minimum Wage Commission', vi: 'Thông báo của Bộ Việc làm và Lao động · Ủy ban Lương tối thiểu', id: 'Pengumuman Kementerian Ketenagakerjaan · Komisi Upah Minimum', km: 'សេចក្តីប្រកាសរបស់ក្រសួងការងារកូរ៉េ · គណៈកម្មការប្រាក់ឈ្នួលអប្បបរមា', ne: 'रोजगार तथा श्रम मन्त्रालयको सूचना · न्यूनतम पारिश्रमिक आयोग' },
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18144',
     date: '2025-08-05',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2026년 최저임금 시급 10,320원',
       points: [
         '2026년 1월 1일부터 12월 31일까지 시간급 10,320원이 적용됩니다.',
@@ -945,7 +1111,7 @@ const NOTICES = [
     source: '서울특별시 · 서울외국인포털',
     url: 'https://news.seoul.go.kr/welfare/archives/144416',
     date: '2026-03-16',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민센터 상담·한국어 교육',
       points: [
         '서울시가 운영하는 외국인주민센터에서 상담, 한국어·컴퓨터 교육, 의료 지원을 받을 수 있습니다.',
@@ -984,7 +1150,7 @@ const NOTICES = [
     source: '인천광역시 · 인천외국인근로자지원센터',
     url: 'https://www.icff.or.kr/',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자지원센터 상담·교육·무료진료',
       points: [
         '생활·노무·법률 상담(방문·전화)과 한국어·정보화·산업안전 교육, 무료진료를 제공합니다.',
@@ -1023,7 +1189,7 @@ const NOTICES = [
     source: '경기도 · 경기도이민사회통합지원센터',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '이민사회통합지원센터 법률·노무 다국어 상담',
       points: [
         '노무사·변호사의 법률·노무 상담과 생활 민원 다국어 상담을 제공합니다.',
@@ -1062,7 +1228,7 @@ const NOTICES = [
     source: '경기도 이민사회정책과 · 언론 보도',
     url: 'https://www.newsis.com/view/NISX20260513_0003627749',
     date: '2026-05-13',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인노동자 쉼터 지원',
       points: [
         '실직이나 재해로 갈 곳이 없는 외국인 노동자가 잠시 머무는 쉼터를 경기도가 지원합니다.',
@@ -1101,7 +1267,7 @@ const NOTICES = [
     source: '강원특별자치도 지역소멸대응정책관',
     url: 'https://state.gwd.go.kr/portal/bulletin/notification?articleSeq=268522',
     date: '2026-03-04',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-12-31',
     ko: { title: '숙련기능인력(E-7-4) 비자 전환 추천',
       points: [
@@ -1141,7 +1307,7 @@ const NOTICES = [
     source: '대전광역시 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493578/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 통합지원센터 상담·한국어 교실',
       points: [
         '대전시가 운영하는 외국인주민 통합지원센터에서 한국어 교실과 생활 적응 교육을 들을 수 있습니다.',
@@ -1180,7 +1346,7 @@ const NOTICES = [
     source: '대전광역시 일자리경제정책과 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493578/download.do',
     date: '2026-02-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-12-31',
     ko: { title: '숙련기능인력(E-7-4·E-7-4R) 비자 전환 추천',
       points: [
@@ -1220,7 +1386,7 @@ const NOTICES = [
     source: '세종특별자치시 기업지원과 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493580/download.do',
     date: '2026-02-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자 한국어·생활법률 교육',
       points: [
         '세종이주노동자복지센터에서 외국인근로자를 위한 한국어 교육, 문화 체험, 기초 생활법률 교육을 합니다.',
@@ -1259,7 +1425,7 @@ const NOTICES = [
     source: '충청북도 외국인정책추진단 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493586/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-12-31',
     ko: { title: '지역특화형 숙련기능인력(E-7-4R) 추천',
       points: [
@@ -1299,7 +1465,7 @@ const NOTICES = [
     source: '충청북도 외국인정책추진단 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493586/download.do',
     date: '2026-03-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자 한국어·정보화·문화 교육',
       points: [
         '충북도가 지원하는 외국인 지원기관에서 한국어, 정보화, 문화 교육과 지역 탐방 행사를 엽니다.',
@@ -1338,7 +1504,7 @@ const NOTICES = [
     source: '충청남도 외국인정책과 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493587/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자 쉼터(천안·당진)',
       points: [
         '사업장을 옮기는 고용허가제 근로자에게 다시 취업할 때까지 숙식을 제공합니다.',
@@ -1377,7 +1543,7 @@ const NOTICES = [
     source: '충청남도 외국인정책과 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493587/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자지원센터 6곳 상담',
       points: [
         '천안, 아산, 서산, 당진, 서천, 홍성의 외국인근로자지원센터 6곳을 충남도가 지원합니다.',
@@ -1416,7 +1582,7 @@ const NOTICES = [
     source: '대구광역시 고용노동정책과 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493575/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '대구·달성 외국인근로자지원센터 상담·교육',
       points: [
         '대구외국인근로자지원센터와 달성외국인근로자지원센터에서 고충 상담(방문·전화)을 받을 수 있습니다.',
@@ -1455,7 +1621,7 @@ const NOTICES = [
     source: '대구광역시 정책기획관 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493575/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-12-31',
     ko: { title: '지역특화형 숙련기능인력(E-7-4R) 추천(서구·남구)',
       points: [
@@ -1495,7 +1661,7 @@ const NOTICES = [
     source: '부산광역시 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493574/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자지원센터 노동 상담·한국어 교육',
       points: [
         'E-9·H-2 외국인근로자 전용 지원센터로, 노동·고용허가제 상담과 통역을 제공합니다.',
@@ -1534,7 +1700,7 @@ const NOTICES = [
     source: '부산광역시 · 언론 보도',
     url: 'https://www.koreajoongangdaily.com/korea/busan-offers-helpline-for-foreign-residents/12263834',
     date: '2025-10-20',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 통합 상담전화 1600-0051',
       points: [
         '체류·행정·근로 등 생활 전반을 전화로 상담할 수 있습니다.',
@@ -1573,7 +1739,7 @@ const NOTICES = [
     source: '부산광역시 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493574/download.do',
     date: '2026-03-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-12-31',
     ko: { title: '숙련기능인력(E-7-4) 비자 전환 추천',
       points: [
@@ -1613,7 +1779,7 @@ const NOTICES = [
     source: '울산광역시(울산경제일자리진흥원) · 언론 보도',
     url: 'https://www.heraldk.com/article/2026050318264357666',
     date: '2026-05-03',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자지원센터 개소',
       points: [
         '울산시가 외국인근로자 전용 지원센터를 새로 열었습니다.',
@@ -1652,7 +1818,7 @@ const NOTICES = [
     source: '울산광역시 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493579/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민지원센터 다국어 상담·저녁 한국어 교실',
       points: [
         '16개 언어로 생활, 출입국, 임금·고용, 의료 상담과 통번역을 지원합니다. 상담 창구는 평일 10~17시입니다.',
@@ -1691,7 +1857,7 @@ const NOTICES = [
     source: '경상북도 · 법무부 외국인정책 시행계획 · 언론 보도',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-02-14',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '지역특화형 비자(E-7-4R) 22개 시·군 확대',
       points: [
         '경북도가 장기 체류 비자를 추천하는 지역특화형 비자 사업을 2026년부터 도내 22개 시·군 전체로 넓혔습니다.',
@@ -1730,7 +1896,7 @@ const NOTICES = [
     source: '경상북도 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '시·군 외국인근로자상담센터 15곳',
       points: [
         '노동법률·생활 고충 상담, 한국어 교육, 의료 지원, 문화 행사를 제공합니다.',
@@ -1769,7 +1935,7 @@ const NOTICES = [
     source: '구미시 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '구미 외국인근로자 무료 진료',
       points: [
         '구미시와 협약 의료기관 의료봉사단이 외국인근로자를 무료로 진료하고 건강 상담을 합니다.',
@@ -1808,7 +1974,7 @@ const NOTICES = [
     source: '경상남도 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민지원센터 상담·한국어 교육·무료 진료',
       points: [
         '경남도가 설치하고 경남이주민노동복지센터가 운영하는 외국인주민 지원센터입니다.',
@@ -1847,7 +2013,7 @@ const NOTICES = [
     source: '경상남도 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자지원센터 5곳',
       points: [
         '창원, 김해, 양산, 사천, 거제에 외국인근로자지원센터가 있습니다.',
@@ -1886,7 +2052,7 @@ const NOTICES = [
     source: '경상남도 · 법무부 외국인정책 시행계획',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '숙련기능인력(E-7-4·E-7-4R) 비자 전환 도지사 추천',
       points: [
         'E-9·E-10·H-2 근로자가 E-7-4 또는 지역특화 E-7-4R로 바꿀 수 있도록 경남도지사가 추천합니다.',
@@ -1925,7 +2091,7 @@ const NOTICES = [
     source: '전남광주외국인주민지원센터(광주국제교류센터)',
     url: 'https://girc.or.kr/page/wss_project.php',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민지원센터 종합 상담(광산구)',
       points: [
         '노무, 교육, 주거, 의료 등 생활 전반을 무료로 상담하고, 필요하면 다른 기관으로 연결해 줍니다.',
@@ -1964,7 +2130,7 @@ const NOTICES = [
     source: '전라남도 · 언론 보도',
     url: 'https://www.segye.com/newsView/20260105503247',
     date: '2026-01-05',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '이민외국인종합지원센터·외국인주민 통합콜센터 1588-5949',
       points: [
         '생활, 행정, 노무, 의료 상담을 한 번에 받을 수 있고, 한국어 교육과 사회통합프로그램도 들을 수 있습니다.',
@@ -2003,7 +2169,7 @@ const NOTICES = [
     source: '전남광주외국인주민지원센터',
     url: 'https://girc.or.kr/notice/316',
     date: '2026-11-05',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-11-15',
     ko: { title: '외국인주민 심리상담(11월 15일)',
       points: [
@@ -2043,7 +2209,7 @@ const NOTICES = [
     source: '전남광주외국인주민지원센터',
     url: 'https://girc.or.kr/notice/309',
     date: '2026-10-17',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-11-07',
     ko: { title: '외국인주민 용접 실무 과정 수강생 모집',
       points: [
@@ -2083,7 +2249,7 @@ const NOTICES = [
     source: '전북국제협력진흥원(전북외국인노동자지원센터)',
     url: 'https://www.jbica.kr/main/?menu=130',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인노동자지원센터 전문 상담·통번역',
       points: [
         '전북에서 일하는 E-9·H-2 근로자를 위한 정착 지원 거점센터입니다.',
@@ -2122,7 +2288,7 @@ const NOTICES = [
     source: '전북국제협력진흥원(전북외국인노동자지원센터)',
     url: 'https://www.jbica.kr/main/?menu=131',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자 한국어·직무 역량 교육',
       points: [
         'E-9·H-2 근로자를 위한 한국어능력시험(TOPIK) 대비반과 찾아가는 한국어 교육을 합니다.',
@@ -2161,7 +2327,7 @@ const NOTICES = [
     source: '전북특별자치도 보도자료',
     url: 'https://www.jeonbuk.go.kr/newsroom/board/view.jeonbuk?boardId=BBS_0000090&menuCd=DOM_000001101000000000&paging=ok&startPage=1&dataSid=602411',
     date: '2025-03-10',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '지역특화형 숙련기능인력(E-7-4R) 비자 추천',
       points: [
         '전북에 2년 이상 체류한 E-9·E-10·H-2 근로자는 도지사 추천으로 E-7-4R 비자로 바꿀 수 있습니다.',
@@ -2200,7 +2366,7 @@ const NOTICES = [
     source: '제주특별자치도 외국인노동자지원센터',
     url: 'http://jejumwc.kr/index.php/contents/inform/notice?act=view&seq=6864',
     date: '2026-03-18',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인노동자지원센터 무료 상담·찾아가는 상담소',
       points: [
         '생활 고충, 출입국, 임금 체불, 고용, 산재, 의료 지원을 무료로 상담합니다.',
@@ -2238,7 +2404,7 @@ const NOTICES = [
     source: '고용노동부',
     url: 'https://www.korea.kr/news/policyNewsView.do?newsId=148948604',
     date: '2025-09-03',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인 고용 취약사업장 집중 감독',
       points: [
         '고용노동부가 2025년 9월 4일부터 4주 동안 외국인을 많이 고용한 노무관리 취약 사업장을 집중 감독했습니다.',
@@ -2276,7 +2442,7 @@ const NOTICES = [
     source: '고용노동부 · 근로기준법',
     url: 'https://law.go.kr/LSW/lsRvsRsnListP.do?chrClsCd=010102&lsId=001872&lsRvsGubun=all',
     date: '2025-10-22',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '상습 임금체불 사업주 제재 강화',
       points: [
         '개정 근로기준법이 2025년 10월 23일부터 시행됐습니다. 상습 체불 사업주는 신용 제재, 정부 지원 제한, 출국금지를 받습니다.',
@@ -2314,7 +2480,7 @@ const NOTICES = [
     source: '법무부 · 출입국관리법 시행규칙',
     url: 'https://www.korea.kr/news/policyNewsView.do?newsId=148954167',
     date: '2025-11-06',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '임금체불 신고 외국인 출입국 통보의무 면제',
       points: [
         '출입국관리법 시행규칙이 개정되어 2025년 11월 6일부터 시행됐습니다.',
@@ -2352,7 +2518,7 @@ const NOTICES = [
     source: '고용노동부 · 근로자퇴직급여 보장법',
     url: 'https://law.go.kr/LSW/lsRvsRsnListP.do?chrClsCd=010102&lsId=009883&lsRvsGubun=all',
     date: '2025-11-11',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '반복 퇴직금 체불 사업주는 합의해도 처벌',
       points: [
         '근로자퇴직급여 보장법 개정이 2025년 11월 11일 공포·시행됐습니다.',
@@ -2390,7 +2556,7 @@ const NOTICES = [
     source: '고용노동부',
     url: 'https://www.korea.kr/briefing/pressReleaseView.do?newsId=156728097',
     date: '2025-11-13',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2025년 5회차 고용허가 9,326명 배정',
       points: [
         '2025년 마지막 신규 고용허가로 제조업 6,530명, 농축산업 940명, 어업 832명, 서비스업 596명, 조선업 250명, 건설업 178명을 배정했습니다.',
@@ -2428,7 +2594,7 @@ const NOTICES = [
     source: '고용노동부 · 법무부',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18792',
     date: '2025-12-29',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인 보호시설 근로감독관 방문 상담',
       points: [
         '2025년 12월 29일부터 근로감독관이 화성·청주·여수·인천·울산의 외국인 보호시설 5곳을 격주로 찾아가 임금 체불 상담과 사건 접수를 합니다.',
@@ -2466,7 +2632,7 @@ const NOTICES = [
     source: '고용노동부 · 근로자퇴직급여 보장법',
     url: 'https://law.go.kr/LSW/lsRvsRsnListP.do?chrClsCd=010102&lsId=009883&lsRvsGubun=all',
     date: '2026-03-17',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '퇴직금 체불 처벌 상향(징역 5년·벌금 5천만 원)',
       points: [
         '근로자퇴직급여 보장법 개정이 2026년 3월 17일 공포됐습니다.',
@@ -2504,7 +2670,7 @@ const NOTICES = [
     source: '고용노동부 · 근로기준법',
     url: 'https://law.go.kr/LSW/lsRvsRsnListP.do?chrClsCd=010102&lsId=001872&lsRvsGubun=all',
     date: '2026-04-07',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '임금체불 처벌 상향(징역 5년·벌금 5천만 원)',
       points: [
         '근로기준법 개정이 2026년 4월 7일 공포되어 10월 8일부터 시행됐습니다.',
@@ -2542,7 +2708,7 @@ const NOTICES = [
     source: '고용노동부',
     url: 'https://www.moel.go.kr/local/jungbu/news/notice/noticeView.do?bbs_seq=20260400456',
     date: '2026-04-08',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2026년 2회차 고용허가 신청',
       points: [
         '2026년 2회차 E-9 신규 고용허가 신청을 4월 20일부터 5월 6일까지 받았습니다.',
@@ -2580,7 +2746,7 @@ const NOTICES = [
     source: '고용노동부',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19479',
     date: '2026-06-04',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '이주노동자 인권침해 방지대책',
       points: [
         '노동포털 익명제보센터에 이주노동자 인권침해 항목을 만들고, 모국어 익명 설문으로 폭행·괴롭힘을 신고할 수 있게 했습니다.',
@@ -2618,7 +2784,7 @@ const NOTICES = [
     source: '고용노동부 · 외국인근로자의 고용 등에 관한 법률',
     url: 'https://www.law.go.kr/LSW/lsRvsRsnListP.do?chrClsCd=010102&lsId=009542&lsRvsGubun=all',
     date: '2026-06-09',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자 숙소 기준 강화(불법 가설건축물 금지)',
       points: [
         '외국인고용법 개정이 2026년 6월 9일 공포되어 2026년 12월 10일부터 시행됩니다.',
@@ -2656,7 +2822,7 @@ const NOTICES = [
     source: '고용노동부 · 근로기준법',
     url: 'https://law.go.kr/LSW/lsRvsRsnListP.do?chrClsCd=010102&lsId=001872&lsRvsGubun=all',
     date: '2026-06-09',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '연차휴가 시간 단위 사용',
       points: [
         '근로기준법 개정이 2026년 6월 9일 공포됐고, 연차 관련 규정은 2027년 6월 10일부터 시행됩니다.',
@@ -2694,7 +2860,7 @@ const NOTICES = [
     source: '법무부 · 출입국관리법 시행규칙 입법예고',
     url: 'https://www.moj.go.kr/bbs/moj/182/607643/artclView.do',
     date: '2026-06-19',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '임금체불·산재 사업주 외국인 고용 제한 입법예고',
       points: [
         '법무부가 2026년 6월 19일부터 40일간 출입국관리법 시행규칙 개정안을 입법예고했습니다.',
@@ -2732,7 +2898,7 @@ const NOTICES = [
     source: '고용노동부 보도자료',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19566',
     date: '2026-06-25',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2026년 3회차 고용허가 1만 2,630명 배정',
       points: [
         '제조업 9,020명, 농축산업 1,906명, 어업 1,196명, 건설업 394명, 서비스업 114명을 배정했습니다.',
@@ -2770,7 +2936,7 @@ const NOTICES = [
     source: '고용노동부 · 임금채권보장법',
     url: 'https://eiec.kdi.re.kr/policy/materialView.do?num=285546',
     date: '2026-08-19',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '도산 사업장 대지급금 확대(최종 6개월분)',
       points: [
         '개정 임금채권보장법(법률 제21376호, 2026년 2월 19일 공포)이 2026년 8월 20일부터 시행됐습니다.',
@@ -2809,7 +2975,7 @@ const NOTICES = [
     source: '경기도 (조례 제8832호)',
     url: 'https://www.law.go.kr/자치법규/경기도외국인이주노동자산업안전및산업재해예방지원조례',
     date: '2026-01-15',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인 이주노동자 산업안전·산재예방 지원 조례 제정',
       points: [
         '2026년 1월 15일 공포·시행됐습니다.',
@@ -2848,7 +3014,7 @@ const NOTICES = [
     source: '경기도 (조례 제8908호)',
     url: 'https://www.law.go.kr/자치법규/경기도산업재해사망외국인노동자유가족지원조례',
     date: '2026-06-29',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '산재 사망 외국인노동자 유가족 지원 조례 제정',
       points: [
         '2026년 6월 29일 공포·시행됐습니다.',
@@ -2887,7 +3053,7 @@ const NOTICES = [
     source: '경기도 (조례 제8941호)',
     url: 'https://www.law.go.kr/자치법규/경기도외국인노동자지원조례',
     date: '2026-07-14',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인노동자 지원 조례 개정(입국 전 교육)',
       points: [
         '2026년 7월 14일 개정되어 입국 전 사전적응·언어교육 지원 조항이 생겼습니다.',
@@ -2926,7 +3092,7 @@ const NOTICES = [
     source: '강원특별자치도 (조례 제5751호)',
     url: 'https://www.law.go.kr/자치법규/강원특별자치도외국인주민지원조례',
     date: '2026-02-27',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 지원 조례 제정',
       points: [
         '2026년 2월 27일 새로 제정되어 공포한 날부터 시행됐습니다.',
@@ -2965,7 +3131,7 @@ const NOTICES = [
     source: '충청북도 (조례 제5529호)',
     url: 'https://www.law.go.kr/자치법규/충청북도외국인주민지원조례',
     date: '2026-02-13',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인 통합지원센터 설치 근거 마련',
       points: [
         '2026년 2월 13일 충북 외국인주민 지원 조례가 개정되어 외국인 통합지원센터를 설치·운영할 수 있게 됐습니다.',
@@ -3004,7 +3170,7 @@ const NOTICES = [
     source: '인천광역시',
     url: 'https://www.incheon.go.kr/ml_kr/MLKR020401/3065030',
     date: '2026-02-25',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인지원센터 남동산단 분소 개소',
       points: [
         '2026년 2월 25일 남동구 하나은행 남동산단금융센터지점 2층에 인천외국인지원센터 분소가 문을 열었습니다.',
@@ -3043,7 +3209,7 @@ const NOTICES = [
     source: '제주특별자치도 (조례 제4157호)',
     url: 'https://www.law.go.kr/자치법규/제주특별자치도외국인주민및이민정책지원기본조례',
     date: '2025-12-24',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민·이민정책 지원 기본 조례 제정',
       points: [
         '2025년 12월 24일 제정되어 공포한 날부터 시행됐습니다.',
@@ -3082,7 +3248,7 @@ const NOTICES = [
     source: '전라남도 · 언론 보도',
     url: 'https://www.khan.co.kr/article/202603201306001/',
     date: '2026-03-20',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '위기 외국인 노동자 쉼터(여수·영암) 운영 기관 선정',
       points: [
         '전남도가 인권침해, 실직, 사업장 변경 등으로 위기에 놓인 외국인 노동자를 위한 쉼터 운영 기관으로 여수시와 영암군을 선정했습니다.',
@@ -3121,7 +3287,7 @@ const NOTICES = [
     source: '전남광주통합특별시 (조례 제354호)',
     url: 'https://www.law.go.kr/자치법규/전남광주통합특별시외국인주민소방안전지원조례',
     date: '2026-07-31',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 소방 안전 지원 조례 제정',
       points: [
         '통합특별시 출범 뒤인 2026년 7월 31일 제정·시행됐습니다.',
@@ -3160,7 +3326,7 @@ const NOTICES = [
     source: '경상북도조례 제5539호',
     url: 'https://www.law.go.kr/LSW/ordinInfoP.do?ordinSeq=2181765',
     date: '2026-11-02',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 지원조례 개정 공포(사회참여 지원 추가)',
       points: [
         '경상북도가 2026년 11월 2일 외국인주민 및 다문화가족 지원조례 개정을 공포했습니다(경상북도조례 제5539호). 같은 날부터 시행합니다.',
@@ -3198,7 +3364,7 @@ const NOTICES = [
     source: '고용노동부',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18251',
     date: '2025-09-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2025년 4회차 고용허가 신청',
       points: [
         '2025년 4회차 E-9 신규 고용허가 신청을 9월 15일부터 26일까지 전국 지방고용노동관서에서 받았습니다.',
@@ -3236,7 +3402,7 @@ const NOTICES = [
     source: '고용노동부',
     url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18858',
     date: '2026-01-15',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2026년 1회차 고용허가 1만 5,784명 배정',
       points: [
         '2026년 첫 E-9 신규 고용허가로 제조업 1만 1,275명, 농축산업 2,382명, 어업 1,495명, 건설업 492명, 서비스업 140명을 배정했습니다.',
@@ -3274,7 +3440,7 @@ const NOTICES = [
     source: '고용노동부 · 산업안전보건법',
     url: 'https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=287805&efYd=20270108',
     date: '2026-07-07',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자 기초안전보건교육 의무화',
       points: [
         '산업안전보건법 개정이 2026년 7월 7일 공포되어 2027년 1월 8일부터 시행됩니다.',
@@ -3312,7 +3478,7 @@ const NOTICES = [
     source: '법무부 · 출입국관리법 시행령',
     url: 'https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=289697',
     date: '2026-09-15',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '사회통합프로그램 직무능력개발 교육 추가',
       points: [
         '출입국관리법 시행령 개정이 2026년 9월 15일 공포·시행됐습니다.',
@@ -3351,7 +3517,7 @@ const NOTICES = [
     source: '대전광역시 (2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493578/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 무료진료소 (일요일)',
       points: [
         '대전시와 외국인사랑의진료소가 외국인주민 무료진료소를 운영합니다.',
@@ -3390,7 +3556,7 @@ const NOTICES = [
     source: '대전광역시 외국인주민 통합지원센터 (2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493578/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 무료 운전면허 교육',
       points: [
         '외국인주민 통합지원센터가 무료 운전면허 교육을 운영합니다.',
@@ -3429,7 +3595,7 @@ const NOTICES = [
     source: '대전광역시 서구 (2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493578/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '서구 외국인근로자 온라인 야간 한국어 교실',
       points: [
         '대전 서구가 외국인주민을 위한 한국어 교실을 운영합니다.',
@@ -3468,7 +3634,7 @@ const NOTICES = [
     source: '대전광역시 외국인주민 통합지원센터 (2026년 외국인정책 시행계획)',
     url: 'http://www.livingindaejeon.or.kr',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '다국어 생활안내 웹사이트 ‘리빙 인 대전’',
       points: [
         '대전시가 외국인을 위한 생활안내 웹사이트 ‘리빙 인 대전’을 운영합니다.',
@@ -3507,7 +3673,7 @@ const NOTICES = [
     source: '세종특별자치시 기업지원과 (대전일보·세종의소리·세계일보 보도)',
     url: 'https://www.daejonilbo.com/news/articleView.html?idxno=2261245',
     date: '2026-03-08',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-12-31',
     ko: { title: '숙련기능인력(E-7-4) 비자 전환 시장 추천',
       points: [
@@ -3547,7 +3713,7 @@ const NOTICES = [
     source: '청주시 (2026년 외국인정책 시행계획 - 충청북도)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493586/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '청주시 외국인주민 지원센터 통번역·상담·한국어',
       points: [
         '청주시 외국인주민 지원센터가 2026년에도 운영됩니다.',
@@ -3586,7 +3752,7 @@ const NOTICES = [
     source: '음성군 (2026년 외국인정책 시행계획 - 충청북도)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493586/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '음성군 외국인지원센터 교육·상담·자격증반',
       points: [
         '음성군외국인지원센터가 상담, 통번역, 한국어 교실을 운영합니다.',
@@ -3625,7 +3791,7 @@ const NOTICES = [
     source: '음성군 (2026년 외국인정책 시행계획 - 충청북도)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493586/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '음성군 다문화이주민+센터 원스톱 민원',
       points: [
         '음성군 다문화이주민+센터에서 체류·고용 민원을 한곳에서 처리합니다.',
@@ -3664,7 +3830,7 @@ const NOTICES = [
     source: '음성군 (2026년 외국인정책 시행계획 - 충청북도)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493586/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '음성군 외국인주민 상담·한국어 지원',
       points: [
         '음성군이 지원하는 비영리 민간단체 3곳에서 외국인주민 개별 상담을 받을 수 있습니다.',
@@ -3703,7 +3869,7 @@ const NOTICES = [
     source: '진천군 인구정책과 (2026년 외국인정책 시행계획 - 충청북도)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493586/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '진천군 외국인주민 긴급지원 (2026년 신규)',
       points: [
         '진천군이 2026년부터 생활이 어려운 외국인주민에게 긴급지원을 합니다.',
@@ -3742,7 +3908,7 @@ const NOTICES = [
     source: '충청북도 외국인정책추진단 (2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493586/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 정착지원 (생활법률·자격증 교육)',
       points: [
         '충청북도가 시·군 외국인 지원기관을 통해 외국인주민 정착지원 사업을 운영합니다.',
@@ -3781,7 +3947,7 @@ const NOTICES = [
     source: '충청남도 외국인정책과 (2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493587/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '충남외국인주민통합지원콜센터 16개 언어 상담',
       points: [
         '충남외국인주민통합지원콜센터가 외국인주민 누구에게나 무료 상담을 제공합니다.',
@@ -3820,7 +3986,7 @@ const NOTICES = [
     source: '공주시·논산시·부여군·서천군·예산군 (2026년 외국인정책 시행계획 - 충청남도)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493587/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-12-31',
     ko: { title: '인구감소지역 지역특화 숙련기능인력(E-7-4R) 추천',
       points: [
@@ -3860,7 +4026,7 @@ const NOTICES = [
     source: '서산시 일자리경제과 (2026년 외국인정책 시행계획 - 충청남도)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493587/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '서산시 외국인근로자지원센터 한국어·정보화·노무 상담',
       points: [
         '2025년 7월 문을 연 서산시 외국인근로자지원센터가 2026년 사업을 운영합니다.',
@@ -3899,7 +4065,7 @@ const NOTICES = [
     source: '당진시 (2026년 외국인정책 시행계획 - 충청남도)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493587/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '당진시 외국인근로자 긴급지원·한글교실',
       points: [
         '당진시 외국인근로자지원센터(당진YMCA 위탁)가 의료비·생활비 긴급지원을 합니다.',
@@ -3938,7 +4104,7 @@ const NOTICES = [
     source: '경기도 이민사회지원과 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-29)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '시·군 외국인복지센터 노무·고충 상담',
       points: [
         '경기도는 2026년 15개 시·군 외국인복지센터 등의 상담사 운영을 지원합니다.',
@@ -3977,7 +4143,7 @@ const NOTICES = [
     source: '경기도 이민사회지원과 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-53)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '시·군 외국인복지센터 통역사 배치',
       points: [
         '경기도는 2026년 13개 시·군 외국인복지센터에 통역사를 배치합니다.',
@@ -4016,7 +4182,7 @@ const NOTICES = [
     source: '경기도 이민사회지원과 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-61·3-2-62)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '시·군 외국인주민 한국어 교실',
       points: [
         '경기도는 2026년 20개 시·군에서 한국어 교육을 지원합니다.',
@@ -4055,7 +4221,7 @@ const NOTICES = [
     source: '경기도 이민사회지원과 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 4-1-2)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 긴급지원(생계비·의료비·장제비)',
       points: [
         '경기도에 체류지 신고를 한 외국인이 질병·사고로 위기에 처하면 지원을 받을 수 있습니다.',
@@ -4094,7 +4260,7 @@ const NOTICES = [
     source: '안산시 (법무부 2026년 외국인정책 시행계획 경기도 자체과제 4-1-13, 안산시 외국인주민지원본부 누리집)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '안산시 외국인주민상담지원센터 모국어 상담(일요일 운영)',
       points: [
         '안산시 외국인주민상담지원센터는 14개 언어로 전화(1644-7111)·방문 상담을 합니다.',
@@ -4133,7 +4299,7 @@ const NOTICES = [
     source: '안산시 외국인주민지원과 (안산시 외국인주민지원본부 교육뉴스)',
     url: 'https://www.ansan.go.kr/global/common/bbs/selectBbsDetail.do?bbs_code=B0679&bbs_seq=1683376',
     date: '2026-09-21',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '안산시 외국인주민 기초한국어·TOPIK 교실',
       points: [
         '안산시는 외국인주민을 위한 기초 한국어 과정과 TOPIK 대비반을 기수별로 운영합니다.',
@@ -4172,7 +4338,7 @@ const NOTICES = [
     source: '시흥시 외국인주민과 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-77·4-1-1)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '시흥시 외국인복지센터 모국어 상담·한국어 교육',
       points: [
         '시흥시외국인복지센터는 자국어 상담원이 생활·법률·노동 상담과 통역을 합니다.',
@@ -4211,7 +4377,7 @@ const NOTICES = [
     source: '화성시 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-2-50)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '화성시 외국인복지센터 고충 상담·통역·한국어 교육',
       points: [
         '화성시외국인복지센터는 생활·노동 고충을 상담하며 임금체불·퇴직금 문제도 다룹니다.',
@@ -4250,7 +4416,7 @@ const NOTICES = [
     source: '김포시 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-2-18)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '김포시 외국인주민지원센터 노무·비자 상담과 한국어 교육',
       points: [
         '김포시외국인주민지원센터는 노무, 법률, 비자 상담과 생활 고충 상담을 합니다.',
@@ -4289,7 +4455,7 @@ const NOTICES = [
     source: '용인시 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-58)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '용인시 외국인복지센터 한국어 교육·자조모임',
       points: [
         '용인시외국인복지센터는 한국어 교육과 사회적응 프로그램을 운영합니다.',
@@ -4328,7 +4494,7 @@ const NOTICES = [
     source: '포천시 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-66)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '포천시 외국인주민지원센터 주말 한국어 교실',
       points: [
         '포천외국인주민지원센터는 시가 직접 운영하며 한국어 교육을 합니다.',
@@ -4367,7 +4533,7 @@ const NOTICES = [
     source: '수원시 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-2-20)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '수원시 외국인복지센터 상담·통역·한국어·무료진료 연계',
       points: [
         '수원시외국인복지센터는 2026년 1~12월 고충 상담과 통역·번역을 지원합니다.',
@@ -4406,7 +4572,7 @@ const NOTICES = [
     source: '부천시 여성다문화과 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-28·3-3-30)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '부천시 외국인주민지원센터 상담·무료진료소·쉼터',
       points: [
         '부천시 외국인주민지원센터는 2026년 연중 상담, 통역, 한국어 교육을 지원합니다.',
@@ -4445,7 +4611,7 @@ const NOTICES = [
     source: '성남시 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-37)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '성남시 외국인주민 일요일 무료진료',
       points: [
         '성남시는 성남시가족센터를 통해 외국인주민 무료진료를 제공합니다.',
@@ -4484,7 +4650,7 @@ const NOTICES = [
     source: '성남시 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-31·3-3-32)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '성남시 외국인주민 상담·직업능력개발 교육',
       points: [
         '성남시가족센터는 외국인주민 상담, 한국어 교육, 긴급지원 등을 운영합니다.',
@@ -4523,7 +4689,7 @@ const NOTICES = [
     source: '광주시 (법무부 2026년 외국인정책 시행계획 경기도, 자체과제 3-3-22)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493584/download.do',
     date: '2026-04-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '경기 광주시 외국인근로자 쉼터 상담·취업역량 프로그램',
       points: [
         '경기 광주시는 관내 외국인근로자 쉼터의 프로그램을 지원합니다.',
@@ -4562,7 +4728,7 @@ const NOTICES = [
     source: '전북특별자치도 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493588/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '지역기반 비자 승급 지원금(바우처 30만원)',
       points: [
         '2026년에 지역특화형 비자나 숙련기능인력(E-7-4) 비자로 바꾼 외국인에게 30만원 바우처를 줍니다.',
@@ -4601,7 +4767,7 @@ const NOTICES = [
     source: '전북특별자치도 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493588/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '1시군 1외국인지원센터 고충 상담',
       points: [
         '전북 13개 시·군의 가족센터·일자리센터 등에 외국인 전담 인력을 두어 고충 상담을 합니다.',
@@ -4640,7 +4806,7 @@ const NOTICES = [
     source: '전주시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493588/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '전주시 외국인근로자 쉼터',
       points: [
         '갑자기 일자리를 잃는 등으로 머물 곳이 필요한 E-9·H-2 근로자에게 임시 숙식을 제공합니다.',
@@ -4679,7 +4845,7 @@ const NOTICES = [
     source: '전북특별자치도 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493588/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '글로벌마을학당 한국어 교실',
       points: [
         '시·군 가족센터가 운영하는 마을학당에서 수준별 한국어 수업을 합니다.',
@@ -4718,7 +4884,7 @@ const NOTICES = [
     source: '광주광역시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493577/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '광주 외국인노동자 지원단체 쉼터·노동법 교육',
       points: [
         '광주시가 외국인노동자 지원 민간단체 11곳 안팎에 1억8천만원을 지원합니다.',
@@ -4757,7 +4923,7 @@ const NOTICES = [
     source: '광주광역시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493577/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '광주 외국인근로자 일요 무료진료소',
       points: [
         '광주시 지원으로 외국인노동자 등에게 1차 진료와 약, 건강검진, 예방접종을 무료로 제공합니다.',
@@ -4796,7 +4962,7 @@ const NOTICES = [
     source: '광주광역시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493577/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '광주 의료 통번역 활동가 동행 통역',
       points: [
         '병원에 갈 때 의료 통번역 활동가가 접수부터 진료, 수납까지 동행하거나 전화로 통역합니다.',
@@ -4835,7 +5001,7 @@ const NOTICES = [
     source: '광주광역시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493577/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '광주 외국인주민 친화병원 20곳',
       points: [
         '광주시가 통역 지원 체계를 갖춘 병원 20곳을 외국인주민 친화병원으로 지정해 운영합니다.',
@@ -4874,7 +5040,7 @@ const NOTICES = [
     source: '광주광역시 소방안전본부 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493577/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '광주 119 신고 외국어 3자 통역',
       points: [
         '광주에서 119에 신고하면 신고자, 상황실, 통역 도우미가 동시에 통화하는 3자 통역을 이용할 수 있습니다.',
@@ -4913,7 +5079,7 @@ const NOTICES = [
     source: '광주 광산구 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493577/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '광산구 외국인주민 긴급지원',
       points: [
         '광산구에 90일 이상 산 외국인이 1년 안에 실직, 큰 병이나 부상 등 위기를 겪어 생계가 어려우면 지원합니다.',
@@ -4952,7 +5118,7 @@ const NOTICES = [
     source: '전라남도 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493589/download.do',
     date: '2026-02-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '숙련기능인력(K-point E74) 광역 추천',
       points: [
         '전남 기업에서 1년 이상 일한 E-9 등 근로자는 광역단체장 추천을 받아 E-7-4·E-7-4R 비자 전환에 도전할 수 있습니다.',
@@ -4991,7 +5157,7 @@ const NOTICES = [
     source: '전라남도 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493589/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 노동·법률 상담과 찾아가는 이동상담',
       points: [
         '전남 지역 16개 수행기관이 외국인 근로자 등에게 노동·법률 상담과 통번역을 지원합니다.',
@@ -5030,7 +5196,7 @@ const NOTICES = [
     source: '영암군 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493589/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '영암군 외국인주민지원센터 상담·사회통합프로그램',
       points: [
         '영암군 삼호읍 대불주거9로 21에 있는 센터에서 비자, 임금체불, 산재, 사업장 변경 상담을 합니다.',
@@ -5069,7 +5235,7 @@ const NOTICES = [
     source: '여수시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493589/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '여수시 외국인주민종합지원센터 통번역·상담',
       points: [
         '여수시 가족+센터가 운영하는 센터에서 체류, 임금체불, 산재 상담을 합니다.',
@@ -5108,7 +5274,7 @@ const NOTICES = [
     source: '영암군 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493589/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '영암군 대불산단 근로자복지센터 기숙사',
       points: [
         '영암 대불산단의 내·외국인 근로자복지센터는 근로자 기숙사(총 138실)를 운영합니다.',
@@ -5147,7 +5313,7 @@ const NOTICES = [
     source: '전남자치경찰위원회 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493589/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '다국어 안전전남 앱',
       points: [
         '전남자치경찰위원회가 만든 앱으로 치안·교통안전 정보와 재난문자를 여러 언어로 받을 수 있습니다.',
@@ -5186,7 +5352,7 @@ const NOTICES = [
     source: '목포시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493589/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '목포시 외국인근로자 상담센터',
       points: [
         '목포시가 (사)전남이주민통합지원센터에 맡겨 외국인 근로자 상담센터를 운영합니다.',
@@ -5225,7 +5391,7 @@ const NOTICES = [
     source: '제주특별자치도 외국인노동자지원센터',
     url: 'http://jejumwc.kr/index.php/contents/consult/refuge',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인노동자 쉼터 무료 숙식',
       points: [
         '임금체불, 폭행, 사업장 이동, 산재, 인권침해 등으로 머물 곳이 없는 외국인노동자에게 무료 숙식을 제공합니다.',
@@ -5264,7 +5430,7 @@ const NOTICES = [
     source: '제주특별자치도 외국인노동자지원센터',
     url: 'http://jejumwc.kr/index.php/contents/korean/info',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인노동자 야간·주말 한국어 교육',
       points: [
         '야간반은 매주 화·수 19~21시, 주말반은 매주 일요일 14~19시에 수업합니다.',
@@ -5303,7 +5469,7 @@ const NOTICES = [
     source: '제주특별자치도 (외국인노동자지원센터 공지)',
     url: 'http://jejumwc.kr/index.php/contents/inform/notice?act=view&seq=6965',
     date: '2026-08-07',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '2026 제주 외국인주민 생활 가이드북',
       points: [
         '제주도가 외국인주민을 위한 2026년 생활 가이드북을 전자책으로 냈습니다.',
@@ -5342,7 +5508,7 @@ const NOTICES = [
     source: '제주특별자치도 외국인노동자지원센터',
     url: 'http://jejumwc.kr/index.php/contents/inform/kiip',
     date: '2026-07-23',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '사회통합프로그램(KIIP) 제주거점 수업·온라인 화상교육',
       points: [
         '외국인노동자지원센터는 법무부 사회통합프로그램 제주거점으로 학기별 한국어·한국사회 수업을 합니다.',
@@ -5381,7 +5547,7 @@ const NOTICES = [
     source: '전남광주외국인주민지원센터 (광주국제교류센터)',
     url: 'https://girc.or.kr/notice/301',
     date: '2026-10-06',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '원스톱 상담의 날(매월 일요일 전문가 상담)',
       points: [
         '비자·체류, 법률·인권, 노동·산재, 세무, 건강 분야 전문가에게 직접 상담받을 수 있습니다.',
@@ -5420,7 +5586,7 @@ const NOTICES = [
     source: '전남광주외국인주민지원센터 (광주국제교류센터)',
     url: 'https://girc.or.kr/notice/222',
     date: '2026-03-06',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     until: '2026-12-20',
     ko: { title: '광주생활이끄미 통역·생활지원 서비스',
       points: [
@@ -5460,7 +5626,7 @@ const NOTICES = [
     source: '전남광주외국인주민지원센터 (광주국제교류센터)',
     url: 'https://girc.or.kr/notice/296',
     date: '2026-09-28',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '광산구 평동 찾아가는 한국어교실',
       points: [
         '직장과 기숙사가 가까운 평동비즈니스센터에서 센터 한국어 수업을 들을 수 있습니다.',
@@ -5499,7 +5665,7 @@ const NOTICES = [
     source: '전남광주외국인주민지원센터 (광주국제교류센터)',
     url: 'https://girc.or.kr/notice/280',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 광주생활 정착교육·정보화교육',
       points: [
         '센터가 거의 매달 생활법률, 전세사기 예방, 세무(종합소득세·연말정산), 금융, 교통안전 같은 정착교육을 엽니다.',
@@ -5538,7 +5704,7 @@ const NOTICES = [
     source: '전북국제협력진흥원 (전북외국인근로자지원센터 공고 제2026-60호)',
     url: 'https://www.jbica.kr/main/?menu=222&mode=view&no=25',
     date: '2026-10-06',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '이름 표기 안전모 「이름을 불러주세요!」 캠페인',
       points: [
         '전북외국인근로자지원센터가 외국인 근로자 이름을 모국어와 한국어로 새긴 KC 인증 안전모를 줍니다.',
@@ -5577,7 +5743,7 @@ const NOTICES = [
     source: '서울특별시 (법무부 2026년 외국인정책 시행계획 서울편; 서울노동포털 외국인근로자 지원기관)',
     url: 'https://www.seoullabor.or.kr/portal/cnts/selectContents.do?cntnts_id=A1000076',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '서울외국인주민센터 법률·노무·심리 상담',
       points: [
         '영등포구 도신로 40에 있는 서울시 외국인 종합지원기관입니다.',
@@ -5616,7 +5782,7 @@ const NOTICES = [
     source: '서울특별시 (법무부 2026년 외국인정책 시행계획 서울편 3-3-1)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493573/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '글로벌빌리지센터 7곳 생활상담·한국어 강좌',
       points: [
         '서울시는 외국인 밀집지역에 글로벌빌리지센터 7곳을 운영합니다.',
@@ -5655,7 +5821,7 @@ const NOTICES = [
     source: '영등포구청 (다드림문화복합센터 안내; 법무부 2026년 외국인정책 시행계획 서울편 3-3-4)',
     url: 'https://www.ydp.go.kr/www/contents.do?key=3316',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '영등포구 다드림문화복합센터 한국어·무료 법률상담',
       points: [
         '영등포구 대림로21길 11에 있는 외국인 지원 센터로 한국어 교실을 운영합니다.',
@@ -5694,7 +5860,7 @@ const NOTICES = [
     source: '서울특별시 도시기반시설본부 (법무부 2026년 외국인정책 시행계획 서울편 4-1-3)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493573/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인 근로자 건설안전교육(시 발주 공사장)',
       points: [
         '서울시 도시기반시설본부 발주 공사장의 외국인 근로자가 대상입니다.',
@@ -5733,7 +5899,7 @@ const NOTICES = [
     source: '구로구청 (2026 구민 지원 안내)',
     url: 'https://www.guro.go.kr/2026support/index.htm',
     date: '2026-03-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '구로구 구민안전보험 등록외국인 자동 가입',
       points: [
         '구로구에 주민등록된 구민과 등록외국인은 구민안전보험에 자동 가입됩니다.',
@@ -5772,7 +5938,7 @@ const NOTICES = [
     source: '인천광역시 (법무부 2026년 외국인정책 시행계획 인천편 3-3-②)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493576/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '서구 뿌리산업 외국인근로자센터 한국어·통번역·E-7-4 전환 지원',
       points: [
         '인천 서구 뿌리산업 외국인근로자센터는 인천외국인종합지원센터가 운영합니다.',
@@ -5811,7 +5977,7 @@ const NOTICES = [
     source: '인천광역시 (법무부 2026년 외국인정책 시행계획 인천편 3-2-1)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493576/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '인천외국인종합지원센터 노무 상담·긴급지원',
       points: [
         '외국인근로자 등 인천 거주 외국인에게 생활·법률·노무 종합상담과 무료 통역을 제공합니다.',
@@ -5850,7 +6016,7 @@ const NOTICES = [
     source: '인천광역시 (법무부 2026년 외국인정책 시행계획 인천편 4-1-1)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493576/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '인천 시민안전보험 등록외국인 포함',
       points: [
         '인천시 시민안전보험은 등록외국인을 포함한 시민 전체가 자동 가입됩니다.',
@@ -5889,7 +6055,7 @@ const NOTICES = [
     source: '원주시·강원특별자치도 (법무부 2026년 외국인정책 시행계획 강원편 3-3-7)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493585/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '원주시 외국인주민지원센터 노동·의료 상담과 한국어',
       points: [
         '원주시 외국인주민지원센터는 도와 시의 지원으로 운영됩니다.',
@@ -5928,7 +6094,7 @@ const NOTICES = [
     source: '강원특별자치도·강원특별자치도경제진흥원 (법무부 2026년 외국인정책 시행계획 강원편 3-2-25)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493585/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인 생활안전 교육·국가별 커뮤니티 지원(2026 신규)',
       points: [
         '강원도는 2026년 외국인 대상 생활안전 교육을 새로 시작합니다.',
@@ -5967,7 +6133,7 @@ const NOTICES = [
     source: '속초시·(사)속초해양산업단지협의회 (법무부 2026년 외국인정책 시행계획 강원편 3-1-1)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493585/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '속초 해양산업단지 외국인근로자 한국어 교육',
       points: [
         '속초해양산업단지 내 외국인근로자를 위한 한국어 교육입니다.',
@@ -6006,7 +6172,7 @@ const NOTICES = [
     source: '강원특별자치도·동해안 6개 시군 (법무부 2026년 외국인정책 시행계획 강원편 4-1-3)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493585/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '동해안 외국인 어선원 복지회관 숙소 지원',
       points: [
         '동해안 시군은 외국인 어선원 복지회관 숙소를 운영합니다.',
@@ -6045,7 +6211,7 @@ const NOTICES = [
     source: '정선군 민원과·정선군가족센터 (법무부 2026년 외국인정책 시행계획 강원편 3-3-22)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493585/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '정선군 군청·행정복지센터 민원 통역 서비스',
       points: [
         '정선군청과 읍·면 행정복지센터를 찾는 외국인에게 통역을 지원합니다.',
@@ -6084,7 +6250,7 @@ const NOTICES = [
     source: '삼척시·삼척시가족센터 (법무부 2026년 외국인정책 시행계획 강원편 3-2-13)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493585/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '삼척시 외국인 행복삼척 살아가기 한국어 교육',
       points: [
         '삼척시가족센터가 관내 외국인근로자 등에게 한국어 교육을 제공합니다.',
@@ -6123,7 +6289,7 @@ const NOTICES = [
     source: '한국산업인력공단 EPS 외국인력지원센터 안내 (한국이주노동자복지회)',
     url: 'https://eps.hrdkorea.or.kr/e9/user/intro/intro.do?method=workerCenterApp',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '구로구 한국이주노동자복지회 외국인력지원센터',
       points: [
         '구로구 한국이주노동자복지회는 고용허가제 외국인력지원센터로 지정된 기관입니다.',
@@ -6162,7 +6328,7 @@ const NOTICES = [
     source: '강릉시 외국인근로자 지원센터 (센터 공식 누리집; 법무부 2026년 외국인정책 시행계획 강원편 3-3-7)',
     url: 'https://www.gnscfw.org/2',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '강릉시 외국인근로자 지원센터 상담·통역·한국어',
       points: [
         '강릉시가 직접 설립해 운영하는 외국인근로자 지원센터입니다.',
@@ -6201,7 +6367,7 @@ const NOTICES = [
     source: '한국산업인력공단 EPS 외국인력지원센터 안내 ((사)함께하는 공동체)',
     url: 'https://eps.hrdkorea.or.kr/e9/user/intro/intro.do?method=workerCenterApp',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '원주시 문막 외국인근로자 쉼터(함께하는 공동체)',
       points: [
         '원주시 문막읍의 (사)함께하는 공동체는 쉼터를 갖춘 외국인력지원센터입니다.',
@@ -6240,7 +6406,7 @@ const NOTICES = [
     source: '부산광역시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493574/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인주민 의료통역 지원',
       points: [
         '부산의료원에 베트남어·중국어·필리핀어·러시아어 의료통역사가 상주합니다.',
@@ -6279,7 +6445,7 @@ const NOTICES = [
     source: '부산광역시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493574/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인근로자 등 결핵 검진',
       points: [
         '부산시가 외국인근로자 등에게 흉부 X선 촬영과 객담검사를 지원합니다.',
@@ -6318,7 +6484,7 @@ const NOTICES = [
     source: '부산광역시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493574/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '분야별 전문가 예약 상담',
       points: [
         '부산외국인주민지원센터와 부산글로벌도시재단이 전문가 상담을 예약제로 운영합니다.',
@@ -6357,7 +6523,7 @@ const NOTICES = [
     source: '부산 강서구 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493574/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '부산 강서구 거주 외국인 한국어교실·문화체험',
       points: [
         '부산 강서구가 거주 외국인을 위한 한국어교실과 생활 상담을 운영합니다.',
@@ -6396,7 +6562,7 @@ const NOTICES = [
     source: '대구광역시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493575/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '대구이주민선교센터 고충상담 지원',
       points: [
         '대구시가 지원하는 대구이주민선교센터에서 임금체불·산업재해·출입국 문제를 상담합니다.',
@@ -6435,7 +6601,7 @@ const NOTICES = [
     source: '대구 달서구 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493575/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '대구 달서구 외국인주민 긴급구호비',
       points: [
         '달서구에 사는 외국인주민이 질병·재해로 생계가 어려우면 긴급구호비를 받을 수 있습니다.',
@@ -6474,7 +6640,7 @@ const NOTICES = [
     source: '울산 동구 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493579/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '울산 동구 일요 한국어교실(TOPIK 대비)',
       points: [
         '울산 동구가 노동자지원센터에서 외국인주민 한국어교실을 운영합니다.',
@@ -6513,7 +6679,7 @@ const NOTICES = [
     source: '울산광역시·동구 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493579/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '울산 동구 빈집 리모델링 외국인근로자 임대주택',
       points: [
         '울산시와 동구가 빈집을 고쳐 외국인근로자에게 시세보다 싼 임대주택을 제공합니다.',
@@ -6552,7 +6718,7 @@ const NOTICES = [
     source: '울산 울주군 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493579/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '울산 울주군 찾아가는 한국어교육',
       points: [
         '울주군가족센터가 남부·서부·중부 권역별로 찾아가는 한국어교육을 운영합니다.',
@@ -6591,7 +6757,7 @@ const NOTICES = [
     source: '울산 울주군 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493579/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '울산 울주군 외국인주민 정착지원 프로그램',
       points: [
         '울주군이 남부종합사회복지관에 맡겨 외국인주민 한국어교육을 연중 운영합니다.',
@@ -6630,7 +6796,7 @@ const NOTICES = [
     source: '울산 북구 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493579/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '울산 북구 외국인근로자 지원사업',
       points: [
         '울산 북구가 울산외국인센터에 맡겨 외국인근로자 고충상담을 운영합니다.',
@@ -6669,7 +6835,7 @@ const NOTICES = [
     source: '울산광역시 (법무부 2026년 외국인정책 시행계획, 세계일보)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493579/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '외국인 정착지원 AI 챗봇 HellouAI',
       points: [
         '울산시가 외국인주민을 위한 AI 챗봇 플랫폼 HellouAI를 운영합니다.',
@@ -6708,7 +6874,7 @@ const NOTICES = [
     source: '구미시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '구미 외국인주민 긴급의료비 지원',
       points: [
         '구미에 사는 외국인주민이 질병·부상으로 수술이나 입원이 필요하면 진료비를 지원합니다.',
@@ -6747,7 +6913,7 @@ const NOTICES = [
     source: '경산시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '경산 외국인근로자 무료 건강검진',
       points: [
         '경산이주노동센터에서 분기마다 외국인근로자와 가족을 위한 무료 건강검진을 합니다.',
@@ -6786,7 +6952,7 @@ const NOTICES = [
     source: '경산시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '경산 외국인주민 무료급식·문화체험',
       points: [
         '경산시 지원으로 외국인주민에게 무료급식을 제공합니다.',
@@ -6825,7 +6991,7 @@ const NOTICES = [
     source: '경주시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '경주 외국인근로자 쉼터',
       points: [
         '경주시가 이직·퇴직으로 머물 곳이 없는 외국인근로자에게 임시 쉼터를 제공합니다.',
@@ -6864,7 +7030,7 @@ const NOTICES = [
     source: '칠곡군 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '칠곡 외국인근로자 한글교육',
       points: [
         '칠곡군이 왜관산업단지관리공단을 통해 외국인근로자 한글교육을 운영합니다.',
@@ -6903,7 +7069,7 @@ const NOTICES = [
     source: '포항시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '포항 거주 외국인 한국어교실',
       points: [
         '포항시가 거주 외국인을 위한 한국어교실을 상·하반기로 운영합니다.',
@@ -6942,7 +7108,7 @@ const NOTICES = [
     source: '경주시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '경주 외국인주민 사랑방',
       points: [
         '경주시외국인도움센터가 성건동에서 외국인주민 커뮤니티 공간 사랑방을 운영합니다.',
@@ -6981,7 +7147,7 @@ const NOTICES = [
     source: '성주군 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '성주 외국인근로자 일요상담소·한국어교실',
       points: [
         '성주군이 귀화자 코디네이터를 두고 외국인근로자 일요상담소를 운영합니다.',
@@ -7020,7 +7186,7 @@ const NOTICES = [
     source: '경상북도 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493680/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '지역기반비자 희망이음사업(정착 지원)',
       points: [
         '경상북도가 20개 시·군 가족센터에 전담인력을 두고 지역특화형·광역형 비자 외국인의 정착을 돕습니다.',
@@ -7059,7 +7225,7 @@ const NOTICES = [
     source: '김해시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '김해 외국인주민 긴급지원',
       points: [
         '김해에 90일 이상 합법 체류한 외국인주민이 실직·산재·질병 등 위기에 처하면 긴급지원을 받을 수 있습니다.',
@@ -7098,7 +7264,7 @@ const NOTICES = [
     source: '김해시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '김해 가야글로벌센터',
       points: [
         '김해시 가야글로벌센터가 외국인주민 한국어교실과 지역사회 적응 프로그램을 운영합니다.',
@@ -7137,7 +7303,7 @@ const NOTICES = [
     source: '김해시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '김해 외국인주민 자동차정비 기술교육',
       points: [
         '김해시가 외국인근로자 등 외국인주민에게 자동차 정비 등 기술교육을 지원합니다.',
@@ -7176,7 +7342,7 @@ const NOTICES = [
     source: '함안군 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '함안 외국인지원센터',
       points: [
         '함안군 외국인지원센터가 외국인근로자의 TOPIK 취득과 E-9에서 E-7 비자 전환을 돕습니다.',
@@ -7215,7 +7381,7 @@ const NOTICES = [
     source: '함안군보건소 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '함안 외국인근로자 진료비 지원',
       points: [
         '함안군보건소가 관내 외국인근로자의 진료·검진·예방접종 비용을 지원합니다.',
@@ -7254,7 +7420,7 @@ const NOTICES = [
     source: '거제시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '거제 외국인 한글교실·작은다문화학교',
       points: [
         '거제시 조선지원과가 외국인노동자를 위한 사회통합프로그램 한글교실을 운영합니다.',
@@ -7293,7 +7459,7 @@ const NOTICES = [
     source: '밀양시 (법무부 2026년 외국인정책 시행계획)',
     url: 'https://www.immigration.go.kr/bbs/immigration/226/493681/download.do',
     date: '2026-01-01',
-    checked: '2026-11-12',
+    checked: '2026-11-16',
     ko: { title: '밀양 외국인노동자 한국어교실·TOPIK 응시료 지원',
       points: [
         '밀양시가 외국인노동자와 가족을 위한 한국어교실을 지원합니다.',
