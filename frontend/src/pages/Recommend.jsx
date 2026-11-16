@@ -16,6 +16,7 @@ import ProgramCard from '../components/reco/ProgramCard.jsx';
 import KoreaMap from '../components/reco/KoreaMap.jsx';
 import Gov24Live from '../components/reco/Gov24Live.jsx';
 import ExternalLink from '../components/ExternalLink.jsx';
+import Pager from '../components/Pager.jsx';
 import { useRecoProfile, maybeNotify, notifySupported } from '../components/reco/useRecoProfile.js';
 import { useI18n } from '../i18n/I18nProvider.jsx';
 import { recoLabels, fill } from '../i18n/reco.js';
@@ -53,7 +54,7 @@ export default function Recommend() {
   useEffect(() => { document.title = t.title + ' | E9-Bridge'; }, [t.title]);
 
   const { profile, update, reset, prefilled } = useRecoProfile();
-  const [shown, setShown] = useState(PAGE);
+  const [page, setPage] = useState(1);
   const [track, setTrack] = useState(loadTrack);
   const [loc, setLoc] = useState('idle');
   const [perm, setPerm] = useState(() => (notifySupported() ? Notification.permission : 'unsupported'));
@@ -68,7 +69,17 @@ export default function Recommend() {
   const listRef = useRef(list);
   listRef.current = list;
   useEffect(() => () => markSeen(listRef.current), []);
-  useEffect(() => { setShown(PAGE); }, [profile]);
+  useEffect(() => { setPage(1); }, [profile]);
+
+  /* 쪽 나누기 — PAGE 건씩. 쪽을 옮기면 목록 맨 위로 올라갑니다. */
+  const pages = Math.max(1, Math.ceil(list.length / PAGE));
+  const cur = Math.min(page, pages);
+  const from = (cur - 1) * PAGE + 1;
+  const to = Math.min(cur * PAGE, list.length);
+  const goPage = (n) => {
+    setPage(n);
+    if (resRef.current) resRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   useEffect(() => { maybeNotify(t, alerts.soon.length, alerts.fresh.length); }, [alerts, t]);
 
   const onTrack = (key, v) => setTrack((cur) => { const next = { ...cur, [key]: v }; saveTrack(next); return next; });
@@ -92,7 +103,7 @@ export default function Recommend() {
 
   const jump = (key) => {
     const i = list.findIndex((r) => r.p.key === key);
-    if (i >= shown) setShown(i + 1);
+    if (i >= 0) setPage(Math.floor(i / PAGE) + 1);
     setTimeout(() => { const el = document.getElementById('rc-' + key); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 80);
   };
 
@@ -207,15 +218,20 @@ export default function Recommend() {
           <h2 id="rpRes">{fill(t.resTitle, { n: list.filter((r) => r.fit).length })}</h2>
           {!profile.sido && <p className="rp-pre">{t.resNeedSido}</p>}
           {!list.length && <p className="rp-pre">{t.resEmpty}</p>}
-          <ol className="rc-list">
-            {list.slice(0, shown).map((r, i) => (
-              <ProgramCard key={r.p.key} r={r} rank={i + 1} track={track} onTrack={onTrack} />
+          <ol className="rc-list" start={from}>
+            {list.slice(from - 1, to).map((r, i) => (
+              <ProgramCard key={r.p.key} r={r} rank={from + i} track={track} onTrack={onTrack} />
             ))}
           </ol>
-          {list.length > shown && (
-            <button type="button" className="btn btn-ghost rp-more" onClick={() => setShown((n) => n + PAGE)}>
-              {fill(t.showMore, { n: Math.min(PAGE, list.length - shown) })}
-            </button>
+          {/* "N건 더 보기" 대신 쪽 번호로 넘깁니다. 몇 건이 남았고 몇 쪽을 더 넘길 수 있는지 함께 보여 줍니다. */}
+          {pages > 1 && (
+            <div className="rp-paging">
+              <p className="rp-pageinfo" aria-live="polite">
+                {fill(cur < pages ? t.pageInfo : t.pageInfoLast,
+                  { from, to, total: list.length, left: list.length - to, pages: pages - cur })}
+              </p>
+              <Pager page={cur} pages={pages} onGo={goPage} blockArrows />
+            </div>
           )}
         </section>
 

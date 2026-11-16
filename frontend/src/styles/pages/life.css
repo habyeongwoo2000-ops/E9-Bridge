@@ -2,7 +2,7 @@
 .life-note {
   margin: 0 0 1rem;
   padding: .85rem 1rem;
-  border-inline-start: 3px solid var(--warn);
+  border: 1px solid #f0d29a;
   border-radius: var(--r-xs);
   background: var(--warn-l);
   color: var(--warn-d);
@@ -24,10 +24,8 @@
 .life-list li {
   padding: 1rem;
   border: 1px solid var(--line);
-  border-top: 3px solid var(--navy);
-  border-radius: var(--r);
+  border-radius: var(--r-xs);
   background: var(--bg);
-  box-shadow: var(--shadow);
 }
 .life-page h2 { margin-block: 0 .75rem; color: var(--navy); font-size: clamp(1.125rem, 2.5vw, 1.5rem); }
 .life-list h3 { margin: 0 0 .5rem; color: var(--navy); }

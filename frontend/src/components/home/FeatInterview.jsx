@@ -15,14 +15,21 @@ export default function FeatInterview() {
   if (!items.length) return null;
 
   const it = items[((k % items.length) + items.length) % items.length];
-  const body = it[lang] || it.en || it.ko;
-  const text = body.useQuote || body.intro || ((body.qa && body.qa[0]) ? body.qa[0].a : '');
-  const facts = [];
-  if (it.country && T.itvCountries) facts.push(T.itvCountries[it.country] || it.country);
-  if (it.years) facts.push(String(T.itvYears || '{y}').replace('{y}', it.years));
-  if (it.field && T.itvFields) facts.push(T.itvFields[it.field] || it.field);
-  if (it.date) facts.push(it.date);
   const alt = (lang !== 'ko' && it.photoAltL && it.photoAltL[lang]) || it.photoAlt || '';
+
+  /* 인터뷰마다 글 길이가 달라 넘길 때마다 [이전·다음] 단추가 위아래로 움직였습니다.
+     모든 인터뷰 카드를 같은 칸에 보이지 않게 겹쳐 두어, 칸 높이를 가장 긴 글에 맞춥니다. */
+  const card = (x) => {
+    const body = x[lang] || x.en || x.ko;
+    const text = body.useQuote || body.intro || ((body.qa && body.qa[0]) ? body.qa[0].a : '');
+    const facts = [];
+    if (x.country && T.itvCountries) facts.push(T.itvCountries[x.country] || x.country);
+    if (x.years) facts.push(String(T.itvYears || '{y}').replace('{y}', x.years));
+    if (x.field && T.itvFields) facts.push(T.itvFields[x.field] || x.field);
+    if (x.date) facts.push(x.date);
+    return { name: itvName(x, lang), text, meta: facts.join(' · ') };
+  };
+  const cur = card(it);
 
   return (
     <section className="feat" id="itvFeat" aria-labelledby="featTitle">
@@ -31,10 +38,22 @@ export default function FeatInterview() {
         <p className="sec-eyebrow" aria-hidden="true">Interview</p>
         <h2 className="sec-title" id="featTitle">{T.navInterview}</h2>
         <p className="feat-lead">{T.itvLead}</p>
-        <div className="feat-card">
-          <span className="pill" id="featAlias">{itvName(it, lang)}</span>
-          <p className="feat-text" id="featText">{text}</p>
-          <p className="feat-meta" id="featMeta">{facts.join(' · ')}</p>
+        <div className="feat-cards">
+          {items.map((x, n) => {
+            const c = card(x);
+            return (
+              <div key={x.id || n} className="feat-card feat-sizer" aria-hidden="true">
+                <span className="pill">{c.name}</span>
+                <p className="feat-text">{c.text}</p>
+                <p className="feat-meta">{c.meta}</p>
+              </div>
+            );
+          })}
+          <div className="feat-card">
+            <span className="pill" id="featAlias">{cur.name}</span>
+            <p className="feat-text" id="featText">{cur.text}</p>
+            <p className="feat-meta" id="featMeta">{cur.meta}</p>
+          </div>
         </div>
         <div className="feat-ctrl">
           <button type="button" className="circ" id="featPrev" aria-label={T.carPrev} onClick={() => setK(k - 1)}>

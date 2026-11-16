@@ -68,6 +68,26 @@ export default function Header({ menuOpen, setMenuOpen }) {
     return () => window.removeEventListener('scroll', check);
   }, [isHome, menuOpen]);
 
+  /* ---------- 내리면 숨고, 올리면 다시 나오기 ----------
+     본문을 읽을 때 머리말이 화면을 가리지 않게 합니다. 손가락 떨림 같은 작은 움직임(DEAD px)은
+     무시하고, 맨 위 근처이거나 메뉴·로그인 메뉴가 열려 있으면 숨기지 않습니다. */
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    const DEAD = 8;
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const top = (barRef.current && barRef.current.parentNode.offsetHeight) || 80;
+      if (menuOpen || authOpen || y <= top) { setHidden(false); lastY = y; return; }
+      if (Math.abs(y - lastY) < DEAD) return;
+      setHidden(y > lastY);
+      lastY = y;
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [menuOpen, authOpen]);
+
   /* ---------- 메뉴가 한 줄에 들어가는지 재기 ---------- */
   const fitNav = useCallback(() => {
     const root = document.documentElement;
@@ -131,7 +151,7 @@ export default function Header({ menuOpen, setMenuOpen }) {
   const inFaqGroup = cur === 'faq' || cur === 'board' || cur === 'ask';
 
   return (
-    <header className={'topbar' + (solid ? ' is-solid' : '')} id="siteHeader">
+    <header className={'topbar' + (solid ? ' is-solid' : '') + (hidden ? ' is-hidden' : '')} id="siteHeader">
       <div className="wrap topbar-in" ref={barRef}>
         <Link className="brand" to="/" onClick={() => setMenuOpen(false)}>
           <img className="brand-mark brand-mark-c" src="/assets/logo-mark.svg" alt="E9-Bridge" width="42" height="42" />

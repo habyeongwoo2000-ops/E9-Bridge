@@ -56,6 +56,23 @@ const TABS = [['all', 'nwAll'], ['change', 'nwTagChange'], ['money', 'nwTabMoney
 
 const pad = (n) => ('0' + n).slice(-2);
 
+function ArticleBody({ a, T }) {
+  return (
+    <>
+      <p className="nwx-tag">{T[a.tag]}</p>
+      <h3 className="nwx-h" lang="ko">
+        <a href={a.url} target="_blank" rel="noopener noreferrer">{a.title}</a>
+      </h3>
+      <p className="nwx-meta"><b>{a.outlet}</b><span aria-hidden="true">·</span><time dateTime={a.date}>{a.date}</time></p>
+      <p className="nwx-sum">{T['nwS' + a.id]}</p>
+      <div className="nwx-links">
+        <a className="more" href={a.url} target="_blank" rel="noopener noreferrer">{T.nwOrig}</a>
+        <Link className="nwx-bridge" to={a.to}><span>{T.nwBridge}</span> {T[a.toKey]}<span aria-hidden="true"> →</span></Link>
+      </div>
+    </>
+  );
+}
+
 export default function NewsSection() {
   const { T } = useI18n();
   const [tab, setTab] = useState('all');
@@ -111,20 +128,20 @@ export default function NewsSection() {
               ))}
             </div>
 
-            {cur && (
-              <article className="nwx-art" key={cur.id} aria-live="polite">
-                <p className="nwx-tag">{T[cur.tag]}</p>
-                <h3 className="nwx-h" lang="ko">
-                  <a href={cur.url} target="_blank" rel="noopener noreferrer">{cur.title}</a>
-                </h3>
-                <p className="nwx-meta"><b>{cur.outlet}</b><span aria-hidden="true">·</span><time dateTime={cur.date}>{cur.date}</time></p>
-                <p className="nwx-sum">{T['nwS' + cur.id]}</p>
-                <div className="nwx-links">
-                  <a className="more" href={cur.url} target="_blank" rel="noopener noreferrer">{T.nwOrig}</a>
-                  <Link className="nwx-bridge" to={cur.to}><span>{T.nwBridge}</span> {T[cur.toKey]}<span aria-hidden="true"> →</span></Link>
+            {/* 기사마다 제목·요약 길이가 달라, 넘길 때마다 아래 [이전·다음] 단추가 위아래로 움직였습니다.
+                모든 기사를 같은 칸에 보이지 않게 겹쳐 두어 칸 높이를 가장 긴 기사에 맞춥니다. */}
+            <div className="nwx-arts">
+              {ARTICLES.map((a) => (
+                <div key={a.id} className="nwx-art nwx-sizer" aria-hidden="true">
+                  <ArticleBody a={a} T={T} />
                 </div>
-              </article>
-            )}
+              ))}
+              {cur && (
+                <article className="nwx-art" key={cur.id} aria-live="polite">
+                  <ArticleBody a={cur} T={T} />
+                </article>
+              )}
+            </div>
 
             <div className="nwx-ctrl">
               <span className="nwx-count" aria-hidden="true"><b>{pad(i + 1)}</b> / {pad(list.length)}</span>
