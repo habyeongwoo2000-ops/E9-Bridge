@@ -10,6 +10,9 @@ import { I18nProvider } from './i18n/I18nProvider.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { SummaryProvider } from './context/SummaryContext.jsx';
 import './styles/style.css';
+import { initAnalytics } from './lib/analytics.js';
+
+initAnalytics();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

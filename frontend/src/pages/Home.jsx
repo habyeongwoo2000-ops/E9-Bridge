@@ -66,7 +66,7 @@ export default function Home() {
           <ul className="svc-list">
             {SERVICES.map((s) => (
               <li key={s.to}>
-                <Link to={s.to}>
+                <Link to={s.to} data-ga="home_service_click" data-ga-label={s.key}>
                   <span className="svc-ic" aria-hidden="true"><svg viewBox="0 0 48 48">{s.svg}</svg></span>
                   <span className="svc-name">{T[s.key]}</span>
                 </Link>
@@ -93,7 +93,7 @@ export default function Home() {
                 <li><span className="wz-n">2</span><span>{T.ckTitle}</span></li>
                 <li><span className="wz-n">3</span><span>{T.secNoPay}</span></li>
               </ol>
-              <Link className="btn btn-go" to="/check">{T.wzStart}</Link>
+              <Link className="btn btn-go" to="/check" data-ga="home_check_start">{T.wzStart}</Link>
             </div>
             <MyCard />
           </div>
@@ -132,13 +132,13 @@ export default function Home() {
           </div>
           <ul className="comm-list">
             <li>
-              <a className="comm-ic comm-ig" href={SNS.instagram} target="_blank" rel="noopener noreferrer" aria-label={T.commIg}>
+              <a className="comm-ic comm-ig" data-ga="community_click" data-ga-label="instagram" href={SNS.instagram} target="_blank" rel="noopener noreferrer" aria-label={T.commIg}>
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5.2" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" /></svg>
               </a>
               <span className="comm-name" aria-hidden="true">Instagram</span>
             </li>
             <li>
-              <a className="comm-ic comm-fb" href={SNS.facebook} target="_blank" rel="noopener noreferrer" aria-label={T.commFb}>
+              <a className="comm-ic comm-fb" data-ga="community_click" data-ga-label="facebook" href={SNS.facebook} target="_blank" rel="noopener noreferrer" aria-label={T.commFb}>
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.6 21v-7.6h2.6l.4-3h-3V8.5c0-.9.3-1.5 1.5-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21h3.1z" /></svg>
               </a>
               <span className="comm-name" aria-hidden="true">Facebook</span>

@@ -7,7 +7,7 @@ import { CONTACT_MAIL } from '../components/Footer.jsx';
 
 const NONE = ['pvNone1', 'pvNone2', 'pvNone3', 'pvNone4', 'pvNone5', 'pvNone6'];
 const KEEP = ['Account', 'Social', 'Profile', 'Post', 'Date', 'Summary'];
-const THIRD = ['Ai', 'Db', 'Host'];
+const THIRD = ['Ai', 'Db', 'Host', 'Ga'];
 const RIGHT = ['pvRight1', 'pvRight2', 'pvRight3', 'pvRight4'];
 
 export default function Privacy() {

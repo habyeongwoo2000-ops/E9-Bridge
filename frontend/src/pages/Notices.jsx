@@ -202,7 +202,7 @@ export default function Notices() {
                         {n.date && T.ntDateLabel && <span>{T.ntDateLabel + ': ' + n.date}</span>}
                         <span>{T.ntCheckedLabel + ': ' + n.checked}</span>
                         {n.until && <span>{T.ntUntil + ': ' + n.until}</span>}
-                        <ExternalLink href={n.url}>{T.ntOriginal}</ExternalLink>
+                        <ExternalLink href={n.url} ga="notice_source_click" gaLabel={n.key}>{T.ntOriginal}</ExternalLink>
                       </div>
                     </div>
                   </article>

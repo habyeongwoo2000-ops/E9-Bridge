@@ -132,7 +132,7 @@ export default function MyCard() {
         {!me ? (
           <div className="my-guest" id="myGuest">
             <p className="my-sub">{T.myLoginLead}</p>
-            <Link className="btn btn-go" to="/login?next=index">{T.myLoginBtn}</Link>
+            <Link className="btn btn-go" to="/login?next=index" data-ga="home_login_start">{T.myLoginBtn}</Link>
           </div>
         ) : (
           <div className="my-user" id="myUser">

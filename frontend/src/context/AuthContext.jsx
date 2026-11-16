@@ -9,6 +9,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { getJSON, postJSON } from '../lib/api.js';
 import { isLang, useI18n } from '../i18n/I18nProvider.jsx';
 import { isAndroidApp } from '../config/platform.js';
+import { track } from '../lib/analytics.js';
 
 const AuthCtx = createContext(null);
 
@@ -30,7 +31,14 @@ export function AuthProvider({ children }) {
 
   const refresh = useCallback(() => {
     return getJSON('/api/auth')
-      .then((d) => { setMe((d && d.user) || null); setMethods((d && d.methods) || []); return (d && d.user) || null; })
+      .then((d) => {
+        setMe((d && d.user) || null); setMethods((d && d.methods) || []);
+        // 소셜 로그인 단추를 누르고 돌아와 로그인돼 있으면 한 번 셉니다(AuthShared 가 표시를 남깁니다).
+        let via = null;
+        try { via = sessionStorage.getItem('eum.oauthVia'); sessionStorage.removeItem('eum.oauthVia'); } catch (e) { /* 저장소 막힘 */ }
+        if (via && d && d.user) track('login', { method: via });
+        return (d && d.user) || null;
+      })
       .catch(() => { setMe(null); setMethods([]); return null; })
       .then((u) => {
         setReady(true);
@@ -60,6 +68,8 @@ export function AuthProvider({ children }) {
     const out = await postJSON('/api/auth', { action, ...payload });
     if (!out.ok || !out.data || !out.data.ok) return { ok: false, error: (out.data && out.data.error) || 'errNet' };
     setMe(out.data.user || null);
+    if (action === 'login') track('login', { method: 'password' });
+    if (action === 'signup') track('sign_up', { method: 'password' });
     return { ok: true, user: out.data.user || null };
   }, []);
 

@@ -16,6 +16,7 @@ import Pager from '../components/Pager.jsx';
 import { useI18n, useDocTitle } from '../i18n/I18nProvider.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { getJSON, postJSON } from '../lib/api.js';
+import { track } from '../lib/analytics.js';
 import { sGet, sSet } from '../lib/storage.js';
 
 export default function Board() {
@@ -93,6 +94,7 @@ export default function Board() {
     setText('');
     setPriv(false);
     setMsg({ key: 'boardSent', kind: 'good' });
+    track('board_question');
     if (page === 1) again(); else setPage(1);
   };
 

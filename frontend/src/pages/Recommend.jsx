@@ -27,6 +27,7 @@ import {
   recommend, countBySido, alertsOf, markSeen, loadTrack, saveTrack, nearestSido, mapSearchUrl
 } from '../lib/reco.js';
 import '../styles/pages/reco.css';
+import { track as gaTrack } from '../lib/analytics.js'; // 이 쪽에는 진행 상황용 track 이 따로 있습니다
 
 const PAGE = 8;
 
@@ -70,6 +71,19 @@ export default function Recommend() {
   listRef.current = list;
   useEffect(() => () => markSeen(listRef.current), []);
   useEffect(() => { setPage(1); }, [profile]);
+
+  /* 맞춤 지원 검색(전환) — 고르는 동안 여러 번 바뀌므로 1.5초 멈췄을 때 한 번만 셉니다.
+     profile 객체는 다시 그릴 때마다 새로 만들어질 수 있어, 고른 값 자체가 바뀌었을 때만 봅니다. */
+  const profileKey = JSON.stringify(profile);
+  const lastKey = useRef(profileKey);
+  useEffect(() => {
+    if (profileKey === lastKey.current) return undefined;
+    const id = setTimeout(() => {
+      lastKey.current = profileKey;
+      gaTrack('reco_search', { sido: profile.sido || 'all' });
+    }, 1500);
+    return () => clearTimeout(id);
+  }, [profileKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* 쪽 나누기 — PAGE 건씩. 쪽을 옮기면 목록 맨 위로 올라갑니다. */
   const pages = Math.max(1, Math.ceil(list.length / PAGE));

@@ -23,7 +23,7 @@ export default function RecoTeaser() {
           <p className="sec-eyebrow" aria-hidden="true">Support for you</p>
           <h2 className="sec-title" id="rtTitle">{t.hmTitle}</h2>
           <p className="rt-lead">{fill(t.hmLead, { n: PROGRAMS.length })}</p>
-          <Link className="btn btn-go" to="/recommend">{ready ? t.hmSee : t.hmStart}</Link>
+          <Link className="btn btn-go" to="/recommend" data-ga="home_reco_click">{ready ? t.hmSee : t.hmStart}</Link>
         </div>
         {ready ? (
           <div className="rt-card">

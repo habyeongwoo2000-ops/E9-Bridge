@@ -28,6 +28,7 @@ import { myRows, EMAIL_RE, openMailto } from '../lib/summary.js';
 import { asDay, fmt, fmtDay, today } from '../lib/dates.js';
 import { load, save, drop } from '../lib/storage.js';
 import { apiPost } from '../lib/api.js';
+import { track } from '../lib/analytics.js';
 
 const STEPS = ['deadline', 'reason', 'payout', 'result'];
 const STEP_LABEL = { deadline: 'dlTitle', reason: 'ckTitle', payout: 'secNoPay', result: 'wzStepResult' };
@@ -72,6 +73,7 @@ export default function Check() {
 
   const hashStep = loc.hash.slice(1);
   const step = STEPS.indexOf(hashStep) !== -1 ? hashStep : 'deadline';
+  useEffect(() => { if (step === 'result') track('check_complete'); }, [step]);
 
   const stepsRef = useRef(null);
   const quizRef = useRef(null);
@@ -177,7 +179,7 @@ export default function Check() {
     if (e) e.preventDefault();
     const r = runDeadline(leave, apply);
     // 계산이 실제로 됐을 때만(미래 날짜 오류가 아닐 때) 내 정보에 저장합니다.
-    if (r && !r.bad) mySave('deadline', { leave, apply }, 'dday');
+    if (r && !r.bad) { mySave('deadline', { leave, apply }, 'dday'); track('check_deadline_calc'); }
   }
   function resetDeadline() {
     setLeave(''); setApply(''); setDd(null);
